@@ -1,3 +1,6 @@
+/* DayZ Legacy 0.44 */
+/* ui_defaultCharacterScreen.sqf - Handles functions related to the default character dialog */
+
 _mode = _this select 0;
 _param = _this select 1;
 

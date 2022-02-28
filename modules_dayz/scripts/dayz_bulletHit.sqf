@@ -1,3 +1,6 @@
+/* DayZ Legacy 0.44 */
+/* dayz_bulletHit.sqf - Handles camera shake to simulate character pain when hit with a bullet */
+
 private["_commit"];
 _commit = 2;
 //if (!r_player_unconscious) then {

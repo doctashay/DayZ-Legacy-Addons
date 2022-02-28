@@ -1,3 +1,6 @@
+/* DayZ Legacy 0.44 */
+/* fn_generateTooltip.sqf - Creates a tooltip with item information such as name, quality, and a picture */
+
 private["_item","_title","_config","_desc","_text","_damage","_damageText","_subHeading","_used","_usedText","_type","_descShortNum"];
 _item = 	_this;
 _type = "cfgVehicles";

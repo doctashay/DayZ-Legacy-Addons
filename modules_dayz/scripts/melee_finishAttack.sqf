@@ -1,3 +1,6 @@
+/* DayZ Legacy 0.44 */
+/* melee_finishAttack.sqf - Conducts melee attack animations */
+
 /*
 author: Rocket
 

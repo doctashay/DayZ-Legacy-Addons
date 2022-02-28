@@ -1,3 +1,6 @@
+/* DayZ Legacy 0.44 */
+/* ui_newScene.sqf - Handles functions related to the default character dialog */
+
 _doSmooth = _this select 0;
 _serial = _this select 1;
 

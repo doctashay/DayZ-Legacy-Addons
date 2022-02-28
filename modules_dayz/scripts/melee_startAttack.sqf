@@ -1,3 +1,6 @@
+/* DayZ Legacy 0.44 */
+/* melee_startAttack.sqf - Handles left click events to determine if a weapon can use melee attacks */
+
 /*
 author: Rocket
 

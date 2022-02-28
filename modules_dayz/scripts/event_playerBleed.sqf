@@ -1,3 +1,6 @@
+/* DayZ Legacy 0.44 */
+/* event_playerBleed.sqf - Determines when to create new bleeding sources and creates a local particle effect at the origin point of the injury */
+
 private["_agent","_source","_effects"];
 _agent = _this;
 _coords = call compile (_agent getVariable ["bleedingsources","[]"]);
