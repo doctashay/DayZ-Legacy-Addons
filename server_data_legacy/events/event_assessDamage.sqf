@@ -11,9 +11,6 @@ _ammoConfig = configFile >> "cfgAmmo" >> _ammo;
 _isMelee = _ammo isKindOf "MeleeDamage";
 _isZombie = _source isKindOf "ZombieEngine";
 
-//WIP vehicle death handling
-//_isVehicle = _source isKindOf "VehicleDamage"; 
-
 //ignore very low damage
 if (_damage < 0.1 and !_isMelee) exitWith {0};
 
