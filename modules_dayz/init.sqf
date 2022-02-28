@@ -260,20 +260,20 @@ player_suicide = {
 };
 
 //functions
-fnc_generateTooltip = compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_generateTooltip.sqf";
-dayz_bulletHit = 		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\dayz_bulletHit.sqf";
-fnc_playerMessage =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_playerMessage.sqf";
-randomValue =		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\randomValue.sqf";
+fnc_generateTooltip = compile preprocessFileLineNumbers "\dzlegacy\modulesDayz\scripts\fn_generateTooltip.sqf";
+dayz_bulletHit = 		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\dayz_bulletHit.sqf";
+fnc_playerMessage =	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\fn_playerMessage.sqf";
+randomValue =		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\randomValue.sqf";
 
 //ui
-ui_characterScreen =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\ui_characterScreen.sqf";
-ui_defaultCharacterScreen =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\ui_defaultCharacterScreen.sqf";
-ui_newScene =		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\ui_newScene.sqf";
+ui_characterScreen =	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\ui_characterScreen.sqf";
+ui_defaultCharacterScreen =	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\ui_defaultCharacterScreen.sqf";
+ui_newScene =		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\ui_newScene.sqf";
 
 //melee
-melee_startAttack = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\melee_startAttack.sqf";
-melee_finishAttack = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\melee_finishAttack.sqf";
-event_playerBleed = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\event_playerBleed.sqf";
+melee_startAttack = 	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\melee_startAttack.sqf";
+melee_finishAttack = 	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\melee_finishAttack.sqf";
+event_playerBleed = 	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\event_playerBleed.sqf";
 
 melee_fnc_checkHitLocal = {
 	if (!_processHit) exitWith {};
