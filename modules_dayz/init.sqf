@@ -41,8 +41,8 @@ meleeAttackType = 1;	//alternates between two attacks
 
 //New player defines
 DZ_ENERGY = 1000;	// actual energy from all food and drink consumed
-DZ_HUNGER = 0;	//0 to 6000ml size content of stomach, zero is empty
-DZ_THIRST = 0; 	//0 to 6000ml size content of stomach, zero is empty
+DZ_HUNGER = 6000;	//0 to 6000ml size content of stomach, zero is empty
+DZ_THIRST = 6000; 	//0 to 6000ml size content of stomach, zero is empty (maxed out for DayZ Legacy debug)
 DZ_WATER = 1800;	// actual water from all food and drink consumed
 DZ_STOMACH = 1000; // actual volume in stomach
 DZ_DIET = 0.5; // actual diet state
@@ -60,7 +60,8 @@ init_cooker = {};
 
 if (isServer) then
 {
-	call compile preprocessFileLineNumbers "\dz\server\scripts\init.sqf";
+	//init.sqf is now initServer.sqf in the mission file and does not need to be called from here.
+	//call compile preprocessFileLineNumbers "\dz\server\scripts\init.sqf";
 };
 
 //generate skins
@@ -202,7 +203,7 @@ populateInventoryNotifiers =
 					
 					//end
 					_container = _container + 1;
-					//statusChat [str(_x),""];
+					statusChat [str(_x),""];
 				};
 			};
 		} forEach myNotifiers;
@@ -252,7 +253,7 @@ DZ_BONES = call {
 	_bones
 };
 
-player_queued = 		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\player_queued.sqf";
+player_queued = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\players\player_queued.sqf";
 
 player_suicide = {
 	_fsm = [_person,_this] execFSM "player_suicide.fsm";
@@ -281,7 +282,7 @@ melee_fnc_checkHitLocal = {
 	if (count _array>0) exitWith 
 	{
 		_array select 0 requestDamage [_agent, _array select 2, _ammo, _array select 1];
-		//statusChat ["hit","colorImportant"];
+		statusChat ["hit","colorImportant"]; //temp re-enabled for DayZ Legacy
 		_processHit = false;	//possibly select for slashes?
 		if (!_unarmed) then
 		{
@@ -311,7 +312,7 @@ rainCheck =
 		{
 			if (gettingWet) then
 			{
-				//hint "not getting wet now!";
+				hint "not getting wet now!";
 				gettingWet = false;	
 				playerWet = [_body,gettingWet];
 				publicVariableServer "playerWet";	
@@ -322,7 +323,7 @@ rainCheck =
 	{
 		if (gettingWet) then
 		{
-			//hint "not getting wet now!";
+			hint "not getting wet now!";
 			gettingWet = false;	
 			playerWet = [_body,gettingWet];
 			publicVariableServer "playerWet";		
@@ -347,7 +348,7 @@ syncWeather = {
 		//DZ_WEATHER_CHANGE setFog (_this select 3);
 		simulSetHumidity (_this select 2);
 		0 setRain (_this select 4);
-		//hint "Weather Change from server!";
+		statusChat ("Weather Change from server!");
 	};
 };
 
