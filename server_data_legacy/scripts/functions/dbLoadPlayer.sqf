@@ -145,7 +145,7 @@ onPlayerDisconnected _disconnectPlayer;
 	_charType = _array select 0;
 	_charInv = _array select 1;
     //_pos = findCachedSpawnPoint [ DZ_spawnpointsfile, DZ_spawnpass3params ];
-	_pos = [3590.96,8492.23,0];
+	_pos = [2250.86, 5121.14, 0.0014];
 	
 	//load data
 	_top = getArray(configFile >> "cfgCharacterCreation" >> "top");
