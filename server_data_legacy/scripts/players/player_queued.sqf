@@ -11,17 +11,17 @@ _alive = _this select 1;
 0 fadeSpeech 0;
 0 fadeMusic 0;
 
-_wait = _this select 3;
+// _wait = _this select 3;
 
-if (_wait < 0) then
-{
-	while {_wait < 0} do
-	{
-		titleText [format["Spawning in %1 seconds... Please wait...",-_wait],"BLACK FADED",10e10];
-		_wait = _wait + 1;
-		sleep 1;
-	};
-};
+// if (_wait < 0) then
+// {
+// 	while {_wait < 0} do
+// 	{
+// 		titleText [format["Spawning in %1 seconds... Please wait...",-_wait],"BLACK FADED",10e10];
+// 		_wait = _wait + 1;
+// 		sleep 1;
+// 	};
+// };
 
 titleText ["Welcome to DayZ Legacy. Please wait a moment...","BLACK FADED",10e10];
 /*
