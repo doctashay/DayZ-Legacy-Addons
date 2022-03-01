@@ -1,6 +1,3 @@
-/* DayZ Legacy 0.44 */
-/* ui_defaultCharacterScreen.sqf - Handles functions related to the default character dialog */
-
 _mode = _this select 0;
 _param = _this select 1;
 
@@ -44,9 +41,16 @@ _prepareCtrl = {
 	_ctrl lbSetCurSel _serial;
 	_ctrl ctrlCommit 0;
 };
+_addToCtrl = {
+	_idc = _this select 0;
+	_item = _this select 1;
+	(_display displayCtrl _idc) lbAdd _item;
+};
+
 _regenerateChar = {
+	_raceTemp = _race + getArray(configFile >> "cfgCharacterCreation" >> format["%1custom",(_gender select DZ_selectedSex)]);
 	deleteVehicle demoUnit;
-	_class = format[_format,(_gender select DZ_selectedSex),(_race select DZ_selectedSkin)];
+	_class = format[_format,(_gender select DZ_selectedSex),(_raceTemp select DZ_selectedSkin)];
 	demoUnit = 	_class createVehicleLocal demoPos;
 	demoTop = 	demoUnit createInInventory (_top select DZ_selectedTop);
 	demoBottom = demoUnit createInInventory (_bottom select DZ_selectedBottom);
@@ -88,6 +92,7 @@ switch _mode do {
 	{
 		startLoadingScreen ["Loading Character Creation...."];
 		_display = _param select 0;
+		uiNameSpace setVariable [ "myDisplay", _display];
 		_s = 0;
 		_c = 0;
 		mousePressed = false;
@@ -112,13 +117,15 @@ switch _mode do {
 				private["_gender_x","_type"];
 				_gender_x = _x;
 				_type = format[_format,_gender_x,_race_x];
-				_obj = format[_format,_gender_x,_race_x] createVehicleLocal _prepos;
-				_obj setPos _prepos;
-				_obj disableAI "move";
-				_obj disableAI "anim";
-				_obj enableSimulation false;
-				preloaded set [count preloaded,_obj];
-				waitUntil {1 preloadObject _type};
+				if (isClass (configFile >> "cfgVehicles" >> _type)) then {
+					_obj = format[_format,_gender_x,_race_x] createVehicleLocal _prepos;
+					_obj setPos _prepos;
+					_obj disableAI "move";
+					_obj disableAI "anim";
+					_obj enableSimulation false;
+					preloaded set [count preloaded,_obj];
+					waitUntil {1 preloadObject _type};
+				};
 			} forEach _gender;
 		} forEach _race;		
 		
@@ -153,7 +160,6 @@ switch _mode do {
 		};
 		
 		[1410,_gender,DZ_selectedSex] call _prepareCtrl;
-		[1420,_skin,DZ_selectedSkin] call _prepareCtrl;
 		[1430,_topT,DZ_selectedTop] call _prepareCtrl;
 		[1440,_bottomT,DZ_selectedBottom] call _prepareCtrl;
 		[1450,_shoeT,DZ_selectedShoe] call _prepareCtrl;		
@@ -168,6 +174,15 @@ switch _mode do {
 	};
 	case "sexLBchanged": {
 		DZ_selectedSex = (_this select 1) select 1;
+		_display = uiNameSpace getVariable "myDisplay";
+		_ctrl = _display displayCtrl 1420;
+		lbClear _ctrl;
+
+		[1420,_skin,DZ_selectedSkin] call _prepareCtrl;
+		{
+			[1420,_x] call _addToCtrl;
+		} forEach getArray(configFile >> "cfgCharacterCreation" >> format["%1custom",(_gender select DZ_selectedSex)]);
+		
 		call _regenerateChar;
 	};
 	case "skinLBchanged": {

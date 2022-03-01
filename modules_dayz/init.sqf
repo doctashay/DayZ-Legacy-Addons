@@ -264,6 +264,7 @@ fnc_generateTooltip = compile preprocessFileLineNumbers "\dzlegacy\modulesDayz\s
 dayz_bulletHit = 		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\dayz_bulletHit.sqf";
 fnc_playerMessage =	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\fn_playerMessage.sqf";
 randomValue =		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\randomValue.sqf";
+fnc_isItemDuctTapeCompatible = 	compile preprocessFileLineNumbers "\dz\modulesDayz\scripts\fnc_isItemDuctTapeCompatible.sqf";
 
 //ui
 ui_characterScreen =	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\ui_characterScreen.sqf";
@@ -290,14 +291,19 @@ melee_fnc_checkHitLocal = {
 	};
 };
 
+isUnderRoof = {
+	_pos = getPosASL _this;
+	_pos0 = [_pos select 0,_pos select 1,(_pos select 2)+ 50];
+	_hits = lineHit [_pos,_pos0,"shadow",_this,objNull,0];
+	_hits
+};
+
 rainCheck =
 {
 	_body = _this;
 	if (rain > 0) then
 	{
-		_pos = getPosASL _body;
-		_pos0 = [_pos select 0,_pos select 1,(_pos select 2)+ 50];
-		_hits = lineHit [_pos,_pos0,"shadow",_body,objNull,0];
+		_hits = _body call isUnderRoof;
 		if (count _hits == 0) then
 		{
 			if (!gettingWet) then
@@ -322,7 +328,7 @@ rainCheck =
 	{
 		if (gettingWet) then
 		{
-			hint "not getting wet now!";
+			//hint "not getting wet now!";
 			gettingWet = false;	
 			playerWet = [_body,gettingWet];
 			publicVariableServer "playerWet";		
@@ -769,4 +775,162 @@ effect_createKindlingSparks =
 	_source setDropInterval (0.3);
 	
 	_kindling setVariable ["kindlingSparksParticleSource",_source];
+};
+
+event_fnc_flareFire =
+{
+	private["_sfx"];
+	_flare = _this;
+	_position = getPosATL _flare;
+	_fireOn = _flare getVariable ["fire",false];
+	if (_fireOn) then
+	{		
+		//call effect_createFlareFlames; 		
+		call effect_createFlareSmoke;
+		call effect_createFlareSparks;
+	}
+	else
+	{
+		//_flareFlames = _flare getVariable ["fireplaceFlamesParticleSource",objNull];		
+		_flareSmoke = _flare getVariable ["flareSmokeParticleSource",objNull];		
+		_flareSparks = _flare getVariable ["flareSparksParticleSource",objNull];
+		//deleteVehicle _flareFlames;
+		deleteVehicle _flareSmoke;
+		deleteVehicle _flareSparks;
+	};
+};
+
+effect_createFlareSmoke = 
+{	
+	_source = "#particlesource" createVehicleLocal getPosATL _flare;
+	
+	_source setParticleParams
+	/*Sprite*/			[["\dz\data\data\ParticleEffects\Universal\Universal", 16, 7, 48, 1],"",// File,Ntieth,Index,Count,Loop(Bool)
+	/*Type*/			"Billboard",
+	/*TimmerPer*/		1,
+	/*Lifetime*/		2,
+	/*Position*/		"emitter",
+	/*MoveVelocity*/	[0, 0.6, 0],
+	/*Simulation*/		5, 0.05, 0.04, 0.05, //rotationVel,weight,volume,rubbing //0, 0.05, 0.04, 0.05,
+	/*Scale*/			[0.2, 0.8, 2.6],
+	/*Color*/			[[0.6,0.6,0.6,0],[0.7,0.7,0.7,0.2],[0.8,0.8,0.8,0.1],[1,1,1,0]], //[[1,1,1,-10]]
+	/*AnimSpeed*/		[1.5,0.5], //[0.8,0.3,0.25],
+	/*randDirPeriod*/	0.4,
+	/*randDirIntesity*/	0.09,
+	/*onTimerScript*/	"",
+	/*DestroyScript*/	"",
+	/*Follow*/			_flare];
+	
+	//[lifeTime, position, moveVelocity, rotationVelocity, size, color, randomDirectionPeriod, randomDirectionIntensity]
+	_source setParticleRandom [0.3, [0.1,0.2,0.1], [0.05,0.5,0.05], 0, 0.3, [0,0,0,0.1], 0.2, 0.05];
+	
+	_source setDropInterval (0.1);
+	
+	_flare setVariable ["flareSmokeParticleSource",_source];
+};
+	
+effect_createFlareSparks = 
+{
+	_source = "#particlesource" createVehicleLocal getPosATL _flare;
+	
+	_source setParticleParams
+	/*Sprite*/			[["\dz\data\data\ParticleEffects\Universal\Universal", 16, 13, 2, 0],"",// File,Ntieth,Index,Count,Loop(Bool)
+	/*Type*/			"Billboard",
+	/*TimmerPer*/		3,
+	/*Lifetime*/		0.1,
+	/*Position*/		"emitter",
+	/*MoveVelocity*/	[0, 0.5, 0],
+	/*Simulation*/		5, 0.05, 0.04, 0.05, //rotationVel,weight,volume,rubbing //0, 0.05, 0.04, 0.05,
+	/*Scale*/			[0.02, 0.02, 0.01],
+	/*Color*/			[[0.6,0.5,0.3,-10],[0.8,0.7,0.4,-10],[1,0.9,0.5,-10],[0.8,0.7,0.4,-10]], //[[1,1,1,-10]]
+	/*AnimSpeed*/		[1000],
+	/*randDirPeriod*/	0, //0.001
+	/*randDirIntesity*/	0,
+	/*onTimerScript*/	"",
+	/*DestroyScript*/	"",
+	/*Follow*/			_flare];
+	
+	//[lifeTime, position, moveVelocity, rotationVelocity, size, color, randomDirectionPeriod, randomDirectionIntensity]
+	_source setParticleRandom [0.2, [0.05,0.2,0.05], [0.08,0.9,0.08], 0, 0.06, [0.1,0.1,0.1,0], 0, 0];
+	
+	_source setDropInterval (0.01);
+	
+	_flare setVariable ["flareSparksParticleSource",_source];
+};
+
+event_fnc_wreckSmoke =
+{
+	private["_sfx"];
+	_wreck = _this;
+	_position = getPosATL _wreck;
+	_fireOn = _wreck getVariable ["fire",false];
+	if (_fireOn) then
+	{					
+		call effect_createWreckSmoke;
+	}
+	else
+	{		
+		_wreckSmoke = _wreck getVariable ["wreckSmokeParticleSource",objNull];			
+		deleteVehicle _wreckSmoke;
+	};
+};
+
+effect_createWreckSmoke = 
+{	
+	_source = "#particlesource" createVehicleLocal getPosATL _this;
+	
+	_source setParticleParams
+	/*Sprite*/			[["\dz\data\data\ParticleEffects\Universal\Universal", 16, 7, 48, 1],"",// File,Ntieth,Index,Count,Loop(Bool)
+	/*Type*/			"Billboard",
+	/*TimmerPer*/		3,
+	/*Lifetime*/		22,
+	/*Position*/		[0, 0, 0], //"emitter"
+	/*MoveVelocity*/	[0, 0, 0.2],
+	/*Simulation*/		5, 0.05, 0.04, 0.05, //rotationVel,weight,volume,rubbing //0, 0.05, 0.04, 0.05,
+	/*Scale*/			[1, 4, 9, 18],
+	/*Color*/			[[0.1,0.1,0.1,0.6],[0.4,0.4,0.4,0.3],[0.7,0.7,0.7,0.1],[0.8,0.8,0.8,0]],
+	/*AnimSpeed*/		[1,0.4,0.1], //[0.8,0.3,0.25],
+	/*randDirPeriod*/	0,
+	/*randDirIntesity*/	0,
+	/*onTimerScript*/	"",
+	/*DestroyScript*/	"",
+	/*Follow*/			_this];
+	
+	//[lifeTime, position, moveVelocity, rotationVelocity, size, color, randomDirectionPeriod, randomDirectionIntensity]
+	_source setParticleRandom [1.5, [0, 0, 0], [0.15, 0.15, 0.3], 30, 0.2, [0, 0, 0, 0], 0, 0];
+	_source setDropInterval (0.15);
+	
+	//_this setVariable ["wreckSmokeParticleSource",_source];
+	
+	//_source particleAttachObject [_this, [0,0,0]];
+};
+
+effect_createGrenadeSmoke = 
+{	
+	_source = "#particlesource" createVehicleLocal getPosATL _this;
+	
+	_source setParticleParams
+	/*Sprite*/			[["\dz\data\data\ParticleEffects\Universal\Universal", 16, 7, 48, 1],"",// File,Ntieth,Index,Count,Loop(Bool)
+	/*Type*/			"Billboard",
+	/*TimmerPer*/		3,
+	/*Lifetime*/		16,
+	/*Position*/		[0, 0, 0], //"emitter"
+	/*MoveVelocity*/	[0, 0, 0],
+	/*Simulation*/		5, 0.05, 0.04, 0.05, //rotationVel,weight,volume,rubbing //0, 0.05, 0.04, 0.05,
+	/*Scale*/			[1,4,10,14,20],
+	/*Color*/			[[0.9,0.9,0.9,0.1],[0.9,0.9,0.9,1],[0.9,0.9,0.9,1],[0.9,0.9,0.9,1],[0.8,0.8,0.8,0.1]],
+	/*AnimSpeed*/		[0.9,0.8,0.1], //[0.8,0.3,0.25],
+	/*randDirPeriod*/	0.5,
+	/*randDirIntesity*/	0.1,
+	/*onTimerScript*/	"",
+	/*DestroyScript*/	"",
+	/*Follow*/			_this];
+	
+	//[lifeTime, position, moveVelocity, rotationVelocity, size, color, randomDirectionPeriod, randomDirectionIntensity]
+	_source setParticleRandom [0, [0, 0, 0], [0, 0, 0], 1, 0.5, [0, 0, 0, 0], 0, 0];
+	_source setDropInterval (0.2);
+	
+	//_this setVariable ["wreckSmokeParticleSource",_source];
+	
+	//_source particleAttachObject [_this, [0,0,0]];
 };

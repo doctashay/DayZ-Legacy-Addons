@@ -6,23 +6,21 @@ item1[] = {"done",4,218,50.000000,-200.000000,150.000000,-150.000000,0.000000,"d
 item2[] = {"normal_state",2,4346,50.000000,-125.000000,150.000000,-75.000000,0.000000,"normal state"};
 item3[] = {"wait",4,218,-75.000000,-200.000000,25.000000,-150.000000,0.000000,"wait"};
 item4[] = {"delay_check",4,218,175.000000,-200.000000,275.000000,-150.000000,0.000000,"delay" \n "check"};
-item5[] = {"unconscious",4,218,275.000000,-75.000000,375.000000,-25.000000,6.000000,"unconscious"};
+item5[] = {"unconscious",4,218,300.000000,-75.000000,400.000000,-25.000000,6.000000,"unconscious"};
 item6[] = {"dead",4,218,50.000000,-50.000000,150.000000,0.000000,7.000000,"dead"};
 item7[] = {"captive",4,218,-200.000000,-50.000000,-100.000000,0.000000,5.000000,"captive"};
-item8[] = {"dead",1,250,50.000000,50.000000,150.000000,100.000000,0.000000,"dead"};
-item9[] = {"struggling",2,250,-200.000000,200.000000,-100.000000,250.000000,0.000000,"struggling"};
-item10[] = {"not",4,218,-325.000000,50.000000,-225.000000,100.000000,4.000000,"not"};
-item11[] = {"",7,210,-279.000000,-104.000000,-270.999969,-96.000000,0.000000,""};
-item12[] = {"not",4,218,375.000000,-25.000000,475.000000,25.000000,0.000000,"not"};
-item13[] = {"",7,210,-28.999996,71.000000,-21.000002,79.000000,0.000000,""};
-item14[] = {"unconscious",2,250,275.000000,25.000000,375.000000,75.000000,0.000000,"unconscious"};
-item15[] = {"restrained",2,250,-200.000000,50.000000,-100.000000,100.000000,0.000000,"restrained"};
-item16[] = {"struggle",4,218,-250.000000,125.000000,-150.000000,175.000000,1.000000,"struggle"};
-item17[] = {"broken_restraint",4,218,-75.000000,200.000000,25.000000,250.000000,3.000000,"broken" \n "restraints"};
-item18[] = {"",7,210,-279.000000,221.000000,-270.999969,229.000000,0.000000,""};
-item19[] = {"wait",4,218,-125.000000,0.000000,-25.000000,50.000000,0.000000,"wait"};
-item20[] = {"not_struggle",4,218,-150.000000,125.000000,-50.000000,175.000000,2.000000,"not struggle"};
-item21[] = {"",7,210,421.000000,-104.000008,429.000000,-95.999992,0.000000,""};
+item8[] = {"dead",1,250,50.000000,175.000000,150.000000,225.000000,0.000000,"dead"};
+item9[] = {"not",4,218,-325.000000,50.000000,-225.000000,100.000000,4.000000,"not"};
+item10[] = {"",7,210,-279.000000,-104.000000,-270.999969,-96.000000,0.000000,""};
+item11[] = {"not",4,218,375.000000,100.000000,475.000000,150.000000,0.000000,"not"};
+item12[] = {"unconscious",2,250,275.000000,25.000000,375.000000,75.000000,0.000000,"unconscious"};
+item13[] = {"restrained",2,250,-200.000000,50.000000,-100.000000,100.000000,0.000000,"restrained"};
+item14[] = {"broken_restraint",4,218,-200.000000,150.000000,-100.000000,200.000000,3.000000,"broken" \n "restraints"};
+item15[] = {"",7,210,421.000000,-104.000008,429.000000,-95.999992,0.000000,""};
+item16[] = {"not_and_captive",4,218,200.000000,100.000000,300.000000,150.000000,0.000000,"not and captive"};
+item17[] = {"captive_and_unco",4,218,200.000000,-50.000000,300.000000,0.000000,6.000000,"captive" \n "and" \n "unconscious"};
+item18[] = {"fade_out_setup",2,250,50.000000,25.000000,150.000000,75.000000,0.000000,"fade out setup"};
+item19[] = {"fading_out",4,218,50.000000,100.000000,150.000000,150.000000,0.000000,"fading out"};
 link0[] = {0,1};
 link1[] = {1,2};
 link2[] = {2,3};
@@ -32,31 +30,27 @@ link5[] = {2,6};
 link6[] = {2,7};
 link7[] = {3,2};
 link8[] = {4,2};
-link9[] = {5,14};
-link10[] = {6,8};
-link11[] = {7,15};
-link12[] = {9,6};
-link13[] = {9,17};
-link14[] = {9,18};
-link15[] = {9,20};
-link16[] = {10,11};
-link17[] = {11,2};
-link18[] = {12,21};
-link19[] = {13,15};
-link20[] = {14,6};
-link21[] = {14,12};
-link22[] = {15,6};
-link23[] = {15,10};
-link24[] = {15,16};
-link25[] = {15,19};
-link26[] = {16,9};
-link27[] = {17,13};
-link28[] = {18,10};
-link29[] = {19,15};
-link30[] = {20,15};
-link31[] = {21,2};
-globals[] = {25.000000,1,0,0,0,640,480,1,136,6316128,1,7.130539,528.413879,217.388550,-339.321472,824,880,1};
-window[] = {2,-1,-1,-1,-1,1062,120,1091,120,3,846};
+link9[] = {5,12};
+link10[] = {6,18};
+link11[] = {7,13};
+link12[] = {9,10};
+link13[] = {10,2};
+link14[] = {11,15};
+link15[] = {12,6};
+link16[] = {12,11};
+link17[] = {12,16};
+link18[] = {13,6};
+link19[] = {13,9};
+link20[] = {13,14};
+link21[] = {13,17};
+link22[] = {14,13};
+link23[] = {15,2};
+link24[] = {16,13};
+link25[] = {17,12};
+link26[] = {18,19};
+link27[] = {19,8};
+globals[] = {25.000000,1,0,0,0,640,480,1,147,6316128,1,-369.072632,382.591797,369.072662,-327.839264,1112,1031,1};
+window[] = {2,-1,-1,-1,-1,1092,150,1121,150,3,1130};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -70,7 +64,10 @@ class FSM
       init = /*%FSM<STATEINIT""">*/"DZ_Brightness = 1;" \n
        "DZ_Contrast = 1;" \n
        "DZ_dynamicBlur = 0;" \n
-       "DZ_colorSat = 1;"/*%FSM</STATEINIT""">*/;
+       "DZ_colorSat = 1;" \n
+       "keyholded = 0;" \n
+       "keypresscounter = 0;" \n
+       "keyup = true;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -93,11 +90,13 @@ class FSM
            "profileNamespace setVariable [""lastCharacter"",typeOf _this];" \n
            "" \n
            "//_damageEH = _this addEventHandler [""HandleDamage"",{_this spawn event_playerDamage;0}];" \n
+           "/*" \n
            "[] spawn {" \n
            "	sleep 1;" \n
            "	_keyAction = (findDisplay 46) displayAddEventHandler [""mouseButtonDown"", ""_this call melee_startAttack""];" \n
            "	_keyAction = (findDisplay 46) displayAddEventHandler [""mouseButtonUp"", ""meleeAttempt = false""];" \n
            "};" \n
+           "*/" \n
            "" \n
            """effectDazed"" addPublicVariableEventHandler" \n
            "{" \n
@@ -129,7 +128,13 @@ class FSM
            "		sleep 1;" \n
            "	};" \n
            "};" \n
-           ""/*%FSM</ACTION""">*/;
+           "" \n
+           "" \n
+           "" \n
+           "if ((player itemInSlot ""headgear"") isKindOf ""Cover_BurlapSack"") then " \n
+           " { " \n
+           "	setAperture 10000;1 fadeSound 0.4;1 fadeSpeech 0.4;" \n
+           " };"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -164,7 +169,17 @@ class FSM
        "//Health" \n
        "	_health = 	_this getVariable[""health"",5000];" \n
        "	_blood = 	_this getVariable[""blood"",5000];" \n
-       "	_this call rainCheck;"/*%FSM</STATEINIT""">*/;
+       "	_this call rainCheck;" \n
+       "" \n
+       "//_musclec = player getVariable [""musclecramp"",0];" \n
+       "//player SetMuscleCramp _musclec;" \n
+       "" \n
+       "if((player itemInSlot ""headgear"") isKindOf ""Cover_BurlapSack"" )then{" \n
+       "setAperture 10000;" \n
+       "4 fadeSound 0.4;" \n
+       "4 fadeSpeech 0.4;" \n
+       "4 fadeRadio 0.4; " \n
+       "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -172,11 +187,12 @@ class FSM
         class dead
         {
           priority = 7.000000;
-          to="dead";
+          to="fade_out_setup";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(alive _body)"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"profileNamespace setVariable [""lastInventory"",[]];" \n
-           "profileNamespace setVariable [""lastCharacter"",""""];"/*%FSM</ACTION""">*/;
+           "profileNamespace setVariable [""lastCharacter"",""""];" \n
+           ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "unconscious">*/
@@ -201,10 +217,14 @@ class FSM
           to="restrained";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"captive _body"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"TitleText [""You are restrained..."", ""PLAIN"",1];" \n
+          action=/*%FSM<ACTION""">*/"TitleText [""I am restrained"", ""PLAIN"",1];" \n
            "" \n
-           "struggle_keyAction1 = (findDisplay 46) displayAddEventHandler [""KeyUp"", ""if ((_this select 1) in DZ_KEYS_STUGGLE) then	{struggling = false};""];" \n
-           "struggle_keyAction2 = (findDisplay 46) displayAddEventHandler [""KeyDown"", ""if ((_this select 1) in DZ_KEYS_STUGGLE) then	{struggling = true};""];" \n
+           "msg_break =" \n
+           "{" \n
+           "	TitleText [""	I am breaking out"", ""PLAIN"",0.25];" \n
+           "};" \n
+           "struggle_keyAction1 = player addEventHandler [""AnimDone"",""if((captive player))then{_type = _this select 1;if((_type == 'PneRestrainHands_gettingFree2' or _type == 'pknlrestrainhands_loop2') && keyup) then{call msg_break;keypresscounter = keypresscounter+1;keyup=false;};if((_type == 'PneRestrainHands_gettingFree' or _type == 'pknlrestrainhands_loop') && !(keyup))then{call msg_break;keypresscounter = keypresscounter+1;keyup=true;};};""];" \n
+           "//struggle_keyAction1 = player addEventHandler [""AnimHook"",""if((captive player))then{_type = _this select 2;if((_type == 'struggleA or _type == 'struggleA') && keyup) then{keypresscounter = keypresscounter+1;keyup=false;hint 'in';};if(_type == 'struggleB' && !(keyup))then{keypresscounter = keypresscounter+1;keyup=true;};};""];" \n
            "" \n
            "_brokenFree = false;" \n
            ""/*%FSM</ACTION""">*/;
@@ -265,68 +285,12 @@ class FSM
     class dead
     {
       name = "dead";
-      init = /*%FSM<STATEINIT""">*/"titleText [""You are dead"",""BLACK FADED"",10e10];" \n
-       "setAperture 1000;"/*%FSM</STATEINIT""">*/;
+      init = /*%FSM<STATEINIT""">*/"titleText [""You are dead"",""BLACK OUT"",10];" \n
+       "" \n
+       ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
-      };
-    };
-    /*%FSM</STATE>*/
-    /*%FSM<STATE "struggling">*/
-    class struggling
-    {
-      name = "struggling";
-      init = /*%FSM<STATEINIT""">*/"TitleText [""You are struggling against your restraints..."", ""PLAIN"",10e10];"/*%FSM</STATEINIT""">*/;
-      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
-      class Links
-      {
-        /*%FSM<LINK "dead">*/
-        class dead
-        {
-          priority = 7.000000;
-          to="dead";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!(alive _body)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"profileNamespace setVariable [""lastInventory"",[]];" \n
-           "profileNamespace setVariable [""lastCharacter"",""""];"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "not">*/
-        class not
-        {
-          priority = 4.000000;
-          to="normal_state";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!(captive _body)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"(findDisplay 46) displayRemoveEventHandler [""KeyUp"",struggle_keyAction1];" \n
-           "(findDisplay 46) displayRemoveEventHandler [""KeyDown"",struggle_keyAction2];" \n
-           "TitleText [""You are no longer restrained"", ""PLAIN"",1];"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "broken_restraint">*/
-        class broken_restraint
-        {
-          priority = 3.000000;
-          to="restrained";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"((diag_tickTime - _start) > 5) "/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"actionReleased = player;" \n
-           "publicVariableServer 'actionReleased';" \n
-           "_brokenFree = true;" \n
-           ""/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "not_struggle">*/
-        class not_struggle
-        {
-          priority = 2.000000;
-          to="restrained";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!struggling"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"playerAction ""playerRestrainIn"";"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
       };
     };
     /*%FSM</STATE>*/
@@ -342,11 +306,34 @@ class FSM
         class dead
         {
           priority = 7.000000;
-          to="dead";
+          to="fade_out_setup";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(alive _body)"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"profileNamespace setVariable [""lastInventory"",[]];" \n
-           "profileNamespace setVariable [""lastCharacter"",""""];"/*%FSM</ACTION""">*/;
+           "profileNamespace setVariable [""lastCharacter"",""""];" \n
+           ""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "not_and_captive">*/
+        class not_and_captive
+        {
+          priority = 0.000000;
+          to="restrained";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(lifeState _body != ""UNCONSCIOUS"") and (captive _body)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"if((player itemInSlot ""headgear"") isKindOf ""Cover_BurlapSack"" )then{" \n
+           "setAperture 10000;" \n
+           "4 fadeSound 0.4;" \n
+           "4 fadeSpeech 0.4;" \n
+           "4 fadeRadio 0.4; " \n
+           "}else{" \n
+           "setAperture -1;" \n
+           "4 fadeSound 1;" \n
+           "4 fadeSpeech 1;" \n
+           "4 fadeRadio 1; " \n
+           "};" \n
+           "titleText [""You are unconscious"",""BLACK IN"",4];" \n
+           ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "not">*/
@@ -356,12 +343,19 @@ class FSM
           to="normal_state";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"lifeState _body != ""UNCONSCIOUS"""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"setAperture -1;" \n
+          action=/*%FSM<ACTION""">*/"if((player itemInSlot ""headgear"") isKindOf ""Cover_BurlapSack"" )then{" \n
+           "setAperture 10000;" \n
+           "4 fadeSound 0.4;" \n
+           "4 fadeSpeech 0.4;" \n
+           "4 fadeRadio 0.4; " \n
+           "}else{" \n
+           "setAperture -1;" \n
            "4 fadeSound 1;" \n
            "4 fadeSpeech 1;" \n
            "4 fadeRadio 1; " \n
+           "};" \n
            "titleText [""You are unconscious"",""BLACK IN"",4];" \n
-           "setAperture -1;"/*%FSM</ACTION""">*/;
+           ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -371,8 +365,7 @@ class FSM
     class restrained
     {
       name = "restrained";
-      init = /*%FSM<STATEINIT""">*/"_agentTime = diag_tickTime;" \n
-       "_bodyPos = getText (configFile >> ""CfgMovesMaleSdr2"" >> ""states"" >> animationState player >> ""bodyPosition"");"/*%FSM</STATEINIT""">*/;
+      init = /*%FSM<STATEINIT""">*/"TitleText [""I am restrained"", ""PLAIN"",1];"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -380,11 +373,27 @@ class FSM
         class dead
         {
           priority = 7.000000;
-          to="dead";
+          to="fade_out_setup";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(alive _body)"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"profileNamespace setVariable [""lastInventory"",[]];" \n
-           "profileNamespace setVariable [""lastCharacter"",""""];"/*%FSM</ACTION""">*/;
+           "profileNamespace setVariable [""lastCharacter"",""""];" \n
+           ""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "captive_and_unco">*/
+        class captive_and_unco
+        {
+          priority = 6.000000;
+          to="unconscious";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(captive _body) and (lifeState _body == ""UNCONSCIOUS"")"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"2 fadeSound 0;" \n
+           "2 fadeSpeech 0;" \n
+           "2 fadeRadio 0; " \n
+           "closeDialog 0;" \n
+           "titleText [""You are unconscious"",""BLACK FADED"",10e10];" \n
+           "setAperture 1000;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "not">*/
@@ -394,30 +403,51 @@ class FSM
           to="normal_state";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!(captive _body)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"(findDisplay 46) displayRemoveEventHandler [""KeyUp"",struggle_keyAction1];" \n
-           "(findDisplay 46) displayRemoveEventHandler [""KeyDown"",struggle_keyAction2];" \n
-           "TitleText [""You are no longer restrained"", ""PLAIN"",1];"/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"(findDisplay 46) displayRemoveEventHandler [""AnimDone"",struggle_keyAction1];" \n
+           "TitleText [""I am no longer restrained"", ""PLAIN"",1];" \n
+           ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
-        /*%FSM<LINK "struggle">*/
-        class struggle
+        /*%FSM<LINK "broken_restraint">*/
+        class broken_restraint
         {
-          priority = 1.000000;
-          to="struggling";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"struggling and !_brokenFree and (_bodyPos != ""stand"")"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_start = diag_tickTime;" \n
-           "playerAction ""PlayerRestrainStruggle"";"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "wait">*/
-        class wait
-        {
-          priority = 0.000000;
+          priority = 3.000000;
           to="restrained";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"((diag_tickTime - _agentTime) > 1) "/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"TitleText [""You are restrained..."", ""PLAIN"",1];"/*%FSM</ACTION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(keypresscounter > 20) or !(captive _body)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"keypresscounter=0;" \n
+           "player playAction ""cancelAction"";" \n
+           "actionReleased = player;" \n
+           "publicVariableServer 'actionReleased';" \n
+           "_brokenFree = true;" \n
+           "_body setCaptive false;" \n
+           ""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "fade_out_setup">*/
+    class fade_out_setup
+    {
+      name = "fade_out_setup";
+      init = /*%FSM<STATEINIT""">*/"_agentTime3 = diag_tickTime;" \n
+       "titleText ["""",""BLACK FADED"",10e10];" \n
+       "1 fadeMusic 0;" \n
+       "1 fadeRadio 0;" \n
+       "1 fadeSound 0;" \n
+       "1 fadeSpeech 0;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "fading_out">*/
+        class fading_out
+        {
+          priority = 0.000000;
+          to="dead";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"((diag_tickTime - _agentTime3) > 1.5)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"setAperture 10000;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
