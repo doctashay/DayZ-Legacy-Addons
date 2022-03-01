@@ -67,7 +67,7 @@ class FSM
            "[""infected"",""building""] setTargetDistanceLimit 0; " \n
            "[""infected"",""player""] setTargetDistanceLimit 200;" \n
            "" \n
-           "call compile preprocessFileLineNumbers ""\dzlegacy\server_data\initEvents.sqf"";" \n
+           "call compile preprocessFileLineNumbers ""\dzlegacy\server_data\scripts\initEvents.sqf"";" \n
            "" \n
            "if (DZ_MP_CONNECT) then" \n
            "{" \n

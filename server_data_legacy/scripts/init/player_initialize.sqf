@@ -13,7 +13,7 @@ if (isServer) then
 	//check if server task manager is running
 	if (isNil "DZ_ServerBrain") then
 	{
-		DZ_ServerBrain = [] execFSM "\dzlegacy\server_data\fsm\server_taskmanager.fsm";
+		DZ_ServerBrain = [] execFSM "\dzlegacy\server_data\scripts\fsm\server_taskmanager.fsm";
 	};
 		
 	_agent setVariable ["p1",getPosATL _agent];
