@@ -60,8 +60,7 @@ init_cooker = {};
 
 if (isServer) then
 {
-	//init.sqf is now initServer.sqf in the mission file and does not need to be called from here.
-	//call compile preprocessFileLineNumbers "\dz\server\scripts\init.sqf";
+	call compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init.sqf";
 };
 
 //generate skins

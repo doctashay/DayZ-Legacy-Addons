@@ -59,7 +59,7 @@ init_spawnZombies = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\sc
 player_queued = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_queued.sqf";
 
 //functions
-fnc_generateTooltip = compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_generateTooltip.sqf";
+fnc_generateTooltip = compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\fn_generateTooltip.sqf";
 fnc_inString = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\fn_inString.sqf";
 fnc_inAngleSector =  	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\fn_inAngleSector.sqf";
 fnc_isMaxQuantity = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\isMaxQuantity.sqf";
@@ -67,13 +67,13 @@ BIS_fnc_findSafePos =	compile preprocessFileLineNumbers "\dzlegacy\server_data\s
 fnc_generateQuantity =compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\fn_generateQuantity.sqf";
 dayz_losCheck =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\dayz_losCheck.sqf";
 dayz_losChance = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\dayz_losChance.sqf";
-dayz_bulletHit = 		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\dayz_bulletHit.sqf";
-fnc_playerMessage =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_playerMessage.sqf";
+dayz_bulletHit = 		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\dayz_bulletHit.sqf";
+fnc_playerMessage =	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\fn_playerMessage.sqf";
 runZombieBrain =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\runZombieBrain.sqf";
 tick_modifiers =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\tick_modifiers.sqf";
 tick_states =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\tick_states.sqf";
 tick_environment = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\tick_environment.sqf";
-randomValue =		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\randomValue.sqf";
+randomValue =		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\randomValue.sqf";
 dbLoadPlayer = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\dbLoadPlayer.sqf";
 world_surfaceNoise = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\fn_surfaceNoise.sqf";
 
