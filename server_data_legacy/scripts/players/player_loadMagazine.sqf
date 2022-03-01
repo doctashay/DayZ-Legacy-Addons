@@ -19,6 +19,15 @@ if (isClass (configFile >> "CfgWeapons" >> typeOf _parent)) exitWith
 	[_person,format["Cannot load %1 while attached to the %2",displayName _mag,displayName _parent],"colorStatusChannel"] call fnc_playerMessage;
 };
 
+if (damage _mag >= 1) exitWith
+{	
+	[_person,"The magazine is too badly damaged",""] call fnc_playerMessage;
+};
+if (damage _sender >= 1) exitWith
+{	
+	[_person,"The ammunition is too badly damaged",""] call fnc_playerMessage;
+};
+
 _config = 	configFile >> "CfgMagazines" >> typeOf _mag;
 _max = 		getNumber (_config >> "count");
 _receiverQty = 	magazineAmmo _mag;
@@ -27,7 +36,7 @@ _ammo = getText (configFile >> "CfgMagazines" >> _type >> "ammoItem");
 
 if (_ammo != typeOf _sender) exitWith
 {
-	[_person,format["The %1 does not fit in the %2",displayName _mag,displayName _sender],"colorStatusChannel"] call fnc_playerMessage;
+	[_person,format["The %2 does not fit in the %1",displayName _mag,displayName _sender],"colorStatusChannel"] call fnc_playerMessage;
 };
 
 if (_receiverQty == _max) exitWith
@@ -62,7 +71,7 @@ if (_senderQty > 0) then
 	}
 	else
 	{
-		_sender setVariable ["quantity",_senderQty];
+		_sender setQuantity _senderQty;
 		[_person,"craft_rounds"] call event_saySound;
 	};
 }
@@ -74,4 +83,4 @@ _mag setMagazineAmmo _receiverQty;
 
 //send response
 [_person,"craft_loadMag"] call event_saySound;
-[_person,format["You have loaded the %1 with %2",_name,_nameAmmo],"colorAction"] call fnc_playerMessage;
+[_person,format["I have loaded the %1 with %2",_name,_nameAmmo],"colorAction"] call fnc_playerMessage;

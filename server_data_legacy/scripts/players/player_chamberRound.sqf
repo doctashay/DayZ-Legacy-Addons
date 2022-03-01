@@ -11,7 +11,16 @@ _cfgAmmo = configFile >> "CfgVehicles" >> typeOf _tool1;
 _cfgWeapon = configFile >> "CfgWeapons" >> typeOf _tool2;
 _type = _this;
 
-statusChat [format ["ammo: %1 // weapon: %2 // result: %3",getText(_cfgAmmo >> "chamberedRound"),getText(_cfgWeapon >> "chamberedRound"),(getText(_cfgAmmo >> "chamberedRound") isKindOf getText(_cfgWeapon >> "chamberedRound"))],""];
+//statusChat [format ["ammo: %1 // weapon: %2 // result: %3",getText(_cfgAmmo >> "chamberedRound"),getText(_cfgWeapon >> "chamberedRound"),(getText(_cfgAmmo >> "chamberedRound") isKindOf getText(_cfgWeapon >> "chamberedRound"))],""];
+
+if (damage _tool1 >= 1) exitWith
+{	
+	[_person,"The ammunition is too badly damaged",""] call fnc_playerMessage;
+};
+if (damage _tool2 >= 1) exitWith
+{	
+	[_person,"The weapon is too badly damaged",""] call fnc_playerMessage;
+};
 
 //stop if error
 if !(getText(_cfgAmmo >> "chamberedRound") isKindOf getText(_cfgWeapon >> "chamberedRound")) exitWith 
@@ -43,11 +52,10 @@ if (_pileQ == 1) then
 }
 else
 {
-	_pileQ = _pileQ - _qty;
-	_tool1 setVariable ["quantity",_pileQ];
+	_tool1 addQuantity -_qty;
 };
 
 //create the magazine
 _mag = _tool2 createInInventory _magazine;
 if (_qty != _maxQ) then {_mag setMagazineAmmo _qty};
-[_owner,format["You have chambered the %1 with %2",displayName _tool1,_str],"colorAction"] call fnc_playerMessage;
+[_owner,format["I have chambered the %1",displayName _tool2],"colorAction"] call fnc_playerMessage;

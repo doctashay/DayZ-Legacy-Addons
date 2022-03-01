@@ -15,6 +15,9 @@ _person = _this;
 _modifiers = _person getVariable ["modifiers",[]];
 _modstates = _person getVariable["modstates",[]];
 
+// don't do damage for dead bodies
+if(!alive _person) exitWith {};
+
 if (count _modifiers != count _modstates) exitWith
 {
 	diag_log "ERROR: Stored modifiers and modstates arrays don't match. Reverting.";
@@ -152,6 +155,9 @@ _cleanup = false;
 	//check if condition still valid
 	_condition = getText (_cfgStage >> "condition");
 	_runEvent = _person call compile _condition;
+	
+	//diag_log format ["Modifier Condition: %1 _runEvent: %2 _permanent: %3",_condition,_runEvent,_permanent];
+	
 	if (!_runEvent) then
 	{
 		_cStage = 0;
@@ -205,9 +211,11 @@ _cleanup = false;
 		{
 			if (_remaining <= 0) then
 			{
+				//diag_log format ["Ending class, finding what to do"];
 				//check if should advance within subclass
 				if (isClass (_cfgStage >> "Stages")) then
 				{
+					//diag_log format ["Advancing to next subclass"];
 					_cStage = 0;
 					_checkStages = _cfgStage >> "Stages";	//mediumImpact:stages				
 					_cSerial = (count _stageArray);	//1
@@ -226,18 +234,25 @@ _cleanup = false;
 					{
 						if (isClass (_cfgStages select _cStage)) then
 						{
+							//diag_log format ["Advancing to next stage within class"];
 							//statusChat["Trying to go forward within my class...","colorFriendly"];
 							_checkStages = _cfgStages;	
 							_cSerial = (count _stageArray) - 1;
 							//hint "continue to stage on same level";
 							call event_fnc_advanceModifier;
+							
+							//run ending statement
+							_statement = getText (_cfgStage >> "statementExit");	//_person
+							call compile _statement;
 						}
 					}	
 					else
 					{
+						//diag_log format ["No advancing"];
 						//check if can drop back					
 						if _canGoBack then
 						{
+							//diag_log format ["Going Backwards"];
 							//statusChat["Trying to go backward within my class...","colorFriendly"];
 							_cStage = _stage - 1;
 							if (isClass (_cfgStages select _cStage)) then

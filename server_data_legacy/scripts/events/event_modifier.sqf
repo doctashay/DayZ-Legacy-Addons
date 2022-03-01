@@ -44,6 +44,7 @@ switch _action do
 {
 	case 0:
 	{
+		private["_stage"];
 		//add modifier
 		if (!_inArray) then
 		{
@@ -59,6 +60,7 @@ switch _action do
 	};
 	case 1: 
 	{
+		private["_stage"];
 		//remove modifier
 		if (_inArray) then
 		{
@@ -70,6 +72,7 @@ switch _action do
 	};
 	case 2:
 	{
+		private["_stage"];
 		//change stage
 		if (_inArray) then
 		{
@@ -82,6 +85,21 @@ switch _action do
 				{
 					_stage = _value;
 					_stages = _cfgModifier >> "Stages";
+					_oldStage = _stage;
+					if (typeName _cStage == "ARRAY") then
+					{
+						_oldStage = _stages select (_cStage select 0);
+					}
+					else
+					{
+						_oldStage = _stages select _cStage;
+					};
+					_oldNotifier = getArray (_oldStage >> "notifier");					
+					
+					//run ending statement
+					_statement = getText (_oldStage >> "statementExit");	//_person
+					call compile _statement;
+					
 					_cfgStage = _stages select _stage;
 					
 					if (isClass _cfgStage) then
@@ -91,6 +109,8 @@ switch _action do
 						_reminder = getArray (_cfgStage >> "cooldown") call randomValue;
 						_stageArray = [_stage];
 						_modstates set [_i,[_stageArray,_remaining,_reminder]];
+						
+						//diag_log str(_modstates);
 						
 						//send an activation message
 						call event_fnc_sendActvMessage;

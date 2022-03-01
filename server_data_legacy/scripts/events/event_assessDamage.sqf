@@ -10,6 +10,7 @@ _ammo = _this select 4;
 _ammoConfig = configFile >> "cfgAmmo" >> _ammo;
 _isMelee = _ammo isKindOf "MeleeDamage";
 _isZombie = _source isKindOf "ZombieEngine";
+_final = 0;
 
 //WIP vehicle death handling
 //_isVehicle = _source isKindOf "VehicleDamage"; 
@@ -30,7 +31,18 @@ if (_isZombie) then
 //hint(str _damage);
 _bone = (((_this select 5) select 1) select 0);
 
-//hint str(_this select 5);
+if (count (_this select 5) > 1) then
+{
+	_bone = (((_this select 5) select 1) select 0);
+}
+else
+{
+	//undefined, so fall damage
+	_bone = "Pelvis";
+	_selection = "legs";
+	(_agent itemInSlot "Feet") setDamage 1;
+	_final = _damage;
+};
 
 _config = configFile >> "cfgBody" >> _bone;
 _base = configName inheritsFrom _config;

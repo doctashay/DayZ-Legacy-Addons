@@ -27,14 +27,14 @@ _senderQty = _senderQty - _exchanged;
 //save results
 if (_senderQty > 0) then
 {
-	_sender setVariable ["quantity",_senderQty];
+	_sender setQuantity _senderQty;
 }
 else
 {
 	deleteVehicle _sender;
 };
-_receiver setVariable ["quantity",_receiverQty];
+_receiver setQuantity _receiverQty;
 
 //send response
 [_person,"craft_rounds"] call event_saySound;
-[_person,format["You have combined the %1",_name],"colorAction"] call fnc_playerMessage;
+[_person,format["I have combined the %1",_name],"colorAction"] call fnc_playerMessage;
