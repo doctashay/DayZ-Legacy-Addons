@@ -1,0 +1,17 @@
+/*%FSM<COMPILE "C:\BIS\fsmeditor\missionTask.cfg, BIS_fnc_missionTask">*/
+/*%FSM<HEAD>*/
+/*
+globals[] = {25.000000,1,0,0,16777215,640,480,1,0,6316128,1,-300.000000,300.000000,300.000000,-300.000000,679,616,1};
+window[] = {0,-1,-1,-32000,-32000,941,-1088,-128,192,1,696};
+*//*%FSM</HEAD>*/
+private ["_fsmMode","_fsmId","_params","_fsmModes","_task","_taskState"];
+_fsmMode = [_this,0,"",[""]] call bis_fnc_param;
+_fsmId = [_this,1,0,[0]] call bis_fnc_param;
+_params = [_this,2,[],[[]]] call bis_fnc_param;
+_fsmModes = [_fsmMode];
+while {count _fsmModes > 0} do {
+    switch (_fsmModes select 0) do
+    {
+        default {_fsmModes = []; ["Could not find task '%1'",_fsmMode] call bis_fnc_error;};
+    };
+};/*%FSM</COMPILE>*/

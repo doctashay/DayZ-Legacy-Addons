@@ -1,0 +1,13 @@
+;	File: onPlayerKilled.sqs
+;	Author: Karel Moricky
+
+;	Description:
+;	You were killed!
+
+;wait until health PPs are finished (death after unconscious, sudden death - see TEST_HealthPP.FSM)
+@((missionnamespace getvariable ["BIS_applyPP2",true]) && (missionnamespace getvariable ["BIS_applyPP4",true]))
+
+;show menu
+_this spawn (uinamespace getvariable "bis_fnc_death");
+;_this execvm "onplayerkilled.sqf"
+exit;

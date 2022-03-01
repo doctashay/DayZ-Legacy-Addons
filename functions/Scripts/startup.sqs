@@ -1,0 +1,81 @@
+;? (distributionRegion==1) : goto "US"
+;? (distributionRegion==6) : goto "RU"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#EU
+disableUserInput true;
+
+_delay = 0.001;
+~1
+
+_n = 0;
+_nMax = 8;
+#SplashBohemia_in
+	titleRsc [format ["SplashBohemia_%1",_n], "PLAIN"];
+	_n = _n + 1;
+	~_delay
+	if (_n <= _nMax) then {goto "SplashBohemia_in"};
+~2
+_n = _nMax;
+#SplashBohemia_out
+	titleRsc [format ["SplashBohemia_%1",_n], "PLAIN"];
+	_n = _n - 1;
+	~_delay
+	if (_n >= 0) then {goto "SplashBohemia_out"};
+
+~1
+
+_n = 0;
+_nMax = 9;
+#SplashDayZ_in
+	titleRsc ["SplashDayZ", "PLAIN"];
+	_n = _n + 1;
+	~_delay
+	if (_n <= _nMax) then {goto "SplashDayZ_in"};
+~2
+_n = _nMax;
+#SplashDayZ_out
+	titleRsc ["SplashDayZ", "PLAIN"];
+	_n = _n - 1;
+	~_delay
+	if (_n >= 0) then {goto "SplashDayZ_out"};
+
+~1
+
+titleText ["", "PLAIN"]
+~1
+disableUserInput false
+
+goto "exit"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#US
+disableUserInput true
+
+titleRsc ["SplashBohemia", "PLAIN"]
+~6
+titleRsc ["SplashDayZ", "PLAIN"]
+~6
+titleText ["", "PLAIN"]
+disableUserInput false
+goto "exit"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#RU
+disableUserInput true
+
+titleRsc ["SplashBohemia", "PLAIN"]
+~6
+titleRsc ["SplashDayZ", "PLAIN"]
+~6
+titleRsc ["SplashO2TV", "PLAIN"]
+~6
+titleRsc ["SplashFighterTV", "PLAIN"]
+~6
+titleText ["", "PLAIN"]
+disableUserInput false
+goto "exit"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#exit
+exit

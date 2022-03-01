@@ -252,7 +252,7 @@ DZ_BONES = call {
 	_bones
 };
 
-player_queued = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\players\player_queued.sqf";
+player_queued = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_queued.sqf";
 
 player_suicide = {
 	_fsm = [_person,_this] execFSM "player_suicide.fsm";
@@ -260,11 +260,11 @@ player_suicide = {
 };
 
 //functions
-fnc_generateTooltip = compile preprocessFileLineNumbers "\dzlegacy\modulesDayz\scripts\fn_generateTooltip.sqf";
+fnc_generateTooltip = compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\fn_generateTooltip.sqf";
 dayz_bulletHit = 		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\dayz_bulletHit.sqf";
 fnc_playerMessage =	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\fn_playerMessage.sqf";
 randomValue =		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\randomValue.sqf";
-fnc_isItemDuctTapeCompatible = 	compile preprocessFileLineNumbers "\dz\modulesDayz\scripts\fnc_isItemDuctTapeCompatible.sqf";
+fnc_isItemDuctTapeCompatible = 	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\fnc_isItemDuctTapeCompatible.sqf";
 
 //ui
 ui_characterScreen =	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\ui_characterScreen.sqf";

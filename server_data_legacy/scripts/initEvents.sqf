@@ -57,7 +57,7 @@ if (isServer) then
 		{
 			statusChat ['... authIn event handler called ...',''];
 		} forEach players;
-/*
+
 		_array = _this select 1;
 		_id = _array select 2;
 		diag_log format ["CLIENT %1 request to spawn %2",_id,_this];
@@ -67,7 +67,7 @@ if (isServer) then
 		_charInv = _array select 1;
 		_pos = [3590.96,8492.23,0]; //[2515.14,2632.52,0]
 		
-		//load data
+		load data
 		_top = getArray(configFile >> "cfgCharacterCreation" >> "top");
 		_bottom = getArray(configFile >> "cfgCharacterCreation" >> "bottom");
 		_shoe = getArray(configFile >> "cfgCharacterCreation" >> "shoe");
@@ -81,6 +81,6 @@ if (isServer) then
 		{null = _agent createInInventory _x} forEach [_myTop,_myBottom,_myShoe];
 		_agent call init_newPlayer;
 		call init_newBody;
-*/
+
 	};
 };
