@@ -67,7 +67,7 @@ if (isServer) then
 		_charInv = _array select 1;
 		_pos = [3590.96,8492.23,0]; //[2515.14,2632.52,0]
 		
-		load data
+		//load data
 		_top = getArray(configFile >> "cfgCharacterCreation" >> "top");
 		_bottom = getArray(configFile >> "cfgCharacterCreation" >> "bottom");
 		_shoe = getArray(configFile >> "cfgCharacterCreation" >> "shoe");

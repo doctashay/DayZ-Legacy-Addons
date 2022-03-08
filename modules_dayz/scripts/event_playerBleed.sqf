@@ -13,14 +13,14 @@ if (isDedicated) exitWith {};
 _effects = _agent getVariable ["bleedingEffects",[]];
 _toDo = (count _coords) - (count _effects);
 
-diag_log format["CLIENT DAMAGE: %1 has %2 coords and %3 effects",_agent,(count _coords),(count _effects)];
-statusChat [format["Client Damage! %1 todo (_coords %3, _effects %4)",_toDo,_agent,(count _coords),(count _effects)],"colorImportant"];
+//diag_log format["CLIENT DAMAGE: %1 has %2 coords and %3 effects",_agent,(count _coords),(count _effects)];
+//statusChat [format["Client Damage! %1 todo (_coords %3, _effects %4)",_toDo,_agent,(count _coords),(count _effects)],"colorImportant"];
 
 if (_toDo > 0) then
 {
 	_end = ((count _coords) - 1);
 	_start = (count _effects);
-	statusChat [format["Creating Bleeding from _coord %1 to %2",_start,_end],""];
+	//statusChat [format["Creating Bleeding from _coord %1 to %2",_start,_end],""];
 	for "_i" from _start to _end do {
 		private["_thisCoord"];
 		_thisCoord = _coords select _i;

@@ -48,4 +48,4 @@ _dirty = false;
 
 //send response
 [_person,"craft_rounds"] call event_saySound;
-[_person,format["You have split the %1",_name],"colorAction"] call fnc_playerMessage;
+[_person,format["I have split the %1",_name],"colorAction"] call fnc_playerMessage;

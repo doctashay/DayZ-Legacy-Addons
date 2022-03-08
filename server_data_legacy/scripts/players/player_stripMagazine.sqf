@@ -14,6 +14,14 @@ _client = owner _person;
 _parent = itemParent _mag;
 _config = configFile >> "CfgMagazines" >> _type;
 _quantity = 0;
+_magdmg = 0;
+
+//to transfer damage from ammo box to pile o rounds
+if(_mag isKindOf "AmmunitionBoxItemBase")then{
+	_magdmg = damage _mag;
+};
+
+//statusChat [format["parent: %1, item: %2",displayName _parent,_name],""];
 
 //check disease
 //[_person,_mag,"Direct"] call event_transferModifiers;	//mags not supported (yet)
@@ -50,7 +58,14 @@ if (_quantity <= 0) exitWith
 //distribute to existing piles
 if (!isNull _parent) then
 {
-	call player_fnc_roundsDistribute;
+	_magdmg call player_fnc_roundsDistribute;
 };
 //send feedback
-[_person,format["You have emptied the rounds out of the %1",_name],"colorAction"] call fnc_playerMessage;
+if (isClass (configFile >> "CfgWeapons" >> typeOf _parent)) then 
+{	
+	[_person,format["I have emptied the rounds out of the %1",displayName _parent],"colorAction"] call fnc_playerMessage;
+}
+else
+{
+	[_person,format["I have emptied the rounds out of the %1",_name],"colorAction"] call fnc_playerMessage;
+};

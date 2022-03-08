@@ -24,7 +24,7 @@ DZ_BLOOD_UNCONSCIOUS = 500;	//minimum blood before player becomes unconscious
 unconscious = false;	//remove this with lifeState is synchronized
 
 //control defines
-DZ_KEYS_STUGGLE = [17,30,31,32];	//DIK codes for keys that action struggle out of restraints
+DZ_KEYS_STUGGLE = [30,32,203,205];	//DIK codes for keys that action struggle out of restraints
 
 //zombie defines
 dayz_areaAffect = 3;				//used during attack calculations
@@ -41,13 +41,16 @@ meleeAttackType = 1;	//alternates between two attacks
 
 //New player defines
 DZ_ENERGY = 1000;	// actual energy from all food and drink consumed
-DZ_HUNGER = 6000;	//0 to 6000ml size content of stomach, zero is empty
-DZ_THIRST = 6000; 	//0 to 6000ml size content of stomach, zero is empty (maxed out for DayZ Legacy debug)
+DZ_HUNGER = 0;	//0 to 6000ml size content of stomach, zero is empty
+DZ_THIRST = 0; 	//0 to 6000ml size content of stomach, zero is empty
 DZ_WATER = 1800;	// actual water from all food and drink consumed
 DZ_STOMACH = 1000; // actual volume in stomach
 DZ_DIET = 0.5; // actual diet state
 DZ_HEALTH = 5000;
 DZ_BLOOD = 5000;
+DZ_TEMPERATURE = 36.5;
+DZ_HEATCOMFORT = 0;
+DZ_MUSCLECRAMP = 0;
 
 //publicVariables
 effectDazed = false;	//PVEH Client
@@ -57,6 +60,9 @@ myNotifiers = [];
 gettingWet = false;
 
 init_cooker = {};
+
+//Repairing items
+ductTapeRepairDamage = 0.5; //Minimal damage for compatible item to be repairable with Duct Tape
 
 if (isServer) then
 {
@@ -202,7 +208,7 @@ populateInventoryNotifiers =
 					
 					//end
 					_container = _container + 1;
-					statusChat [str(_x),""];
+					//statusChat [str(_x),""];
 				};
 			};
 		} forEach myNotifiers;
