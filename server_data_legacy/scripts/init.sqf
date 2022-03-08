@@ -203,30 +203,6 @@ dbSavePlayerPrep =
 	//diag_log format ["Saved %1",_array];
 };
 
-dbSavePlayer =
-{
-	if ((lifeState _agent == "ALIVE") and (not captive _agent)) then
-	{
-		_agent call dbSavePlayerPrep;
-		dbServerSaveCharacter [_uid, _agent];
-		diag_log "Saved as alive";
-	}
-	else
-	{
-		if (!isNull _agent) then
-		{
-			dbKillCharacter _uid; // hotfix: saving when killed after disconnection
-			dbDestroyCharacter _agent;
-			_agent setDamage 1;
-			diag_log "Saved as dead";
-		}
-		else
-		{
-			diag_log "No save, null";
-		};
-	};
-};
-
 player_warningMessage = {
 	private["_messages","_color","_client","_output"];
 	_messages = _this select 0;
@@ -311,7 +287,7 @@ fnc_generateRscQuantity = {
 	_str = format ["%1%%",_qty];
 	_str
 };
-/*
+
 player_suicide = {
 	_fsm = [_person,_this] execFSM "\dz\server\scripts\fsm\player_suicide.fsm";
 	_person setVariable ["fsm_suicide",_fsm];
@@ -338,7 +314,7 @@ event_animHook =
 		};
 	};
 };
-*/
+
 player_transferWater = {
 	_receiverQty = quantity _tool2;
 	_senderQty = quantity _tool1;
@@ -1221,163 +1197,163 @@ fishing_event_remove={
 	_this removeAllEventHandlers 'AnimChanged';
 };
 
-build_TentContainer = 
-{
-	if ( isServer ) then
-	{
-		_tent = (_this select 0);
-		_person = (_this select 1);
-		_tentType = (_this select 2) select 0;
-		_tentOri = (_this select 2) select 1;
-		_dist = (_this select 2) select 2;
-		_tentSize = (_this select 3);
-		_tentX = (_tentSize select 0) * 0.5;
-		_tentY = (_tentSize select 1) * 0.5;
-		_tentZ = (_tentSize select 2) * 0.5;
+// build_TentContainer = 
+// {
+// 	if ( isServer ) then
+// 	{
+// 		_tent = (_this select 0);
+// 		_person = (_this select 1);
+// 		_tentType = (_this select 2) select 0;
+// 		_tentOri = (_this select 2) select 1;
+// 		_dist = (_this select 2) select 2;
+// 		_tentSize = (_this select 3);
+// 		_tentX = (_tentSize select 0) * 0.5;
+// 		_tentY = (_tentSize select 1) * 0.5;
+// 		_tentZ = (_tentSize select 2) * 0.5;
 
-		_hp = damage (_this select 0);
+// 		_hp = damage (_this select 0);
 
-		_pos = getPosASL _person;
-		_ori = direction _person;
-		_cosOri = cos _ori;
-		_sinOri = sin _ori; 
-		_xPos = (_pos select 0) + (sin _ori * _dist);
-		_yPos = (_pos select 1) + (cos _ori * _dist);
-		_zPos = (_pos select 2);
+// 		_pos = getPosASL _person;
+// 		_ori = direction _person;
+// 		_cosOri = cos _ori;
+// 		_sinOri = sin _ori; 
+// 		_xPos = (_pos select 0) + (sin _ori * _dist);
+// 		_yPos = (_pos select 1) + (cos _ori * _dist);
+// 		_zPos = (_pos select 2);
 		
-		_waterCheck = true;
-		_heightCheck = true;
+// 		_waterCheck = true;
+// 		_heightCheck = true;
 
-		_posTentX = _xPos + _cosOri * _tentX - _sinOri * _tentY;
-		_posTentY = _yPos + _cosOri * _tentY + _sinOri * _tentX;
+// 		_posTentX = _xPos + _cosOri * _tentX - _sinOri * _tentY;
+// 		_posTentY = _yPos + _cosOri * _tentY + _sinOri * _tentX;
 		
-		_height = surfaceHeightASL [_posTentX, _posTentY, _zPos + 0.2];
-		_sur = surfaceTypeASL [_posTentX, _posTentY, _zPos + 0.2];
+// 		_height = surfaceHeightASL [_posTentX, _posTentY, _zPos + 0.2];
+// 		_sur = surfaceTypeASL [_posTentX, _posTentY, _zPos + 0.2];
 
-		if ( _height > 1.5 || _height < -0.2 ) then
-		{
-			_heightCheck = false;
-		};
+// 		if ( _height > 1.5 || _height < -0.2 ) then
+// 		{
+// 			_heightCheck = false;
+// 		};
 
-		if ( _sur == "FreshWater" || _sur == "sea") then
-		{
-			_waterCheck = false;
-		};
+// 		if ( _sur == "FreshWater" || _sur == "sea") then
+// 		{
+// 			_waterCheck = false;
+// 		};
 
-		if ( _heightCheck && _waterCheck ) then
-		{
-			_posTentX = _xPos + _cosOri * _tentX - _sinOri * -_tentY;
-			_posTentY = _yPos + _cosOri * -_tentY + _sinOri * _tentX;
+// 		if ( _heightCheck && _waterCheck ) then
+// 		{
+// 			_posTentX = _xPos + _cosOri * _tentX - _sinOri * -_tentY;
+// 			_posTentY = _yPos + _cosOri * -_tentY + _sinOri * _tentX;
 			
-			_height = surfaceHeightASL [_posTentX, _posTentY, _zPos + 0.2];
-			_sur = surfaceTypeASL [_posTentX, _posTentY, _zPos + 0.2];
+// 			_height = surfaceHeightASL [_posTentX, _posTentY, _zPos + 0.2];
+// 			_sur = surfaceTypeASL [_posTentX, _posTentY, _zPos + 0.2];
 			
-			if ( _height > 1.5 || _height < -0.2 ) then
-			{
-				_heightCheck = false;
-			};
+// 			if ( _height > 1.5 || _height < -0.2 ) then
+// 			{
+// 				_heightCheck = false;
+// 			};
 
-			if ( _sur == "FreshWater" || _sur == "sea") then
-			{
-				_waterCheck = false;
-			};	
-		};
+// 			if ( _sur == "FreshWater" || _sur == "sea") then
+// 			{
+// 				_waterCheck = false;
+// 			};	
+// 		};
 
-		if ( _heightCheck && _waterCheck ) then
-		{
-			_posTentX = _xPos + _cosOri * -_tentX - _sinOri * -_tentY;
-			_posTentY = _yPos + _cosOri * -_tentY + _sinOri * -_tentX;
+// 		if ( _heightCheck && _waterCheck ) then
+// 		{
+// 			_posTentX = _xPos + _cosOri * -_tentX - _sinOri * -_tentY;
+// 			_posTentY = _yPos + _cosOri * -_tentY + _sinOri * -_tentX;
 			
-			_height = surfaceHeightASL [_posTentX, _posTentY, _zPos + 0.2];
-			_sur = surfaceTypeASL [_posTentX, _posTentY, _zPos + 0.2];
+// 			_height = surfaceHeightASL [_posTentX, _posTentY, _zPos + 0.2];
+// 			_sur = surfaceTypeASL [_posTentX, _posTentY, _zPos + 0.2];
 			
-			if ( _height > 1.5 || _height < -0.2 ) then
-			{
-				_heightCheck = false;
-			};
+// 			if ( _height > 1.5 || _height < -0.2 ) then
+// 			{
+// 				_heightCheck = false;
+// 			};
 			
-			if ( _sur == "FreshWater" || _sur == "sea") then
-			{
-				_waterCheck = false;
-			};	
-		};
+// 			if ( _sur == "FreshWater" || _sur == "sea") then
+// 			{
+// 				_waterCheck = false;
+// 			};	
+// 		};
 
-		if ( _heightCheck && _waterCheck ) then
-		{
-			_posTentX = _xPos + _cosOri * -_tentX - _sinOri * _tentY;
-			_posTentY = _yPos + _cosOri * _tentY + _sinOri * -_tentX;
+// 		if ( _heightCheck && _waterCheck ) then
+// 		{
+// 			_posTentX = _xPos + _cosOri * -_tentX - _sinOri * _tentY;
+// 			_posTentY = _yPos + _cosOri * _tentY + _sinOri * -_tentX;
 			
-			_height = surfaceHeightASL [_posTentX, _posTentY, _zPos + 0.2];
-			_sur = surfaceTypeASL [_posTentX, _posTentY, _zPos + 0.2];
+// 			_height = surfaceHeightASL [_posTentX, _posTentY, _zPos + 0.2];
+// 			_sur = surfaceTypeASL [_posTentX, _posTentY, _zPos + 0.2];
 
-			if ( _height > 1.5 || _height < -0.2 ) then
-			{
-				_heightCheck = false;
-			};
+// 			if ( _height > 1.5 || _height < -0.2 ) then
+// 			{
+// 				_heightCheck = false;
+// 			};
 
-			if ( _sur == "FreshWater" || _sur == "sea") then
-			{
-				_waterCheck = false;
-			};	
-		};
+// 			if ( _sur == "FreshWater" || _sur == "sea") then
+// 			{
+// 				_waterCheck = false;
+// 			};	
+// 		};
 		
-		//boundingBox
-		//_bCenter = boundingCenter TentMedium_Pitched;
+// 		//boundingBox
+// 		//_bCenter = boundingCenter TentMedium_Pitched;
 
-		if ( _heightCheck ) then
-		{
-			if ( _waterCheck ) then
-			{
-				//check slope
-				_terrainNormal = RoadWayNormalAsl [_xPos, _yPos, _pos select 2];
-				_terrainSlope = atg(sqrt((_terrainNormal select 0)*(_terrainNormal select 0) + (_terrainNormal select 1)*(_terrainNormal select 1))/(_terrainNormal select 2) );
+// 		if ( _heightCheck ) then
+// 		{
+// 			if ( _waterCheck ) then
+// 			{
+// 				//check slope
+// 				_terrainNormal = RoadWayNormalAsl [_xPos, _yPos, _pos select 2];
+// 				_terrainSlope = atg(sqrt((_terrainNormal select 0)*(_terrainNormal select 0) + (_terrainNormal select 1)*(_terrainNormal select 1))/(_terrainNormal select 2) );
 
-				if ( _terrainSlope < 20 ) then
-				{
-					 //test collision
-					 _bbox = (collisionBox [[_xPos, _yPos, _zPos + _tentZ + 0.2 ], _tentSize ,[vectorDir _person, RoadWayNormalAsl [_xPos, _yPos, _zPos]], [_person, _tent]]);
-					 if ( !_bbox ) then
-					 {
-						_tent = _tentType createVehicle [_xPos, _yPos];
-						_tent setPosASL [_xPos, _yPos, _pos select 2];
-						_tent setDir _ori - _tentOri;
-						_tent setDamage _hp;
+// 				if ( _terrainSlope < 20 ) then
+// 				{
+// 					 //test collision
+// 					 _bbox = (collisionBox [[_xPos, _yPos, _zPos + _tentZ + 0.2 ], _tentSize ,[vectorDir _person, RoadWayNormalAsl [_xPos, _yPos, _zPos]], [_person, _tent]]);
+// 					 if ( !_bbox ) then
+// 					 {
+// 						_tent = _tentType createVehicle [_xPos, _yPos];
+// 						_tent setPosASL [_xPos, _yPos, _pos select 2];
+// 						_tent setDir _ori - _tentOri;
+// 						_tent setDamage _hp;
 						
-						_cutter = objNull;
-						if (_tentType == "TentLarge_Pitched" ) then
-						{
-							_cutter = "Tent_Large_ClutterCutter" createVehicle [_xPos, _yPos]; // it can be better always on a ground 
-						};
-						if (_tentType == "TentMedium_Pitched" ) then
-						{
-							_cutter = "Tent_ClutterCutter" createVehicle [_xPos, _yPos]; // it can be better always on a ground 
-						};
+// 						_cutter = objNull;
+// 						if (_tentType == "TentLarge_Pitched" ) then
+// 						{
+// 							_cutter = "Tent_Large_ClutterCutter" createVehicle [_xPos, _yPos]; // it can be better always on a ground 
+// 						};
+// 						if (_tentType == "TentMedium_Pitched" ) then
+// 						{
+// 							_cutter = "Tent_ClutterCutter" createVehicle [_xPos, _yPos]; // it can be better always on a ground 
+// 						};
 
-						_cutter setDir getDir _tent;
+// 						_cutter setDir getDir _tent;
 
-						deleteVehicle (_this select 0);
-					 }
-					 else
-					 {
-						[_person,'I can not pitch the tent, there is not enough space!','colorImportant'] call fnc_playerMessage;
-					 };
-				}
-				else
-				{
-					[_person,'I can not pitch the tent, the slope is too steep!','colorImportant'] call fnc_playerMessage;		
-				};
-			}
-			else
-			{
-				[_person,'I can not pitch the tent in the water!','colorImportant'] call fnc_playerMessage;
-			};
-		}
-		else
-		{
-			[_person,'I can not pitch the tent on place like this!','colorImportant'] call fnc_playerMessage;		
-		};
-	};
-};
+// 						deleteVehicle (_this select 0);
+// 					 }
+// 					 else
+// 					 {
+// 						[_person,'I can not pitch the tent, there is not enough space!','colorImportant'] call fnc_playerMessage;
+// 					 };
+// 				}
+// 				else
+// 				{
+// 					[_person,'I can not pitch the tent, the slope is too steep!','colorImportant'] call fnc_playerMessage;		
+// 				};
+// 			}
+// 			else
+// 			{
+// 				[_person,'I can not pitch the tent in the water!','colorImportant'] call fnc_playerMessage;
+// 			};
+// 		}
+// 		else
+// 		{
+// 			[_person,'I can not pitch the tent on place like this!','colorImportant'] call fnc_playerMessage;		
+// 		};
+// 	};
+// };
 
 pack_TentContainer = 
 {
