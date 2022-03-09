@@ -83,7 +83,7 @@ weapon_swapHandguard =compile preprocessFileLineNumbers "\dzlegacy\server_data\s
 building_spawnLoot =	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\server\building_spawnLoot.sqf";
 init_spawnLoot = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnLoot.sqf";
 init_spawnZombies = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnZombies.sqf";
-init_spawnWildAnimals = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\init\spawnWildAnimals.sqf";
+init_spawnWildAnimals = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnWildAnimals.sqf";
 init_spawnServerEvent = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnServerEvent.sqf";
 player_queued = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_queued.sqf";
 
