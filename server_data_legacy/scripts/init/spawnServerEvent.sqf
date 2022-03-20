@@ -84,34 +84,34 @@ groupsEvents = _groups;
 				diag_log format ["_usedPositions :: %1", _usedPositions];
 				diag_log format ["_positionStr :: %1", _positionStr];
 				
-				if ( ! (_positionStr in _usedPositions) ) then 
-				{
-					DZ_TotalEvents = DZ_TotalEvents + 1;
-					_spawnType = getText (_cfgSpawnGroups >> _x >> _event >> "spawnType");
-					if ( _spawnType == "Loot") then
-					{
-						_spawnEvent = _type spawnProxyVehicle [_position, 0.05, 0.2, _angle];
-					};
+				// if ( ! (_positionStr in _usedPositions) ) then 
+				// {
+				// 	DZ_TotalEvents = DZ_TotalEvents + 1;
+				// 	_spawnType = getText (_cfgSpawnGroups >> _x >> _event >> "spawnType");
+				// 	if ( _spawnType == "Loot") then
+				// 	{
+				// 		_spawnEvent = _type spawnProxyVehicle [_position, 0.05, 0.2, _angle];
+				// 	};
 
-					if ( _spawnType == "Vehicle") then
-					{
-						_spawnEvent = _type createVehicle _position;
-						_spawnEvent setDir _angle;
-						_spawnEvent setFuel 0.2;
-					};					
+				// 	if ( _spawnType == "Vehicle") then
+				// 	{
+				// 		_spawnEvent = _type createVehicle _position;
+				// 		_spawnEvent setDir _angle;
+				// 		_spawnEvent setFuel 0.2;
+				// 	};					
 
-					_usedPositions set [ count _usedPositions, _positionStr ];
-					//*DON'T WORKING RIGHT NOW
-					//random from half hour to hour to delete vehicles
-					//_deleteTime = floor random (3);
-					//_deleteTime = _deleteTime + 3;
-					//_deleteTime = _deleteTime * 3600;
-					// _spawnEvent addeventhandler ["init",{sleep _deleteTime; deleteVehicle _this} ]; 
-				}
-				else
-				{
-					_s = _s - 1;
-				};
+				// 	_usedPositions set [ count _usedPositions, _positionStr ];
+				// 	//*DON'T WORKING RIGHT NOW
+				// 	//random from half hour to hour to delete vehicles
+				// 	//_deleteTime = floor random (3);
+				// 	//_deleteTime = _deleteTime + 3;
+				// 	//_deleteTime = _deleteTime * 3600;
+				// 	// _spawnEvent addeventhandler ["init",{sleep _deleteTime; deleteVehicle _this} ]; 
+				// }
+				// else
+				// {
+				// 	_s = _s - 1;
+				// };
 			};
 			//------------
 /* Nebo jinak
@@ -161,5 +161,5 @@ groupsEvents = _groups;
 	};
 } forEach _groups;
 
-//_text = format["Server Event: %1, Spawned At: %2", _event, _position ];
-//diag_log _text;
+_text = format["Server Event: %1, Spawned At: %2", _event, _position ];
+diag_log _text;
