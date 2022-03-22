@@ -64,17 +64,17 @@ player_applyDefibrillator = 	compile preprocessFileLineNumbers "\dzlegacy\server
 player_moveToInventory =	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_moveToInventory.sqf";
 
 player_mendItem = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_mendItem.sqf";
-player_igniteFireplace = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_igniteFireplace.sqf";
+//player_igniteFireplace = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_igniteFireplace.sqf";
 player_RabbitSnareTrap = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_RabbitSnareTrap.sqf";
 player_plantStages = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_plantStages.sqf";
-player_digGreenhouse=		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_digGreenhouse.sqf";
+//player_digGreenhouse=		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_digGreenhouse.sqf";
 player_dryClothes = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_dryClothes.sqf";
 player_gutDeadBodyCheck = compile preprocessFileLineNumbers "dzlegacy\server_data\scripts\players\player_gutDeadBodyCheck.sqf";
 player_gutDeadBodyStart = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_gutDeadBodyStart.sqf";
 player_gutDeadBodyEnd = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_gutDeadBodyEnd.sqf";
 player_gutDeadBodyCancel = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_gutDeadBodyCancel.sqf";
 player_useDuctTapeOnItem = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_useDuctTapeOnItem.sqf";
-player_DigTile = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_DigTile.sqf";
+//player_DigTile = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_DigTile.sqf";
 
 //weapons
 weapon_swapHandguard =compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\weapons\weapon_swapHandguard.sqf";
@@ -84,7 +84,7 @@ building_spawnLoot =	compile preprocessFileLineNumbers "\dzlegacy\server_data\sc
 init_spawnLoot = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnLoot.sqf";
 init_spawnZombies = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnZombies.sqf";
 init_spawnWildAnimals = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnWildAnimals.sqf";
-init_spawnServerEvent = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnServerEvent.sqf";
+//init_spawnServerEvent = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnServerEvent.sqf";
 player_queued = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_queued.sqf";
 
 //functions
