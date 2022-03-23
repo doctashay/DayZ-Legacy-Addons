@@ -183,7 +183,6 @@ switch _state do
 			[_person,format[_message select 6,_nameTarget],_message select 7] call fnc_playerMessage;
 
 			_person setVariable ["inUseItem",objNull];
-			*/
 			_person setVariable ["inUseItem",objNull];
 			_person setVariable ["actionTarget",objNull];
 			_person setVariable ["isUsingSomething",0];
