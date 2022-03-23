@@ -233,12 +233,12 @@ class FSM
     class process_save
     {
       name = "process_save";
-      init = /*%FSM<STATEINIT""">*/"//_agent setVariable [""requestSave"",true];" \n
-       "//_savedPos = getPosATL _agent;" \n
-       "//if (isNil ""DZ_DisableDebug"") then {" \n
+      init = /*%FSM<STATEINIT""">*/"_agent setVariable [""requestSave"",true];" \n
+       "_savedPos = getPosATL _agent;" \n
+       "if (isNil ""DZ_DisableDebug"") then {" \n
        "	//Deans debug code" \n
-       "//	diag_log format[""Character save requested for ... %1"",_agent];" \n
-       "//};"/*%FSM</STATEINIT""">*/;
+       "	diag_log format[""Character save requested for ... %1"",_agent];" \n
+       "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
