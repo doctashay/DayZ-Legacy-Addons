@@ -289,7 +289,7 @@ fnc_generateRscQuantity = {
 };
 
 player_suicide = {
-	_fsm = [_person,_this] execFSM "\dz\server\scripts\fsm\player_suicide.fsm";
+	_fsm = [_person,_this] execFSM "\dzlegacy\server_data_legacy\scripts\fsm\player_suicide.fsm";
 	_person setVariable ["fsm_suicide",_fsm];
 };
 
