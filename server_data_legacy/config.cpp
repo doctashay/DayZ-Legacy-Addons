@@ -32,10 +32,6 @@ class CfgSpawns
 		"ZombieMale4",
 		"ZombieMale5",
 		"ZombieMale6",
-		"ZombieMale7",
-		"ZombieMale8",
-		"ZombieMale9",
-		"ZombieMale10"
 	};
 	class Balota
 	{
@@ -253213,51 +253209,3408 @@ class CfgObjectActions
 	{
 		model="";
 	};
-	class Well
+	class FuelStation
+	{
+		model="DZ\structures\House\A_FuelStation\A_FuelStation_Feed.p3d";
+		class UseStand
+		{
+			displayName="Use The Stand";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			condition="((_owner getVariable ['isUsingSomething',0] == 0) && _canUseActions ) && _inHands isKindOf 'BottleBase';";
+			statement="_owner setVariable ['isUsingSomething',1]; [this, _inHands, _owner, 'gasoline'] call player_liquidSource;";
+		};
+	};
+	class WellBlue
+	{
+		model="dz\buildings\misc\pumpa.p3d";
+		class UsePump
+		{
+			displayName="Use The Pump";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			condition="ProfileStart 'sqf_objAction_UsePumpBlue_condition'; _con = (((_owner getVariable ['isUsingSomething',0] == 0) && _canUseActions)); ProfileStop 'sqf_objAction_UsePumpBlue_condition'; _con;";
+			statement="_owner setVariable ['isUsingSomething',1]; [this, _inHands, _owner,'water'] call player_liquidSource;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=1;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1 && isNull _inHands";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class WellYellow: WellBlue
 	{
 		model="dz\structures\Misc\Misc_WellPump\Misc_WellPump.p3d";
-		class DrinkWater
+		class UsePump
 		{
-			displayName="Drink Water";
+			displayName="Use The Pump";
 			priority=0.1;
 			showWindow=1;
 			hideOnUse=1;
-			condition="true";
-			statement="_owner playAction 'PlayerCrouch';[_owner,'RiverWater'] call player_fnc_processStomach;[_owner,'You drink some water from the well','colorAction'] call fnc_playerMessage;";
+			condition="ProfileStart 'sqf_objAction_UsePumpYellow_condition'; _con = ((_owner getVariable ['isUsingSomething',0] == 0) && _canUseActions ); ProfileStop 'sqf_objAction_UsePumpYellow_condition'; _con;";
+			statement="_owner setVariable ['isUsingSomething',1]; [this, _inHands, _owner, 'water'] call player_liquidSource;";
 		};
-		class FillBottle
+		class CancelAction
 		{
-			displayName="Fill Bottle";
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=1;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1 && isNull _inHands";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class ChopTreeFraxinus1
+	{
+		model="dz\plants2\tree\t_fraxinus2W.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
 			priority=0.1;
 			showWindow=1;
 			hideOnUse=1;
-			condition="_inHands isKindOf 'BottleBase'";
-			statement="[this,_inHands,_owner,_name] spawn player_fillBottle;";
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'AxeBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);(this setDamage ((damage this) + 0.34));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<2},{_x=_x+1}] do{_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_owner,'I have chopped some firewood.',''] call fnc_playerMessage;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.0025);(this setDamage ((damage this) + 0.5));if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<2},{_x=_x+1}] do{_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_owner,'I have chopped some firewood.',''] call fnc_playerMessage;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class ChopTreeFraxinus2: ChopTreeFraxinus1
+	{
+		model="dz\plants2\tree\t_fraxinus2s.p3d";
+		class Chopwood: Chopwood
+		{
+		};
+		class ChopwoodChain: ChopwoodChain
+		{
+		};
+		class SearchForBranch: SearchForBranch
+		{
+		};
+		class CancelAction: CancelAction
+		{
+		};
+	};
+	class ChopTreet_t_quercus3s
+	{
+		model="dz\plants2\tree\t_quercus2f.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'AxeBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);(this setDamage ((damage this) + 0.34));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<3},{_x=_x+1}] do{_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_owner,'I have chopped some firewood.',''] call fnc_playerMessage;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.0025);(this setDamage ((damage this) + 0.5));if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<3},{_x=_x+1}] do{_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_owner,'I have chopped some firewood.',''] call fnc_playerMessage;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1  && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class ChopTreet_quercus2f: ChopTreet_t_quercus3s
+	{
+		model="dz\plants2\tree\t_quercus2f.p3d";
+		class Chopwood: Chopwood
+		{
+		};
+		class ChopwoodChain: ChopwoodChain
+		{
+		};
+		class SearchForBark: SearchForBark
+		{
+		};
+		class CancelAction: CancelAction
+		{
+		};
+	};
+	class ChopTreet_betula1f: ChopTreet_t_quercus3s
+	{
+		model="dz\plants2\tree\t_betula1f.p3d";
+		class Chopwood: Chopwood
+		{
+		};
+		class ChopwoodChain: ChopwoodChain
+		{
+		};
+		class CancelAction: CancelAction
+		{
+		};
+		class SearchForBark: SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Birch',0] call player_pickBerry;";
+		};
+	};
+	class ChopTreet_t_betula2f: ChopTreet_betula1f
+	{
+		model="dz\plants2\tree\t_betula2f.p3d";
+		class Chopwood: Chopwood
+		{
+		};
+		class ChopwoodChain: ChopwoodChain
+		{
+		};
+		class SearchForBark: SearchForBark
+		{
+		};
+		class CancelAction: CancelAction
+		{
+		};
+	};
+	class ChopTreet_t_betula2s: ChopTreet_betula1f
+	{
+		model="dz\plants2\tree\t_betula2s.p3d";
+		class Chopwood: Chopwood
+		{
+		};
+		class ChopwoodChain: ChopwoodChain
+		{
+		};
+		class SearchForBark: SearchForBark
+		{
+		};
+		class CancelAction: CancelAction
+		{
+		};
+	};
+	class ChopTreet_t_betula2w: ChopTreet_betula1f
+	{
+		model="dz\plants2\tree\t_betula2w.p3d";
+		class Chopwood: Chopwood
+		{
+		};
+		class ChopwoodChain: ChopwoodChain
+		{
+		};
+		class SearchForBark: SearchForBark
+		{
+		};
+		class CancelAction: CancelAction
+		{
+		};
+	};
+	class ChopTreet_acer2s
+	{
+		model="dz\plants2\tree\t_acer2s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""2"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""2"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""2"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_alnus2s
+	{
+		model="dz\plants2\tree\t_alnus2s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""3"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_carpinus2s
+	{
+		model="dz\plants2\tree\t_carpinus2s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""2"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""2"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""2"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_fagus2f
+	{
+		model="dz\plants2\tree\t_fagus2f.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""3"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_fagus2s
+	{
+		model="dz\plants2\tree\t_fagus2s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""3"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_fagus2W
+	{
+		model="dz\plants2\tree\t_fagus2W.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""3"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_larix3s
+	{
+		model="dz\plants2\tree\t_larix3s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""5"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""5"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""5"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_malus1s
+	{
+		model="dz\plants2\tree\t_malus1s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""2"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""2"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""2"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_naked_tree_big
+	{
+		model="dz\plants2\tree\t_naked_tree_big.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""4"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""4"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""4"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_naked_tree_single
+	{
+		model="dz\plants2\tree\t_naked_tree_single.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""3"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_picea1s
+	{
+		model="dz\plants2\tree\t_picea1s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""3"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_picea2s
+	{
+		model="dz\plants2\tree\t_picea2s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""3"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_picea3f
+	{
+		model="dz\plants2\tree\t_picea3f.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""3"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_pinusN1s
+	{
+		model="dz\plants2\tree\t_pinusN1s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""4"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""4"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""4"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_pinusN2s
+	{
+		model="dz\plants2\tree\t_pinusN2s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""4"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""4"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""4"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_pinusS2f
+	{
+		model="dz\plants2\tree\t_pinusS2f.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""2"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""2"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""2"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_populus3s
+	{
+		model="dz\plants2\tree\t_populus3s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""3"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_populus3s_A3
+	{
+		model="dz\plants2\tree\t_populus3s_A3.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""3"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_pyrus2s
+	{
+		model="dz\plants2\tree\t_pyrus2s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""3"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_salix2s
+	{
+		model="dz\plants2\tree\t_salix2s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""2"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""2"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""2"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_salix2s_swamp
+	{
+		model="dz\plants2\tree\t_salix2s_swamp.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""3"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""3"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopTreet_sorbus2s
+	{
+		model="dz\plants2\tree\t_sorbus2s.p3d";
+		class Chopwood
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""2"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""2"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class SearchForBranch
+		{
+			displayName="Cut branch off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
+		};
+		class SearchForBark
+		{
+			displayName="Cut bark off";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop firewood";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.005);(this setDamage 1);if((damage this) == 1)then{[_owner,'chainsaw_cut'] call event_saySound; _owner playAction ['GestureMeleeChainsawNormal',{for [{_x=0},{_x<parseNumber(""2"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{[_owner,'chainsaw_cut'] call event_saySound;_owner playAction 'GestureMeleeChainsawNormal';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddResin
+		{
+			displayName="Add resin";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'Crafting_Torch' && !(isOn _inHands) && _inHands getVariable ['internalenergy',150] < 145";
+			statement="if(damage _inHands < 1)then{_owner playAction 'ItemUseShort';_inHands setVariable ['internalenergy',150];};";
+		};
+	};
+	class ChopBushb_pmugo
+	{
+		model="dz\plants2\bush\b_pmugo.p3d";
+		class ChopwoodAxe
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'AxeBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.02);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['GestureMeleeAxeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.002);(this setDamage ((damage this) + (2/parseNumber(""1""))));[_owner,'chainsaw_cut'] call event_saySound;_owner playAction ['GestureMeleeChainsawNormal',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodKnife
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1  && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.035);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['MeleeKnifeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The blade is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+	};
+	class ChopBushb_betulaHumilis
+	{
+		model="dz\plants2\bush\b_betulaHumilis.p3d";
+		class ChopwoodAxe
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'AxeBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.02);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['GestureMeleeAxeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.002);(this setDamage ((damage this) + (2/parseNumber(""1""))));[_owner,'chainsaw_cut'] call event_saySound;_owner playAction ['GestureMeleeChainsawNormal',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodKnife
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1  && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.035);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['MeleeKnifeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The blade is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+	};
+	class ChopBushb_naked
+	{
+		model="dz\plants2\bush\b_naked.p3d";
+		class ChopwoodAxe
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'AxeBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.02);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['GestureMeleeAxeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.002);(this setDamage ((damage this) + (2/parseNumber(""1""))));[_owner,'chainsaw_cut'] call event_saySound;_owner playAction ['GestureMeleeChainsawNormal',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodKnife
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1  && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.035);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['MeleeKnifeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The blade is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+	};
+	class ChopBushb_salix2s
+	{
+		model="dz\plants2\bush\b_salix2s.p3d";
+		class ChopwoodAxe
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'AxeBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.02);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['GestureMeleeAxeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.002);(this setDamage ((damage this) + (2/parseNumber(""1""))));[_owner,'chainsaw_cut'] call event_saySound;_owner playAction ['GestureMeleeChainsawNormal',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodKnife
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1  && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.035);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['MeleeKnifeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The blade is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+	};
+	class ChopBushb_prunus
+	{
+		model="dz\plants2\bush\b_prunus.p3d";
+		class ChopwoodAxe
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'AxeBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.02);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['GestureMeleeAxeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.002);(this setDamage ((damage this) + (2/parseNumber(""1""))));[_owner,'chainsaw_cut'] call event_saySound;_owner playAction ['GestureMeleeChainsawNormal',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodKnife
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1  && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.035);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['MeleeKnifeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The blade is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+	};
+	class ChopBushb_craet1
+	{
+		model="dz\plants2\bush\b_craet1.p3d";
+		class ChopwoodAxe
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'AxeBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.02);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['GestureMeleeAxeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.002);(this setDamage ((damage this) + (2/parseNumber(""1""))));[_owner,'chainsaw_cut'] call event_saySound;_owner playAction ['GestureMeleeChainsawNormal',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodKnife
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1  && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.035);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['MeleeKnifeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The blade is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+	};
+	class ChopBushb_craet2
+	{
+		model="dz\plants2\bush\b_craet2.p3d";
+		class ChopwoodAxe
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'AxeBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.02);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['GestureMeleeAxeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.002);(this setDamage ((damage this) + (2/parseNumber(""1""))));[_owner,'chainsaw_cut'] call event_saySound;_owner playAction ['GestureMeleeChainsawNormal',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodKnife
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1  && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.035);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['MeleeKnifeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The blade is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+	};
+	class ChopBushb_corylus2s
+	{
+		model="dz\plants2\bush\b_corylus2s.p3d";
+		class ChopwoodAxe
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'AxeBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.02);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['GestureMeleeAxeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.002);(this setDamage ((damage this) + (2/parseNumber(""1""))));[_owner,'chainsaw_cut'] call event_saySound;_owner playAction ['GestureMeleeChainsawNormal',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodKnife
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1  && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.035);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['MeleeKnifeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The blade is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+	};
+	class ChopBushb_corylus
+	{
+		model="dz\plants2\bush\b_corylus.p3d";
+		class ChopwoodAxe
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'AxeBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.02);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['GestureMeleeAxeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.002);(this setDamage ((damage this) + (2/parseNumber(""1""))));[_owner,'chainsaw_cut'] call event_saySound;_owner playAction ['GestureMeleeChainsawNormal',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodKnife
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1  && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.035);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['MeleeKnifeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The blade is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+	};
+	class ChopBushb_sambucus
+	{
+		model="dz\plants2\bush\b_sambucus.p3d";
+		class ChopwoodAxe
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'AxeBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.02);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['GestureMeleeAxeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.002);(this setDamage ((damage this) + (2/parseNumber(""1""))));[_owner,'chainsaw_cut'] call event_saySound;_owner playAction ['GestureMeleeChainsawNormal',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodKnife
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1  && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.035);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['MeleeKnifeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The blade is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+	};
+	class ChopBushb_canina2s
+	{
+		model="dz\plants2\bush\b_canina2s.p3d";
+		class ChopwoodAxe
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'AxeBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.02);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['GestureMeleeAxeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodChain
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1 && (_inHands isKindOf 'Chainsaw' and (isOn _inHands))";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.002);(this setDamage ((damage this) + (2/parseNumber(""1""))));[_owner,'chainsaw_cut'] call event_saySound;_owner playAction ['GestureMeleeChainsawNormal',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class ChopwoodKnife
+		{
+			displayName="Chop sticks";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=20;
+			condition="_canUseActions && damage this < 1  && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase')";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.035);(this setDamage ((damage this) + (1/parseNumber(""1""))));_owner playAction ['MeleeKnifeSlash',{_wood = ['Crafting_WoodenStick',_this] call player_addInventory;_wood setQuantity 3;[_this,'I have chopped some sticks.',''] call fnc_playerMessage;}]}else{[_owner,'The blade is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+	};
+	class MineR2_Boulder2
+	{
+		model="dz\rocks2\R2_Boulder2.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineR2_Boulder1
+	{
+		model="dz\rocks2\R2_Boulder1.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineR2_Stone
+	{
+		model="dz\rocks2\R2_Stone.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineSmall_Stone_01_F
+	{
+		model="dz\rocks2\Small_Stone_01_F.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineSmall_Stone_02_F
+	{
+		model="dz\rocks2\Small_Stone_02_F.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineStone_Small_F
+	{
+		model="dz\rocks2\Stone_Small_F.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineStone_Small_W
+	{
+		model="dz\rocks2\Stone_Small_W.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineBluntStone_01
+	{
+		model="dz\rocks3\Blunt\BluntStone_01.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineBluntStone_01_LC
+	{
+		model="dz\rocks3\Blunt\BluntStone_01_LC.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineBluntStone_02
+	{
+		model="dz\rocks3\Blunt\BluntStone_02.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineBluntStone_02_LC
+	{
+		model="dz\rocks3\Blunt\BluntStone_02_LC.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineBluntStone_03
+	{
+		model="dz\rocks3\Blunt\BluntStone_03.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineBluntStone_03_LC
+	{
+		model="dz\rocks3\Blunt\BluntStone_03_LC.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineSharpStone_01
+	{
+		model="dz\rocks3\Sharp\SharpStone_01.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineSharpStone_01_LC
+	{
+		model="dz\rocks3\Sharp\SharpStone_01_LC.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineSharpStone_02
+	{
+		model="dz\rocks3\Sharp\SharpStone_02.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineSharpStone_02_LC
+	{
+		model="dz\rocks3\Sharp\SharpStone_02_LC.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineSharpStone_03
+	{
+		model="dz\rocks3\Sharp\SharpStone_03.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class MineSharpStone_03_LC
+	{
+		model="dz\rocks3\Sharp\SharpStone_03_LC.p3d";
+		class MineStone
+		{
+			displayName="Mine stone";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			condition="_canUseActions && _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;[_this,'I have mined some stone.',''] call fnc_playerMessage;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class BerryBush1
+	{
+		model="dz\plants2\bush\b_canina2s.p3d";
+		class SearchBerries
+		{
+			displayName="Search for berries";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && isNull _inHands";
+			statement="[0,_owner,'Fruit_CaninaBerry',2] call player_pickBerry;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1 && isNull _inHands";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class BerryBush2
+	{
+		model="dz\plants2\bush\b_sambucus.p3d";
+		class SearchBerries
+		{
+			displayName="Search for berries";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && isNull _inHands";
+			statement="[0,_owner,'Fruit_SambucusBerry',4] call player_pickBerry;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class AppleTree
+	{
+		model="dz\plants2\tree\t_malus1s.p3d";
+		class SearchApples
+		{
+			displayName="Search for apples";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			radius=20;
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && isNull _inHands";
+			statement="[0,_owner,'Fruit_Apple',2] call player_pickBerry;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1 && isNull _inHands";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class ChickenCoop
+	{
+		model="dz\structures\Misc\ChickenCoop\Misc_ChickenCoop.p3d";
+		class SearchFeathers
+		{
+			displayName="Search for feathers";
+			showWindow=1;
+			priority=0.1;
+			hideOnUse=1;
+			memoryPoints[]=
+			{
+				"action"
+			};
+			radius=3;
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && isNull _inHands";
+			statement="[0,_owner,'Crafting_ChickenFeather',2] call player_pickBerry;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1 && isNull _inHands";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class Greenhouse
+	{
+		model="dz\structures\Misc\Misc_Greenhouse\Misc_Greenhouse.p3d";
+		class DigGreenhouse
+		{
+			displayName="Prepare slot for planting";
+			priority=1;
+			showWindow=1;
+			hideOnUse=0;
+			condition="_canUseActions && _inHands call fnc_isFarmingTool && _owner getVariable ['isUsingSomething',0] == 0";
+			statement="[this,_inHands,_owner] spawn player_digGreenhouse;";
+		};
+		class PlantGreenhouse
+		{
+			displayName="Plant a seed";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			condition="_canUseActions && _inHands isKindOf 'SeedItemBase'";
+			statement="[this,_inHands,_owner] spawn player_digGreenhouse;";
+		};
+		class PlantPotatoGreenhouse
+		{
+			displayName="Plant a potato";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			condition="(_inHands isKindOf 'Fruit_Potato')  and  ((_inHands getVariable 'food_stage') select 0 == 'Raw')";
+			statement="[this,_inHands,_owner] spawn player_digGreenhouse;";
+		};
+		class FertilizeSoil
+		{
+			displayName="Fertilize the soil";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			condition="_canUseActions && (typeOf _inHands) call fnc_isFertilizer";
+			statement="[this,_inHands,_owner] spawn player_digGreenhouse;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class TileDigging
+	{
+		model="dz\plants2\farming\garden_plot.p3d";
+		class DigTile
+		{
+			displayName="Prepare slot for planting";
+			priority=1;
+			showWindow=1;
+			hideOnUse=0;
+			condition="_canUseActions && _inHands call fnc_isFarmingTool && _owner getVariable ['isUsingSomething',0] == 0";
+			statement="[this,_inHands,_owner] spawn player_digGreenhouse;";
+		};
+		class PlantTile
+		{
+			displayName="Plant a seed";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			condition="_canUseActions && _inHands isKindOf 'SeedItemBase'";
+			statement="[this,_inHands,_owner] spawn player_digGreenhouse;";
+		};
+		class PlantTilePotato
+		{
+			displayName="Plant a potato";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			condition="(_inHands isKindOf 'Fruit_Potato')  and  (_inHands getVariable 'food_stage' select 0 == 'Raw')";
+			statement="[this,_inHands,_owner] spawn player_digGreenhouse;";
+		};
+		class FertilizeSoilInTile
+		{
+			displayName="Fertilize soil";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			condition="_canUseActions && (typeOf _inHands) call fnc_isFertilizer";
+			statement="[this,_inHands,_owner] spawn player_digGreenhouse;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
 		};
 	};
 };
 class CfgSurfaceActions
 {
+	class CRForest1
+	{
+		model="#CRForest1";
+		class CollectFireWood
+		{
+			displayName="Search for wooden sticks";
+			priority=0.1;
+			showWindow=0;
+			hideOnUse=1;
+			condition="ProfileStart 'sqf_surfAction_CRForest1CollectFireWood_condition'; _con = (_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && isNull _inHands); ProfileStop 'sqf_surfAction_CRForest1CollectFireWood_condition'; _con;";
+			statement="[0,_owner,'Crafting_WoodenStick',2] call player_pickBerry;";
+		};
+		class DigTile
+		{
+			displayName="Make a garden plot";
+			condition="_canUseActions && _inHands call fnc_isFarmingTool && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			statement="[0, _owner, _inHands, ""CRForest1""] spawn player_DigGardenPlot";
+		};
+		class SetUpRabbitSnare
+		{
+			displayName="Deploy snare trap";
+			condition="_canUseActions && _inHands isKindOf 'Crafting_RabbitSnare' && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			statement="[0, _owner, _inHands, ""CRForest1""] spawn player_RabbitSnareTrap;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class CRForest2
+	{
+		model="#CRForest2";
+		class CollectFireWood
+		{
+			displayName="Search for wooden sticks";
+			priority=0.1;
+			showWindow=0;
+			hideOnUse=1;
+			condition="ProfileStart 'sqf_surfAction_CRForest2CollectFireWood_condition'; _con = (_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && isNull _inHands); ProfileStop 'sqf_surfAction_CRForest2CollectFireWood_condition'; _con;";
+			statement="[0,_owner,'Crafting_WoodenStick',3] call player_pickBerry;";
+		};
+		class DigTile
+		{
+			displayName="Make a garden plot";
+			condition="_canUseActions && _inHands call fnc_isFarmingTool && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			statement="[0, _owner, _inHands, ""CRForest2""] spawn player_DigGardenPlot";
+		};
+		class SetUpRabbitSnare
+		{
+			displayName="Deploy snare trap";
+			condition="_canUseActions && _inHands isKindOf 'Crafting_RabbitSnare' && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			statement="[0, _owner, _inHands, ""CRForest2""] spawn player_RabbitSnareTrap;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class CRGrass1
+	{
+		model="#CRGrass1";
+		class DigUpWormsKnife
+		{
+			displayName="Dig up worms";
+			priority=0.2;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_canUseActions && _inHands isKindOf 'KnifeBase' && _owner getVariable ['isUsingSomething',0] == 0";
+			statement="if(damage _inHands < 1)then{_owner setVariable ['isUsingSomething',1];_inHands setDamage ((damage _inHands)+0.01);_rand = random 5; 	if(_rand <= 2)then{	_owner playAction ['ItemUseShort',{_this setVariable ['isUsingSomething',0];_worm = ['Food_Worm',_this] call player_addInventory;_worm setQuantity 4;[_this,'I have dug up a bunch of worms.',''] call fnc_playerMessage;}];}else{	_owner playAction ['ItemUseShort',{[_this,'I dig up nothing.',''] call fnc_playerMessage;_this setVariable ['isUsingSomething',0];}];};}else{[_owner,'The knife is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class DigUpWormsHoe
+		{
+			displayName="Dig up worms";
+			priority=0.2;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_canUseActions && _inHands isKindOf 'FarmingHoe' && _owner getVariable ['isUsingSomething',0] == 0";
+			statement="if(damage _inHands < 1)then{_owner setVariable ['isUsingSomething',1];_inHands setDamage ((damage _inHands)+0.01);_rand = random 5; 	if(_rand <= 2)then{	_owner playAction ['digHoe',{_this setVariable ['isUsingSomething',0];_worm = ['Food_Worm',_this] call player_addInventory;_worm setQuantity 4;[_this,'I have dug up a bunch of worms.',''] call fnc_playerMessage;}];}else{	_owner playAction ['digHoe',{[_this,'I dig up nothing.',''] call fnc_playerMessage;_this setVariable ['isUsingSomething',0];}];};}else{[_owner,'The farming hoe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class DigUpWormsShovel
+		{
+			displayName="Dig up worms";
+			priority=0.2;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_canUseActions && _inHands isKindOf 'Tool_Shovel' && _owner getVariable ['isUsingSomething',0] == 0";
+			statement="if(damage _inHands < 1)then{_owner setVariable ['isUsingSomething',1];_inHands setDamage ((damage _inHands)+0.01);_rand = random 5; 	if(_rand < 2)then{	_owner playAction ['digShovel',{_this setVariable ['isUsingSomething',0];_worm = ['Food_Worm',_this] call player_addInventory;_worm setQuantity 3;[_this,'I have dug up a bunch of worms.',''] call fnc_playerMessage;}];}else{	_owner playAction ['digShovel',{[_this,'I dig up nothing.',''] call fnc_playerMessage;_this setVariable ['isUsingSomething',0];}];};}else{[_owner,'The shovel is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddGrass
+		{
+			displayName="Add grass to the wrap";
+			priority=0.2;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_canUseActions && _inHands isKindOf 'Att_Weaponwrap_Burlap'";
+			statement="_owner playAction ['ItemUseShort',{deleteVehicle itemInHands _this;_gr = ['Att_Weaponwrap_Grass',_this] call player_addInventory;}];";
+		};
+		class DigTile
+		{
+			displayName="Make a garden plot";
+			condition="_canUseActions && _inHands call fnc_isFarmingTool && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			statement="[0, _owner, _inHands, ""CRGrass1""] spawn player_DigGardenPlot";
+		};
+		class SetUpRabbitSnare
+		{
+			displayName="Deploy snare trap";
+			condition="_canUseActions && _inHands isKindOf 'Crafting_RabbitSnare' && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			statement="[0, _owner, _inHands, ""CRGrass1""] spawn player_RabbitSnareTrap;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+		class 
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1 && (_inHands isKindOf 'Tool_Shovel' || _inHands isKindOf 'FarmingHoe')";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class CRGrass2
+	{
+		model="#CRGrass2";
+		class DigUpWormsHoe
+		{
+			displayName="Dig up worms";
+			priority=0.2;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_canUseActions && _inHands isKindOf 'FarmingHoe' && _owner getVariable ['isUsingSomething',0] == 0";
+			statement="if(damage _inHands < 1)then{_owner setVariable ['isUsingSomething',1];_inHands setDamage ((damage _inHands)+0.01);_rand = random 7; 	if(_rand <= 2)then{	_owner playAction ['digHoe',{_this setVariable ['isUsingSomething',0];_worm = ['Food_Worm',_this] call player_addInventory;_worm setQuantity 4;[_owner,'I have dug up a bunch of worms.',''] call fnc_playerMessage;}];}else{	_owner playAction ['digHoe',{_this setVariable ['isUsingSomething',0];[_this,'I dig up nothing.',''] call fnc_playerMessage;}];};}else{[_owner,'The farming hoe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class DigUpWormsShovel
+		{
+			displayName="Dig up worms";
+			priority=0.2;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_canUseActions && _inHands isKindOf 'Tool_Shovel' && _owner getVariable ['isUsingSomething',0] == 0";
+			statement="if(damage _inHands < 1)then{_owner setVariable ['isUsingSomething',1];_inHands setDamage ((damage _inHands)+0.01);_rand = random 100; if(_rand < 30)then{_owner playAction ['digShovel',{_this setVariable ['isUsingSomething',0];_worm = ['Food_Worm',_this] call player_addInventory;_worm setQuantity 3;[_owner,'I have dug up a bunch of worms.',''] call fnc_playerMessage;}];}else{if (_rand<99)then{_owner playAction ['digShovel',{_this setVariable ['isUsingSomething',0];[_this,'I dig up nothing.',''] call fnc_playerMessage;}];}else{_owner playAction ['digShovel',{_this setVariable ['isUsingSomething',0];_worm = ['Cookware_Pot',_this] call player_addInventory;_worm setDamage 0.8;[_this,'I dig up rusty cooking pot?!',''] call fnc_playerMessage;}];};};}else{[_owner,'The shovel is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class AddGrass
+		{
+			displayName="Add grass to the wrap";
+			priority=0.2;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_canUseActions &&  _inHands isKindOf 'Att_Weaponwrap_Burlap'";
+			statement="_owner playAction ['ItemUseShort',{deleteVehicle itemInHands _this;_gr = ['Att_Weaponwrap_Grass',_this] call player_addInventory;}];";
+		};
+		class DigTile
+		{
+			displayName="Make a garden plot";
+			condition="_canUseActions && _inHands call fnc_isFarmingTool && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			statement="[0, _owner, _inHands, ""CRGrass2""] spawn player_DigGardenPlot";
+		};
+		class SetUpRabbitSnare
+		{
+			displayName="Deploy snare trap";
+			condition="_canUseActions && _inHands isKindOf 'Crafting_RabbitSnare' && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			statement="[0, _owner, _inHands, ""CRGrass2""] spawn player_RabbitSnareTrap;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class CRGrit1
+	{
+		model="#CRGrit1";
+		class CollectStones
+		{
+			displayName="Search for stones";
+			priority=0.1;
+			showWindow=0;
+			hideOnUse=1;
+			condition="ProfileStart 'sqf_surfAction_CRGrit1CollectStones_condition'; _con = (_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && isNull _inHands);ProfileStop 'sqf_surfAction_CRGrit1CollectStones_condition'; _con;";
+			statement="[0,_owner,'Consumable_SmallStone',3] call player_pickBerry;";
+		};
+		class CraftStoneKnife
+		{
+			displayName="Craft stone knife";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			condition="_canUseActions && _inHands isKindOf 'Consumable_SmallStone'";
+			statement="if((quantity _inHands) > 1)then{_inHands addQuantity -1;}else{deleteVehicle _inHands;};_owner playAction ['PlayerCraft',{_stone = ['Tool_StoneKnife',_this] call player_addInventory;_this moveToHands _stone;[_this,'I have crafted Stone Knife.',''] call fnc_playerMessage;}];";
+		};
+		class DigTile
+		{
+			displayName="Make a garden plot";
+			condition="_canUseActions && _inHands call fnc_isFarmingTool && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			statement="[0, _owner, _inHands, ""CRGrit1""] spawn player_DigGardenPlot";
+		};
+		class SetUpRabbitSnare
+		{
+			displayName="Deploy snare trap";
+			condition="_canUseActions && _inHands isKindOf 'Crafting_RabbitSnare' && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			statement="[0, _owner, _inHands, ""CRGrit1""] spawn player_RabbitSnareTrap;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class CRBoulders
+	{
+		model="#CRBoulders";
+		class CollectStones
+		{
+			displayName="Search for stones";
+			priority=0.1;
+			showWindow=0;
+			hideOnUse=1;
+			condition="ProfileStart 'sqf_surfAction_CRBouldersCollectStones_condition'; _con = (_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && isNull _inHands); ProfileStop 'sqf_surfAction_CRBouldersCollectStones_condition'; _con;";
+			statement="[0,_owner,'Consumable_SmallStone',3] call player_pickBerry;";
+		};
+		class MineStones
+		{
+			displayName="Mine stones";
+			priority=0.2;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_canUseActions &&  _inHands isKindOf 'Pickaxe'";
+			statement="if(damage _inHands < 0.95)then{_inHands setDamage ((damage _inHands)+0.025);_owner playAction ['digHoe',{_stone = ['Consumable_Stone',_this] call player_addInventory;_stone setQuantity 1;}]}else{[_owner,'The pickaxe is ruined.','colorImportant'] call fnc_playerMessage;};";
+		};
+		class CraftStoneKnife
+		{
+			displayName="Craft stone knife";
+			priority=0.1;
+			showWindow=1;
+			hideOnUse=1;
+			condition="_canUseActions && _inHands isKindOf 'Consumable_SmallStone'";
+			statement="deleteVehicle _inHands;_owner playAction ['PlayerCraft',{_stone = ['Tool_StoneKnife',_this] call player_addInventory;_this moveToHands _stone;[_this,'I have crafted Stone Knife.',''] call fnc_playerMessage;}];";
+		};
+		class SetUpRabbitSnare
+		{
+			displayName="Deploy snare trap";
+			condition="_canUseActions && _inHands isKindOf 'Crafting_RabbitSnare' && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			statement="[0, _owner, _inHands, ""CRBoulders""] spawn player_RabbitSnareTrap;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
 	class Freshwater
 	{
 		model="#Freshwater";
 		class DrinkWater
 		{
-			displayName="Drink Water";
+			displayName="Drink";
 			priority=0.1;
 			showWindow=1;
 			hideOnUse=1;
-			condition="";
-			statement="_owner playAction 'PlayerCrouch';[_owner,'RiverWater'] call player_fnc_processStomach;[_owner,'You drink some water from the pond','colorAction'] call fnc_playerMessage;";
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && isNull _inHands";
+			statement="_owner setVariable ['isUsingSomething',1]; [this, _inHands, _owner,'water'] call player_liquidSource; [_owner,'RiverWater','Direct',1] call event_transferModifiers;";
 		};
 		class FillBottle
 		{
 			displayName="Fill Bottle";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && _inHands isKindOf 'BottleBase'";
+			statement="_owner setVariable ['isUsingSomething',1]; [this, _inHands, _owner,'water'] call player_liquidSource; [2,_inHands,'Cholera',1] call event_modifier;";
+		};
+		class 
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0.2;
+			showWindow=1;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1 && isNull _inHands";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+		class Startfishing
+		{
+			displayName="Start fishing";
+			priority=0.30000001;
+			showWindow=1;
+			hideOnUse=0;
+			condition="_canUseActions && _inHands isKindOf 'Tool_FishingRodBase' && !isOn _inHands && !(isNull (_inHands itemInSlot 'bait'))";
+			statement="[_owner,'CastingRod'] call event_saySound;[_this,'I have thrown the bait into the water',''] call fnc_playerMessage;fishingpos=(getPosATL _owner) select 0;[_owner,fishingpos] call fishing_event_add;_owner playAction 'fishingStart';(_inHands itemInSlot 'bait') setVariable['power',(10004+random 10)];_inHands powerOn true;";
+		};
+		class Check
+		{
+			displayName="Check the bait";
+			condition="_inHands isKindOf 'Tool_FishingRodBase' && isOn _inHands";
+			priority=0.5;
+			showWindow=1;
+			hideOnUse=0;
+			statement="_owner playAction 'fishingCheck';_num=(_inHands itemInSlot 'bait') getVariable['power',10020];	if(_num > 10003)then{(_inHands itemInSlot 'bait') setVariable['power',_num+0.15];};switch (true) do { case (_num > 10002.5): {[_owner,'I sense no movement near the bait',''] call fnc_playerMessage;[_owner,'SplashSmall_0'] call event_saySound;};	case (_num <= 10002.5 && _num > 10000.75): {[_owner,'There is some movement near the bait',''] call fnc_playerMessage;[_owner,'SplashSmall_1'] call event_saySound;}; case (_num <= 10000.75 && _num > 10000.25): {[_owner,'Something is cautiously examining the bait',''] call fnc_playerMessage;[_owner,'SplashSmall_2'] call event_saySound;}; case (_num <= 10000.25 && _num > 9999.5): {[_owner,'Something has just bit the bait!','colorImportant'] call fnc_playerMessage;[_owner,'SplashSmall_2'] call event_saySound;}; case (_num <= 9999.5 && _num > 9999): {[_owner,'The movement near the bait is fading',''] call fnc_playerMessage;[_owner,'SplashSmall_1'] call event_saySound;};case (_num <= 9999): {(_inHands itemInSlot 'bait') setVariable['power',(10000+random 15)];};};";
+		};
+		class Pull
+		{
+			displayName="Pull out";
+			condition="_inHands isKindOf 'Tool_FishingRodBase' && isOn _inHands";
+			priority=0.40000001;
+			showWindow=1;
+			hideOnUse=0;
+			statement="_owner playAction 'fishingCatch';_bait = typeOf(_inHands itemInSlot 'bait');_num = (_inHands itemInSlot 'bait') getVariable['power',10020];if (_num <= 10000.25 && _num > 9999.5)then{if ((random 10) < 7)then{[_owner,'FishStruggling_0'] call event_saySound;[_owner,'I have caught the fish!',''] call fnc_playerMessage;_tuna=['Food_Carp',_owner] call player_addInventory;_tuna setQuantity 2;}else{if ((random 20) > 2)then{[_owner,'FishStruggling_2'] call event_saySound;[_owner,'The fish broke away taking the bait with it',''] call fnc_playerMessage;}else{	[_owner,'FishStruggling_1'] call event_saySound;[_owner,'I have caught ... something',''] call fnc_playerMessage;_wellies=['Wellies_Brown',_owner] call player_addInventory;};};deleteVehicle (_inHands itemInSlot 'bait');if(_bait == 'Consumable_Bait')then{_hook=['Consumable_Hook',_owner] call player_addInventory;}else{_hook2=['Consumable_BoneHook',_owner] call player_addInventory;};}else{if(_num <=9999.5 && _num > 9999)then{[_owner,'SplashMultiple'] call event_saySound;[_owner,'Too late...',''] call fnc_playerMessage;}else{[_owner,'I have pulled the bait out of water',''] call fnc_playerMessage;[_owner,'SplashMultiple'] call event_saySound;};};_inHands powerOn false;";
+		};
+	};
+	class CRHlina
+	{
+		model="#CRHlina";
+		class CollectStones
+		{
+			displayName="Search for stones";
+			priority=0.1;
+			showWindow=0;
+			hideOnUse=1;
+			condition="ProfileStart 'sqf_surfAction_CRHlinaCollectStones_condition'; _con = (_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && isNull _inHands); ProfileStop 'sqf_surfAction_CRHlinaCollectStones_condition'; _con;";
+			statement="[0,_owner,'Consumable_SmallStone',3] call player_pickBerry;";
+		};
+		class CraftStoneKnife
+		{
+			displayName="Craft stone knife";
 			priority=0.1;
 			showWindow=1;
 			hideOnUse=1;
-			condition="_inHands isKindOf 'BottleBase'";
-			statement="[this,_inHands,_owner,_name] spawn player_fillBottle;";
+			condition="_canUseActions && _inHands isKindOf 'Consumable_SmallStone'";
+			statement="deleteVehicle _inHands;_owner playAction ['PlayerCraft',{_stone = ['Tool_StoneKnife',_this] call player_addInventory;_this moveToHands _stone;[_this,'I have crafted Stone Knife.',''] call fnc_playerMessage;}];";
+		};
+		class DigTile
+		{
+			displayName="Make a garden plot";
+			condition="_canUseActions && _inHands call fnc_isFarmingTool && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			statement="[0, _owner, _inHands, ""CRHlina""] spawn player_DigGardenPlot";
+		};
+		class SetUpRabbitSnare
+		{
+			displayName="Deploy snare trap";
+			condition="_canUseActions && _inHands isKindOf 'Crafting_RabbitSnare' && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			statement="[0, _owner, _inHands, ""CRHlina""] spawn player_RabbitSnareTrap;";
+		};
+		class CancelAction
+		{
+			displayNameDefault="Cancel current action";
+			displayName="Cancel current action";
+			priority=0;
+			showWindow=0;
+			hideOnUse=1;
+			condition="_owner getVariable ['isUsingSomething',0] == 1";
+			statement="_owner setVariable ['isUsingSomething',0]; _owner playAction 'CancelAction';";
+		};
+	};
+	class cesta
+	{
+		model="#cesta";
+		class SetUpRabbitSnare
+		{
+			displayName="Deploy snare trap";
+			condition="_canUseActions && _inHands isKindOf 'Crafting_RabbitSnare' && _owner getVariable ['isUsingSomething',0] == 0";
+			priority=1;
+			showWindow=1;
+			hideOnUse=1;
+			radius=10;
+			statement="[0, _owner, _inHands, ""cesta""] spawn player_RabbitSnareTrap;";
 		};
 	};
 };
@@ -253301,6 +256654,37 @@ class CfgModifiers
 		{
 		};
 	};
+	class ServerTest: Default
+	{
+		messagesExit[]=
+		{
+			"Server Message Stress Test Stopped"
+		};
+		messageExitStyle="colorImportant";
+		class Stages
+		{
+			class 1: DefaultStage
+			{
+				duration[]={1,1};
+				messages[]=
+				{
+					"drop & pick"
+				};
+				messageStyle="colorFriendly";
+				cooldown[]={1,1};
+				condition="true";
+				statementEnter="_cargoContainer = _person itemInSlot 'Back'; _itemsInContainer = itemsInCargo _cargoContainer; _randomNum = floor(random (count _itemsInContainer)); _chosenItem = _itemsInContainer select _randomNum; _itemType = typeOf _chosenItem; _person moveToHands _chosenItem; [_itemType,_person] call player_addInventory; _item = _itemType createVehicle (getPosATL _person); _item setPosATL (getPosATL _person); deleteVehicle _item;";
+				statementExit="_itemHands = itemInHands player; deleteVehicle _itemHands;";
+			};
+			class 2: DefaultStage
+			{
+				duration[]={1,1};
+				condition="true";
+				statementEnter="[2,_person,'ServerTest',0] call event_modifier;";
+				statementExit="";
+			};
+		};
+	};
 	class Bleeding: Default
 	{
 		messagesExit[]=
@@ -253337,6 +256721,235 @@ class CfgModifiers
 					"bleeding",
 					{0.54100001,0.030999999,0.030999999,1}
 				};
+				statementEnter="admin_log format ['%1(uid=%2) STARTS BLEEDING.', name _person, getPlayerUID _person];";
+				statementExit="admin_log format ['%1(uid=%2) STOPS BLEEDING.', name _person, getPlayerUID _person];";
+			};
+		};
+	};
+	class Temperature: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="colorFriendly";
+		class Stages
+		{
+			class Init: DefaultStage
+			{
+				messages[]={};
+				messageStyle="";
+				cooldown[]={30,60};
+				notifier[]={};
+				modifiers[]={};
+				condition="_this getVariable['bodytemperature',36.5] < 36.7 && _this getVariable['bodytemperature',36.5] > 35.8 && _this getVariable ['heatcomfort',-15] < -10";
+			};
+			class Warming: Init
+			{
+				messages[]=
+				{
+					"I am slowly warming up"
+				};
+				messageStyle="";
+				cooldown[]={30,60};
+				notifier[]={};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						1,
+						" * 0.001"
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] < 36.7 && _this getVariable['bodytemperature',36.5] > 35.8 && _this getVariable ['heatcomfort',-15] >= -10";
+			};
+			class HypothermiaLight: Warming
+			{
+				messages[]=
+				{
+					"I am cold",
+					"I am shaking"
+				};
+				messageStyle="colorImportant";
+				cooldown[]={20,20};
+				notifier[]=
+				{
+					8,
+					"cold",
+					{0.52499998,0.54100001,0.030999999,1}
+				};
+				modifiers[]=
+				{
+					
+					{
+						"energy",
+						-1.1,
+						" * 0.5"
+					},
+					
+					{
+						"bodytemperature",
+						1,
+						" * 0.001"
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] <= 35.8 && _this getVariable['bodytemperature',36.5] >= 35";
+			};
+			class HypothermiaMedium: HypothermiaLight
+			{
+				messages[]=
+				{
+					"I am freezing"
+				};
+				messageStyle="colorImportant";
+				cooldown[]={10,10};
+				notifier[]=
+				{
+					8,
+					"freezing",
+					{0.54100001,0.294,0.030999999,1}
+				};
+				modifiers[]=
+				{
+					
+					{
+						"energy",
+						-1.6,
+						" * 0.5"
+					},
+					
+					{
+						"bodytemperature",
+						1,
+						" * 0.001"
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] < 35 && _this getVariable['bodytemperature',36.5] >= 34.5";
+			};
+			class HypothermiaHeavy: HypothermiaMedium
+			{
+				messages[]=
+				{
+					"I am hypothermic"
+				};
+				messageStyle="colorImportant";
+				cooldown[]={5,5};
+				notifier[]=
+				{
+					8,
+					"hypothermia",
+					{0.54100001,0.030999999,0.030999999,1}
+				};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						1,
+						" * 0.001"
+					},
+					
+					{
+						"energy",
+						-1.05
+					},
+					
+					{
+						"health",
+						-10
+					},
+					
+					{
+						"blood",
+						-5
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] < 34.5";
+			};
+			class HyperthermiaLight: HypothermiaHeavy
+			{
+				messages[]={};
+				messageStyle="colorImportant";
+				cooldown[]={10,10};
+				notifier[]=
+				{
+					8,
+					"hot",
+					{0.52499998,0.54100001,0.030999999,1}
+				};
+				modifiers[]=
+				{
+					
+					{
+						"water",
+						-1,
+						" * 0.1* DZ_THIRST_SEC"
+					},
+					
+					{
+						"bodytemperature",
+						-1,
+						" * 0.0001"
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] >= 37.1 && _this getVariable['bodytemperature',36.5] < 38";
+			};
+			class HyperthermiaMedium: HyperthermiaLight
+			{
+				messages[]=
+				{
+					"I am overheating"
+				};
+				messageStyle="colorImportant";
+				cooldown[]={10,10};
+				notifier[]=
+				{
+					8,
+					"overheating",
+					{0.54100001,0.294,0.030999999,1}
+				};
+				modifiers[]=
+				{
+					
+					{
+						"water",
+						-1,
+						" * DZ_THIRST_SEC"
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] >= 38 && _this getVariable['bodytemperature',36.5] < 40";
+			};
+			class HyperthermiaHeavy: HyperthermiaMedium
+			{
+				messages[]=
+				{
+					"I am hyperthermic"
+				};
+				messageStyle="colorImportant";
+				cooldown[]={10,10};
+				notifier[]=
+				{
+					8,
+					"hyperthermia",
+					{0.54100001,0.030999999,0.030999999,1}
+				};
+				modifiers[]=
+				{
+					
+					{
+						"water",
+						-2,
+						" * DZ_THIRST_SEC"
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] >= 40";
+			};
+			class TemperatureStable: HyperthermiaHeavy
+			{
+				messages[]={};
+				messageStyle="colorImportant";
+				cooldown[]={30,60};
+				notifier[]={};
+				modifiers[]={};
+				condition="_this getVariable['bodytemperature',36.5] >= 36.7 && _this getVariable['bodytemperature',36.5] < 37.1";
 			};
 		};
 	};
@@ -253357,7 +256970,7 @@ class CfgModifiers
 				};
 				messageStyle="";
 				cooldown[]={60,180};
-				condition="_this getVariable['energy',0] < 600";
+				condition="_this getVariable['energy',0] < 1000";
 				notifier[]=
 				{
 					2,
@@ -253375,7 +256988,7 @@ class CfgModifiers
 				};
 				messageStyle="";
 				cooldown[]={20,30};
-				condition="_this getVariable['energy',0] < 300";
+				condition="_this getVariable['energy',0] < 500";
 				notifier[]=
 				{
 					2,
@@ -253410,7 +257023,41 @@ class CfgModifiers
 					"starving",
 					{0.54100001,0.030999999,0.030999999,1}
 				};
-				condition="_this getVariable['energy',0] < 100";
+				condition="_this getVariable['energy',0] < 0";
+			};
+		};
+	};
+	class HighEnergy: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="";
+		class Stages
+		{
+			class ReasonableEnergy: DefaultStage
+			{
+				messages[]={};
+				messageStyle="";
+				cooldown[]={};
+				condition="_this getVariable['energy',0] > 2000";
+				notifier[]=
+				{
+					2,
+					"energized",
+					{0.294,0.54100001,0.030999999,1}
+				};
+			};
+			class HighEnergy: ReasonableEnergy
+			{
+				messages[]={};
+				messageStyle="";
+				cooldown[]={};
+				condition="_this getVariable['energy',0] > 4000";
+				notifier[]=
+				{
+					2,
+					"energized",
+					{0.43900001,0.80400002,0.043099999,1}
+				};
 			};
 		};
 	};
@@ -253422,18 +257069,16 @@ class CfgModifiers
 		{
 			class LowRegeneration: DefaultStage
 			{
-				messages[]=
-				{
-					"I feel less hungry",
-				};
-				messageStyle="colorFriendly";
-				cooldown[]={90,180};
+				messages[]={};
+				messageStyle="";
+				cooldown[]={};
 				modifiers[]=
 				{
 					
 					{
 						"blood",
-						1
+						1,
+						"*0.5"
 					}
 				};
 				condition="(_this getVariable['energy',0] > 2000) and (_this getVariable['water',0] > 1500)";
@@ -253470,9 +257115,10 @@ class CfgModifiers
 				{
 					0,
 					"healing",
-					{0.294,0.54100001,0.030999999}
+					{0.294,0.54100001,0.030999999,1}
 				};
-				condition="(_this getVariable['energy',0] > 4000) and (_this getVariable['water',0] > 2500) and (_this getVariable['blood',0] >= 5000)";
+				statementEnter="";
+				condition="(_this getVariable['energy',0] > 4000) and (_this getVariable['water',0] > 2500) and (_this getVariable['blood',0] >= 5000) and (_this getVariable['health',0] < 5000)";
 			};
 			class Healthy: Healing
 			{
@@ -253485,12 +257131,21 @@ class CfgModifiers
 				modifiers[]={};
 				notifier[]=
 				{
-					0,
+					5,
 					"healthy",
-					{0.294,0.54100001,0.030999999}
+					{0.43900001,0.80400002,0.043099999,1}
 				};
+				statementEnter="_this setDamage 0;";
 				condition="(_this getVariable['blood',0] >= 5000) and (_this getVariable['health',0] >= 5000)";
 			};
+		};
+	};
+	class Healthy: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="";
+		class Stages
+		{
 		};
 	};
 	class Thirst: Default
@@ -253511,7 +257166,7 @@ class CfgModifiers
 				};
 				messageStyle="";
 				cooldown[]={60,180};
-				condition="_this getVariable['water',0] < 2000";
+				condition="_this getVariable['water',0] < 1500";
 				notifier[]=
 				{
 					3,
@@ -253527,7 +257182,7 @@ class CfgModifiers
 				};
 				messageStyle="";
 				cooldown[]={20,30};
-				condition="_this getVariable['water',0] < 1000";
+				condition="_this getVariable['water',0] < 500";
 				notifier[]=
 				{
 					3,
@@ -253548,7 +257203,36 @@ class CfgModifiers
 					
 					{
 						"health",
-						-5
+						-2
+					},
+					
+					{
+						"blood",
+						-0.0049999999
+					}
+				};
+				notifier[]=
+				{
+					3,
+					"thirsty",
+					{0.54100001,0.030999999,0.030999999,1}
+				};
+				condition="_this getVariable['water',0] < 0";
+			};
+			class SevereDehydration: HighDehydration
+			{
+				messages[]=
+				{
+					"I'm dying of dehydration"
+				};
+				messageStyle="colorImportant";
+				cooldown[]={20,30};
+				modifiers[]=
+				{
+					
+					{
+						"health",
+						-8
 					},
 					
 					{
@@ -253562,7 +257246,41 @@ class CfgModifiers
 					"thirsty",
 					{0.54100001,0.030999999,0.030999999,1}
 				};
-				condition="_this getVariable['water',0] < 0";
+				condition="_this getVariable['water',0] < -1000";
+			};
+		};
+	};
+	class HighWater: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="";
+		class Stages
+		{
+			class ReasonablyHydrated: DefaultStage
+			{
+				messages[]={};
+				messageStyle="";
+				cooldown[]={};
+				condition="_this getVariable['water',0] > 2500";
+				notifier[]=
+				{
+					3,
+					"hydrated",
+					{0.294,0.54100001,0.030999999,1}
+				};
+			};
+			class WellHydrated: ReasonablyHydrated
+			{
+				messages[]={};
+				messageStyle="";
+				cooldown[]={};
+				condition="_this getVariable['water',0] > 3500";
+				notifier[]=
+				{
+					3,
+					"hydrated",
+					{0.43900001,0.80400002,0.043099999,1}
+				};
 			};
 		};
 	};
@@ -253631,28 +257349,168 @@ class CfgModifiers
 			{
 				messages[]={};
 				messageStyle="colorImportant";
-				canGoBack=1;
-				condition="_this getVariable['stomach',0] >= 2800";
+				condition="_this getVariable['stomach',0] >= 3300";
 				statementEnter="null = _this spawn player_vomit;";
+				notifier[]=
+				{
+					5,
+					"sick",
+					{0.54100001,0.030999999,0.030999999,1}
+				};
+			};
+		};
+	};
+	class Wet: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="";
+		class Stages
+		{
+			class Damp: DefaultStage
+			{
+				cooldown[]={60,120};
+				messages[]=
+				{
+					"I feel damp"
+				};
+				messageStyle="";
+				condition="_this getVariable ['wet',0] > 0.05";
+				notifier[]=
+				{
+					7,
+					"damp",
+					{0,0.95300001,1,1}
+				};
+			};
+			class Wet: DefaultStage
+			{
+				cooldown[]={60,120};
+				messages[]=
+				{
+					"My body feels wet"
+				};
+				messageStyle="";
+				condition="_this getVariable ['wet',0] > 0.2";
+				notifier[]=
+				{
+					7,
+					"wet",
+					{0,0.71600002,1,1}
+				};
+			};
+			class Soaked: DefaultStage
+			{
+				cooldown[]={60,120};
+				messages[]=
+				{
+					"I am soaked through"
+				};
+				messageStyle="colorImportant";
+				condition="_this getVariable ['wet',0] > 0.5";
+				notifier[]=
+				{
+					7,
+					"soaked",
+					{0,0.417,1,1}
+				};
+			};
+			class Drenched: DefaultStage
+			{
+				cooldown[]={60,120};
+				messages[]=
+				{
+					"I am completely drenched"
+				};
+				messageStyle="colorImportant";
+				condition="_this getVariable ['wet',0] > 0.8";
+				notifier[]=
+				{
+					7,
+					"drenched",
+					{0,0.117,1,1}
+				};
 			};
 		};
 	};
 	class FootInjury: Default
 	{
+		messagesExit[]={};
+		messageExitStyle="";
 		class Stages
 		{
 			class 1: DefaultStage
 			{
-				cooldown[]={30,60};
+				cooldown[]={60,120};
 				messages[]=
 				{
 					"My feet hurt",
 					"My feet are sore"
 				};
+				messageStyle="colorImportant";
+				condition="(_this getVariable['health',0] > 1000) && (speed _person > 0) && ((isNull (_person itemInSlot 'Feet')) || ( damage (_person itemInSlot 'Feet') >=1 ))";
+				modifiers[]=
+				{
+					
+					{
+						"health",
+						-10,
+						"* getNumber (configFile >> 'CfgSurfaces' >> surfaceType getPosASL _person >> 'rough');"
+					}
+				};
 			};
-			class 2: DefaultStage
+		};
+	};
+	class HitLegs: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="";
+		class Stages
+		{
+			class Start: DefaultStage
+			{
+				cooldown[]={};
+				duration[]={1,2};
+				messages[]={};
+				condition="(_person getHitPointDamage 'HitLegs' < 0.15)";
+				notifier[]={};
+			};
+			class Injury: DefaultStage
+			{
+				cooldown[]={60,240};
+				duration[]={1,2};
+				messages[]=
+				{
+					"My leg is painful"
+				};
+				condition="(_person getHitPointDamage 'HitLegs' >= 0.15) && (_person getHitPointDamage 'HitLegs' < 0.4)";
+				notifier[]=
+				{
+					6,
+					"sprained ankle",
+					{0.52499998,0.54100001,0.030999999,1}
+				};
+			};
+			class Chipped: DefaultStage
+			{
+				cooldown[]={60,120};
+				duration[]={1,2};
+				messages[]=
+				{
+					"My leg hurts"
+				};
+				messageStyle="colorImportant";
+				condition="(_person getHitPointDamage 'HitLegs' >= 0.4) && (_person getHitPointDamage 'HitLegs' <= 0.9)";
+				notifier[]=
+				{
+					6,
+					"chipped leg",
+					{0.54100001,0.294,0.030999999,1}
+				};
+			};
+			class Fracture: DefaultStage
 			{
 				cooldown[]={30,60};
+				duration[]={};
 				messages[]=
 				{
 					"My feet are badly damaged",
@@ -253660,6 +257518,73 @@ class CfgModifiers
 					"My feet are hurting badly"
 				};
 				messageStyle="colorImportant";
+				condition="_person getHitPointDamage 'HitLegs' > 0.9";
+				notifier[]=
+				{
+					6,
+					"fractured leg",
+					{0.54100001,0.030999999,0.030999999,1}
+				};
+			};
+		};
+	};
+	class HitHands: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="";
+		class Stages
+		{
+			class Injury: DefaultStage
+			{
+				cooldown[]={60,120};
+				messages[]=
+				{
+					"My arm is in pain",
+					"My arm is painful"
+				};
+				messageStyle="colorImportant";
+				condition="_person getHitPointDamage 'HitHands' > 0.5";
+			};
+			class Fracture: DefaultStage
+			{
+				cooldown[]={30,60};
+				duration[]={86400,604800};
+				messages[]=
+				{
+					"My arm is in extreme pain",
+					"My arm is extremely painful",
+					"I think my arm is broken"
+				};
+				messageStyle="colorImportant";
+				condition="_person getHitPointDamage 'HitHands' == 1";
+				notifier[]=
+				{
+					9,
+					"fracture",
+					{0.54100001,0.030999999,0.030999999,1}
+				};
+			};
+			class Setting: DefaultStage
+			{
+				cooldown[]={30,60};
+				duration[]={86400,604800};
+				messages[]=
+				{
+					"My arm is in pain",
+					"My arm is painful"
+				};
+				condition="_person getHitPointDamage 'HitHands' == 1";
+				notifier[]=
+				{
+					9,
+					"fracture",
+					{0.54100001,0.030999999,0.030999999,1}
+				};
+			};
+			class Healed: DefaultStage
+			{
+				condition="_this getHitPointDamage 'HitHands' == 1";
+				statementEnter="_person setHitPointDamage ['HitHands',0.3];";
 			};
 		};
 	};
@@ -253672,8 +257597,65 @@ class CfgModifiers
 				cooldown[]={};
 				duration[]={};
 				condition="((_this getVariable['shock',0]) + DZ_BLOOD_UNCONSCIOUS) > _this getVariable['blood',5000]";
-				statementEnter="[_person,true] call damage_unconscious;";
-				statementExit="[_person,false] call damage_unconscious;";
+				statementEnter="_person setUnconscious true; admin_log format ['Player %1(id=%2) has fallen into unconsciousness.', name _person, getPlayerUID _person];";
+				statementExit="_person setUnconscious false;";
+			};
+			class Revived: LossOfConsciousness
+			{
+				cooldown[]={};
+				duration[]={60,240};
+				condition="!(_this getVariable['fibrillation',false]) and (lifeState _this != 'UNCONSCIOUS')";
+				statementEnter="";
+				statementExit="";
+			};
+		};
+	};
+	class HeartAttack: Default
+	{
+		class Stages
+		{
+			class Warning: DefaultStage
+			{
+				cooldown[]={5,10};
+				duration[]={20,40};
+				messages[]=
+				{
+					"I feel severe pain in my chest"
+				};
+				condition="true";
+				messageStyle="colorImportant";
+				modifiers[]=
+				{
+					
+					{
+						"shock",
+						100,
+						""
+					}
+				};
+			};
+			class Fibrillation: DefaultStage
+			{
+				cooldown[]={};
+				duration[]={};
+				condition="true";
+				modifiers[]=
+				{
+					
+					{
+						"health",
+						-20,
+						""
+					},
+					
+					{
+						"shock",
+						5000,
+						""
+					}
+				};
+				statementEnter="_person setVariable['fibrillation',true]";
+				statementExit="_person setVariable['fibrillation',false]";
 			};
 		};
 	};
@@ -253681,6 +257663,18 @@ class CfgModifiers
 	{
 		messagesExit[]={};
 		messageExitStyle="";
+		class Transmission
+		{
+			invasivity=1;
+			toxicity=0.2;
+			physicalResistance=1;
+			chemicalResistance=1;
+			class Direct: DefaultDirect
+			{
+				transferability=1;
+				fromPlayer=0;
+			};
+		};
 		class Stages
 		{
 			class 0: DefaultStage
@@ -253721,6 +257715,7 @@ class CfgModifiers
 					"sick",
 					{0.52499998,0.54100001,0.030999999,1}
 				};
+				statementEnter="efFPL = ppEffectCreate ['RadialBlur', 300];efFPL ppEffectEnable true;efFPL ppEffectAdjust [0.005,0.005,0.2,0.2];efFPL ppEffectCommit 0;";
 			};
 			class 2: 1
 			{
@@ -253754,9 +257749,11 @@ class CfgModifiers
 					"sick",
 					{0.54100001,0.294,0.030999999,1}
 				};
+				statementEnter="efFPL = ppEffectCreate ['RadialBlur', 300];efFPL ppEffectEnable true;efFPL ppEffectAdjust [0.01,0.01,0.2,0.2];efFPL ppEffectCommit 0;";
 			};
 			class 3: 2
 			{
+				statementEnter="ppEffectDestroy efFPL;";
 				cooldown[]={180,420};
 				duration[]={900,1800};
 				messages[]={};
@@ -253769,6 +257766,18 @@ class CfgModifiers
 	{
 		messagesExit[]={};
 		messageExitStyle="";
+		class Transmission
+		{
+			invasivity=1;
+			toxicity=0.17;
+			physicalResistance=1;
+			chemicalResistance=1;
+			class Direct: DefaultDirect
+			{
+				transferability=1;
+				fromPlayer=0;
+			};
+		};
 		class Stages
 		{
 			class 0: DefaultStage
@@ -253814,6 +257823,7 @@ class CfgModifiers
 					"sick",
 					{0.52499998,0.54100001,0.030999999,1}
 				};
+				statementEnter="efFPL = ppEffectCreate ['RadialBlur', 300];efFPL ppEffectEnable true;efFPL ppEffectAdjust [0.01,0.01,0.2,0.2];efFPL ppEffectCommit 0;";
 			};
 			class 2: 1
 			{
@@ -253867,10 +257877,11 @@ class CfgModifiers
 					"sick",
 					{0.54100001,0.294,0.030999999,1}
 				};
-				statementEnter="";
+				statementEnter="efFPM = ppEffectCreate ['RadialBlur', 300];efFPM ppEffectEnable true;efFPM ppEffectAdjust [0.02,0.02,0.25,0.25];efFPM ppEffectCommit 0;";
 			};
 			class 4: 3
 			{
+				statementEnter="ppEffectDestroy efFPM;";
 				cooldown[]={180,420};
 				duration[]={900,1800};
 				messages[]=
@@ -253888,19 +257899,25 @@ class CfgModifiers
 	{
 		messagesExit[]={};
 		messageExitStyle="";
+		class Transmission
+		{
+			invasivity=1;
+			toxicity=0.15000001;
+			physicalResistance=1;
+			chemicalResistance=1;
+			class Direct: DefaultDirect
+			{
+				transferability=1;
+				fromPlayer=0;
+			};
+		};
 		class Stages
 		{
 			class 0: DefaultStage
 			{
-				cooldown[]={30,60};
-				duration[]={180,420};
-				messages[]=
-				{
-					"I have a funny taste in my mouth",
-					"My mouth tastes funny",
-					"I notice a weird taste",
-					"My mouth tastes weird"
-				};
+				cooldown[]={};
+				duration[]={180,600};
+				messages[]={};
 				messageStyle="";
 				condition="true";
 			};
@@ -253933,6 +257950,7 @@ class CfgModifiers
 					"sick",
 					{0.54100001,0.294,0.030999999,1}
 				};
+				statementEnter="efFPH = ppEffectCreate ['RadialBlur', 300];efFPH ppEffectEnable true;efFPH ppEffectAdjust [0.015,0.015,0.3,0.3];efFPH ppEffectCommit 0;";
 			};
 			class 2: 1
 			{
@@ -253983,7 +258001,7 @@ class CfgModifiers
 					"sick",
 					{0.54100001,0.294,0.030999999,1}
 				};
-				statementEnter="";
+				statementEnter="efFPH = ppEffectCreate ['RadialBlur', 300];efFPH ppEffectEnable true;efFPH ppEffectAdjust [0.025,0.025,0.2,0.2];efFPH ppEffectCommit 0;";
 			};
 			class 4: 3
 			{
@@ -254024,7 +258042,7 @@ class CfgModifiers
 					"sick",
 					{0.52499998,0.54100001,0.030999999,1}
 				};
-				statementEnter="";
+				statementEnter="ppEffectDestroy efFPH;";
 			};
 		};
 	};
@@ -254082,6 +258100,7 @@ class CfgModifiers
 					"sick",
 					{0.54100001,0.294,0.030999999,1}
 				};
+				statementEnter="efCHM = ppEffectCreate ['ChromAberration', 250];efCHM ppEffectEnable true;efCHM ppEffectAdjust [0.015,0.015,true];efCHM ppEffectCommit 0;";
 			};
 			class 2: 1
 			{
@@ -254137,7 +258156,7 @@ class CfgModifiers
 					"sick",
 					{0.54100001,0.030999999,0.030999999,1}
 				};
-				statementEnter="";
+				statementEnter="efCHM = ppEffectCreate ['ChromAberration', 250];efCHM ppEffectEnable true;efCHM ppEffectAdjust [0.1,0.1,true];efCHM ppEffectCommit 0;";
 			};
 			class 4: 3
 			{
@@ -254189,7 +258208,7 @@ class CfgModifiers
 					"sick",
 					{0.54100001,0.294,0.030999999,1}
 				};
-				statementEnter="";
+				statementEnter="ppEffectDestroy efCHM";
 			};
 		};
 	};
@@ -254304,6 +258323,18 @@ class CfgModifiers
 			"My wounds are clean now"
 		};
 		messageExitStyle="colorFriendly";
+		class Transmission
+		{
+			invasivity=0.40000001;
+			toxicity=0.80000001;
+			physicalResistance=0.5;
+			chemicalResistance=0.60000002;
+			class Direct: DefaultDirect
+			{
+				transferability=1;
+				fromPlayer=0;
+			};
+		};
 		class Stages
 		{
 			class 0: DefaultStage
@@ -254763,6 +258794,14 @@ class CfgModifiers
 		};
 		class Stages
 		{
+			class Immunity: DefaultStage
+			{
+				cooldown[]={};
+				duration[]={86400,259200};
+				messages[]={};
+				messageStyle="";
+				condition="true";
+			};
 			class Carrier: DefaultStage
 			{
 				cooldown[]={};
@@ -255076,6 +259115,12 @@ class CfgModifiers
 								-1
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 2: 1
 					{
@@ -255108,6 +259153,12 @@ class CfgModifiers
 								-2
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -255133,6 +259184,12 @@ class CfgModifiers
 								-2,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 				};
@@ -255169,6 +259226,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -255196,6 +259259,12 @@ class CfgModifiers
 								"blood",
 								-2
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
 						};
 					};
 					class 2: 1
@@ -255229,6 +259298,12 @@ class CfgModifiers
 								-3
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -255251,20 +259326,17 @@ class CfgModifiers
 							
 							{
 								"water",
-								-3,
-								" * DZ_THIRST_SEC"
+								-2
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
 						};
 					};
 				};
-			};
-			class Immunity: DefaultStage
-			{
-				cooldown[]={};
-				duration[]={1209600,2628000};
-				messages[]={};
-				messageStyle="";
-				condition="true";
 			};
 		};
 	};
@@ -255274,7 +259346,8 @@ class CfgModifiers
 		messageExitStyle="";
 		class Transmission
 		{
-			invasivity=0.5;
+			invasivity=0.80000001;
+			toxicity=0.2;
 			physicalResistance=0.2;
 			chemicalResistance=0.30000001;
 			class Direct: DefaultDirect
@@ -255288,17 +259361,17 @@ class CfgModifiers
 			class Carrier: DefaultStage
 			{
 				cooldown[]={};
-				duration[]={604800,1814400};
+				duration[]={86400,259200};
 				messages[]={};
-				messageStyle="colorImportant";
+				messageStyle="colorFriendly";
 				condition="true";
 			};
 			class NegligibleImpact: DefaultStage
 			{
 				cooldown[]={};
-				duration[]={1200,2400};
+				duration[]={86400,172800};
 				messages[]={};
-				messageStyle="";
+				messageStyle="colorImportant";
 				condition="true";
 				class Stages
 				{
@@ -255420,6 +259493,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -255449,6 +259528,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 2: 1
 					{
@@ -255473,6 +259558,12 @@ class CfgModifiers
 								-1.08,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 					class 3: 2
@@ -255522,6 +259613,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -255551,6 +259648,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 2: 1
 					{
@@ -255576,6 +259679,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -255595,6 +259704,12 @@ class CfgModifiers
 								-1.02,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 				};
@@ -255632,6 +259747,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -255661,6 +259782,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 2: 1
 					{
@@ -255686,6 +259813,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -255706,6 +259839,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 				};
 			};
@@ -255725,7 +259864,8 @@ class CfgModifiers
 		messageExitStyle="";
 		class Transmission
 		{
-			invasivity=0.60000002;
+			invasivity=0.80000001;
+			toxicity=0.5;
 			physicalResistance=0.30000001;
 			chemicalResistance=0.40000001;
 			class Direct: DefaultDirect
@@ -255739,9 +259879,9 @@ class CfgModifiers
 			class Carrier: DefaultStage
 			{
 				cooldown[]={};
-				duration[]={604800,1209600};
+				duration[]={86400,259200};
 				messages[]={};
-				messageStyle="colorImportant";
+				messageStyle="colorFriendly";
 				condition="true";
 			};
 			class NegligibleImpact: DefaultStage
@@ -255749,7 +259889,7 @@ class CfgModifiers
 				cooldown[]={};
 				duration[]={7200,14400};
 				messages[]={};
-				messageStyle="";
+				messageStyle="colorImportant";
 				condition="true";
 				class NegligibleStages
 				{
@@ -255901,6 +260041,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -255934,6 +260080,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 2: 1
 					{
@@ -255966,6 +260118,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -255988,6 +260146,12 @@ class CfgModifiers
 								-1.05,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 				};
@@ -256031,6 +260195,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -256064,6 +260234,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 2: 1
 					{
@@ -256094,6 +260270,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -256116,6 +260298,12 @@ class CfgModifiers
 								-1.08,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 				};
@@ -256160,6 +260348,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -256190,6 +260384,12 @@ class CfgModifiers
 								-1.2,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
 						};
 					};
 					class 2: 1
@@ -256222,6 +260422,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -256246,6 +260452,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 				};
 			};
@@ -256265,7 +260477,8 @@ class CfgModifiers
 		messageExitStyle="";
 		class Transmission
 		{
-			invasivity=0.60000002;
+			invasivity=0.40000001;
+			toxicity=0.60000002;
 			physicalResistance=0.30000001;
 			chemicalResistance=0.40000001;
 			class Direct: DefaultDirect
@@ -256279,7 +260492,7 @@ class CfgModifiers
 			class Carrier: DefaultStage
 			{
 				cooldown[]={};
-				duration[]={604800,1814400};
+				duration[]={86400,259200};
 				messages[]={};
 				messageStyle="";
 				condition="true";
@@ -256423,6 +260636,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -256449,6 +260668,12 @@ class CfgModifiers
 								-1.08,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 					class 2: 1
@@ -256478,6 +260703,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -256500,6 +260731,12 @@ class CfgModifiers
 								-1.05,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 				};
@@ -256540,6 +260777,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -256573,6 +260816,12 @@ class CfgModifiers
 								-1.15,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
 						};
 					};
 					class 2: 1
@@ -256608,6 +260857,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -256631,6 +260886,12 @@ class CfgModifiers
 								-1.08,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 				};
@@ -256671,6 +260932,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -256704,6 +260971,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
+						};
 					};
 					class 2: 1
 					{
@@ -256736,6 +261009,12 @@ class CfgModifiers
 								-1.1799999,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
 						};
 					};
 					class 3: 2
@@ -256781,7 +261060,8 @@ class CfgModifiers
 		messageExitStyle="";
 		class Transmission
 		{
-			invasivity=0.69999999;
+			invasivity=0.5;
+			toxicity=0.5;
 			physicalResistance=0.40000001;
 			chemicalResistance=0.5;
 			class Direct: DefaultDirect
@@ -256929,6 +261209,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -256951,6 +261237,12 @@ class CfgModifiers
 								-1.15,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 					class 2: 1
@@ -256975,6 +261267,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -256996,6 +261294,12 @@ class CfgModifiers
 								-1.1,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 				};
@@ -257030,6 +261334,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -257053,6 +261363,12 @@ class CfgModifiers
 								-1.2,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
 						};
 					};
 					class 2: 1
@@ -257080,6 +261396,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -257101,6 +261423,12 @@ class CfgModifiers
 								-1.15,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
 						};
 					};
 				};
@@ -257138,6 +261466,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -257163,6 +261497,12 @@ class CfgModifiers
 								-1.4,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
 						};
 					};
 					class 2: 1
@@ -257190,6 +261530,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -257212,6 +261558,12 @@ class CfgModifiers
 								-1.2,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
 						};
 					};
 				};
@@ -257342,6 +261694,479 @@ class CfgModifiers
 					{0.52499998,0.54100001,0.030999999,1}
 				};
 			};
+		};
+	};
+	class Blinded: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="";
+		class Stages
+		{
+			class 0: DefaultStage
+			{
+				cooldown[]={30,60};
+				duration[]={0.1,0.2};
+				messages[]={};
+				messageStyle="";
+				statementEnter="_person spawnForPlayer compile 'setEVImpuls 10;';";
+				condition="true";
+			};
+		};
+	};
+	class BrainDisease: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="";
+		class Transmission
+		{
+			invasivity=1;
+			toxicity=0.2;
+			physicalResistance=1;
+			chemicalResistance=1;
+			class Direct: DefaultDirect
+			{
+				transferability=1;
+				fromPlayer=0;
+			};
+		};
+		class Stages
+		{
+			class 0: DefaultStage
+			{
+				cooldown[]={};
+				duration[]={100,150};
+				sounds[]=
+				{
+					"Character_Mad"
+				};
+				statementEnter="_person setVariable ['musclecramp',0.05];_person SetMuscleCramp 0.05;";
+				statementExit="";
+			};
+			class 1: 0
+			{
+				cooldown[]={};
+				duration[]={100,150};
+				sounds[]=
+				{
+					"Character_Mad"
+				};
+				statementEnter="_person setVariable ['musclecramp',0.1];_person SetMuscleCramp 0.1;";
+				statementExit="";
+			};
+			class 2: 1
+			{
+				cooldown[]={};
+				duration[]={60,120};
+				sounds[]=
+				{
+					"Character_Mad"
+				};
+				statementEnter="_person setVariable ['musclecramp',0.3];_person SetMuscleCramp 0.3";
+				statementExit="";
+			};
+			class 3: 2
+			{
+				cooldown[]={};
+				duration[]={30,60};
+				sounds[]=
+				{
+					"Character_Mad"
+				};
+				statementEnter="_person setVariable ['musclecramp',0.5];_person SetMuscleCramp 0.5;";
+				statementExit="";
+			};
+			class 4: 3
+			{
+				cooldown[]={};
+				duration[]={15,30};
+				sounds[]=
+				{
+					"Character_Mad"
+				};
+				statementEnter="_person setVariable ['musclecramp',0.7];_person SetMuscleCramp 0.7;";
+				statementExit="";
+			};
+			class Shake: 4
+			{
+				cooldown[]={180,360};
+				duration[]={};
+				sounds[]=
+				{
+					"Character_Mad"
+				};
+				condition="true";
+				statementEnter="_person setVariable ['musclecramp',1];_person SetMuscleCramp 1;";
+				statementExit="";
+			};
+		};
+	};
+	class FeelingCold: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="";
+		class Stages
+		{
+			class 0: DefaultStage
+			{
+				modifiers[]={};
+				messages[]={};
+				messageStyle="";
+				statementEnter="";
+				condition="_this getVariable ['heatcomfort',-15] > -10 && _this getVariable ['heatcomfort',-15] < 18";
+			};
+			class 1: 0
+			{
+				cooldown[]={90,90};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						-1,
+						" * 0.0000125"
+					}
+				};
+				messages[]=
+				{
+					"I am slowly cooling off"
+				};
+				messageStyle="";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] <= -10 && _this getVariable ['heatcomfort',-15] > -15";
+			};
+			class 2: 1
+			{
+				cooldown[]={60,60};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						-1,
+						" * 0.0010125"
+					}
+				};
+				messages[]=
+				{
+					"I am cooling off"
+				};
+				messageStyle="";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] <= -15 && _this getVariable ['heatcomfort',-15] > -20";
+			};
+			class 3: 2
+			{
+				cooldown[]={40,40};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						-1,
+						" * 0.001125"
+					}
+				};
+				messages[]=
+				{
+					"I am promptly cooling off"
+				};
+				messageStyle="";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] <= -20 && _this getVariable ['heatcomfort',-15] > -30";
+			};
+			class 4: 3
+			{
+				cooldown[]={30,30};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						-1,
+						" * 0.002"
+					}
+				};
+				messages[]=
+				{
+					"I am rapidly cooling off"
+				};
+				messageStyle="";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] <= -30";
+			};
+			class 5: 4
+			{
+				cooldown[]={90,90};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						1,
+						" * 0.0001"
+					}
+				};
+				messages[]=
+				{
+					"I am warming up"
+				};
+				messageStyle="";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] >= 18 && _this getVariable ['heatcomfort',-15] < 28";
+			};
+			class 6: 5
+			{
+				cooldown[]={30,30};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						1,
+						" * 0.001"
+					}
+				};
+				messages[]=
+				{
+					"I am rapidly warming up"
+				};
+				messageStyle="";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] >= 28 && _this getVariable ['heatcomfort',-15] < 200";
+			};
+			class 7: 6
+			{
+				cooldown[]={2,2};
+				modifiers[]=
+				{
+					
+					{
+						"health",
+						-100
+					},
+					
+					{
+						"blood",
+						-100
+					},
+					
+					{
+						"water",
+						-15
+					}
+				};
+				messages[]=
+				{
+					"I am burning!",
+					"My face is melting!"
+				};
+				messageStyle="ColorImportant";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] >= 200";
+			};
+		};
+	};
+	class StaminaRegain: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="";
+		class Stages
+		{
+			class 0: DefaultStage
+			{
+				cooldown[]={};
+				modifiers[]=
+				{
+					
+					{
+						"stamina",
+						10,
+						"* DZ_THIRST_SEC"
+					}
+				};
+				messages[]={};
+				messageStyle="";
+				statementEnter="";
+				condition="_this getVariable ['stamina',0] < 10";
+			};
+			class 1: 0
+			{
+				cooldown[]={};
+				modifiers[]=
+				{
+					
+					{
+						"stamina",
+						14,
+						"* DZ_THIRST_SEC"
+					}
+				};
+				messages[]={};
+				messageStyle="";
+				statementEnter="";
+				condition="_this getVariable ['stamina',0] < 30 && _this getVariable ['stamina',0] >= 10";
+			};
+			class 2: 1
+			{
+				cooldown[]={};
+				modifiers[]=
+				{
+					
+					{
+						"stamina",
+						16,
+						"* DZ_THIRST_SEC"
+					}
+				};
+				messages[]={};
+				messageStyle="";
+				statementEnter="";
+				condition="_this getVariable ['stamina',0] < 80 && _this getVariable ['stamina',0] >= 30";
+			};
+			class 3: 2
+			{
+				cooldown[]={};
+				modifiers[]=
+				{
+					
+					{
+						"stamina",
+						20,
+						"* DZ_THIRST_SEC"
+					}
+				};
+				messages[]={};
+				messageStyle="";
+				statementEnter="";
+				condition="_this getVariable ['stamina',0] < 100 && _this getVariable ['stamina',0] >= 80";
+			};
+			class 4: 3
+			{
+				cooldown[]={};
+				modifiers[]={};
+				messages[]={};
+				messageStyle="";
+				statementEnter="";
+				condition="_this getVariable ['stamina',0] >= 100";
+			};
+		};
+	};
+};
+class cfgLiquidTypes
+{
+	liquidTypes[]=
+	{
+		"Water",
+		"RiverWater",
+		"Vodka",
+		"Beer",
+		"Gasoline",
+		"Diesel"
+	};
+	class Water
+	{
+		displayName="Water";
+		script="";
+		compatible[]={};
+		flammability=-10;
+		intoxication=-10;
+		class Nutrition
+		{
+			totalVolume=150;
+			energy=0;
+			water=100;
+			nutritionalIndex=75;
+		};
+	};
+	class RiverWater: Water
+	{
+		displayName="Water";
+		compatible[]={};
+		flammability=-10;
+		intoxication=-10;
+		class Nutrition
+		{
+			totalVolume=150;
+			energy=0;
+			water=100;
+			nutritionalIndex=75;
+		};
+	};
+	class Disinfectant: Water
+	{
+		displayName="Disinfectant";
+		compatible[]={};
+		flammability=10;
+		intoxication=50;
+		class Nutrition
+		{
+			totalVolume=160;
+			energy=350;
+			water=30;
+			nutritionalIndex=55;
+		};
+	};
+	class Vodka: Water
+	{
+		displayName="Vodka";
+		compatible[]={};
+		flammability=10;
+		intoxication=50;
+		class Nutrition
+		{
+			totalVolume=375;
+			energy=1650;
+			water=100;
+			nutritionalIndex=75;
+		};
+	};
+	class Beer
+	{
+		displayName="Beer";
+		compatible[]={};
+		flammability=0;
+		intoxication=10;
+		class Nutrition
+		{
+			totalVolume=250;
+			energy=156;
+			water=100;
+			nutritionalIndex=75;
+		};
+	};
+	class Gasoline
+	{
+		displayName="Gasoline";
+		compatible[]={};
+		flammability=50;
+		intoxication=5;
+		class Nutrition
+		{
+			totalVolume=50;
+			energy=-10;
+			water=100;
+			nutritionalIndex=75;
+		};
+	};
+	class Diesel
+	{
+		displayName="Diesel";
+		compatible[]={};
+		flammability=50;
+		intoxication=5;
+		class Nutrition
+		{
+			totalVolume=50;
+			energy=-10;
+			water=100;
+			nutritionalIndex=75;
 		};
 	};
 };
