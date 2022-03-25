@@ -23,6 +23,9 @@ if (isServer) then
 	_agent synchronizeVariable ["blood",0.5];
 	_agent synchronizeVariable ["health",0.5];
 	_agent synchronizeVariable ["shock",0.5];
+	_agent synchronizeVariable ["bodytemperature",0.5];
+	_agent synchronizeVariable ["heatcomfort",0.5];
+	_agent synchronizeVariable ["wet",0.5];
 	
 	//set start time
 	_agent setVariable ["starttime",diag_tickTime];
