@@ -8,8 +8,8 @@ Duct tape's damage affect its efficiency
 
 
 //Parameters
-_minTapeUsage = 0.10; //How much of the tape we need to repair [1,1] sized item with 100% efficiency (pristine tape)
-_tapeMinEfficiency = 0.5; //Minimal efficiency for damaged (almost ruined) tape
+_minTapeUsage = 0.10; //How much of the tape we need to repair "badly damaged", 1x1 sized item with pristine tape
+_tapeMinEfficiency = 0.5; //Minimal efficiency for "badly damaged" tape
 
 //Input variables
 _ductTape = _this select 0;
@@ -22,28 +22,57 @@ _repairRequired = damage _tapedItem - ductTapeRepairDamage;
 _tapeRequired = (_tapedItemXYSize select 0) * (_tapedItemXYSize select 1) * _minTapeUsage * (_repairRequired / ductTapeRepairDamage) * (1 + damage _ductTape * _tapeMinEfficiency);
 
 //Solving the issue with insufficient duct tape material
-_repairCoeficient = 1;
+_repairCoefficient = 1;
 if (Quantity _ductTape < _tapeRequired) then
 {
-	_repairCoeficient = Quantity _ductTape / _tapeRequired;
+	_repairCoefficient = Quantity _ductTape / _tapeRequired;
 };
 
 //Apply repairs
-_tapedItem setDamage damage _tapedItem - _repairRequired*_repairCoeficient;
-[_ductTape, -_tapeRequired] call fnc_addQuantity;
+_repairApplied = _repairRequired*_repairCoefficient;
+_tapedItem setDamage damage _tapedItem - _repairApplied;
+_remainingTape = [_ductTape, -_tapeRequired] call fnc_addQuantity;
 
 //Feedback to the user
-if (damage _tapedItem <= ductTapeRepairDamage) then {
-	[_user,"I've managed to reinforce the item with the tape quite well.","colorStatusChannel"] call fnc_playerMessage;
-}else{
-	[_user,"I've reinforced the item but it could still use more tape.","colorStatusChannel"] call fnc_playerMessage;
-};
-
-hintSilent format["
+_itemIsFullyRepaired = (damage _tapedItem <= ductTapeRepairDamage);
+_itemIsNOTFullyRepaired = !(damage _tapedItem <= ductTapeRepairDamage);
+switch (true) do 
+	{
+		// Cases for when the item is effectively repaired.
+		case (_itemIsFullyRepaired and _remainingTape > 0):
+		{
+			[_user,format["I've restored the item's condition as much as I could while using %1%% of the duct tape.", ceil(_tapeRequired*100-0.5)],"colorStatusChannel"] call fnc_playerMessage;
+		};
+		case (_itemIsFullyRepaired and _remainingTape <= 0):
+		{
+			[_user,"I've restored the item's condition as much as I could while using all of the duct tape.","colorStatusChannel"] call fnc_playerMessage;
+		};
+		
+		// Cases for when the item is partially repaired
+		case (_itemIsNOTFullyRepaired and _repairApplied <= 0.075):
+		{
+			[_user,"I've slightly reinforced the item while using all of the duct tape.","colorStatusChannel"] call fnc_playerMessage;
+		};
+		case (_itemIsNOTFullyRepaired and _repairApplied > 0.075 and _repairApplied <= 0.2):
+		{
+			[_user,"I've reinforced the item a bit while using all of the duct tape.","colorStatusChannel"] call fnc_playerMessage;
+		};
+		case (_itemIsNOTFullyRepaired and _repairApplied > 0.2 and _repairApplied <= 0.35):
+		{
+			[_user,"I've moderately reinforced the item while using all of the duct tape.","colorStatusChannel"] call fnc_playerMessage;
+		};
+		case (_itemIsNOTFullyRepaired and _repairApplied > 0.35 and _repairApplied <= 0.5):
+		{
+			[_user,"I've reinforced the item quite well while using all of the duct tape.","colorStatusChannel"] call fnc_playerMessage;
+		};
+	};
+	
+	
+/*hintSilent format["
 _tapedItemXYSize = %1 , %2\n
 _tapeRequired = %3\n
 _repairRequired = %4\n
-_repairCoeficient = %5\n
+_repairCoefficient = %5\n
 _tapedItem damage = %6\n
 _ductTape quantity = %7
-", _tapedItemXYSize select 0, _tapedItemXYSize select 1, _tapeRequired, _repairRequired, _repairCoeficient, damage _tapedItem, quantity _ductTape];
+", _tapedItemXYSize select 0, _tapedItemXYSize select 1, _tapeRequired, _repairRequired, _repairCoefficient, damage _tapedItem, quantity _ductTape];*/
