@@ -2,13 +2,15 @@ private["_agent","_uid"];
 _agent = _this select 0;
 _killer = _this select 1;
 
+dbStats ["hunt",_killer,1];
+
 _type = typeOf _agent;
 _last_pos = getPosATL _agent;
 
 //cleanup
 //_cleanup_delay = floor(random(300));
 sleep 300;
-deleteVehicle _agent;
+
 
 _Z_spawnparams = [
   1 / 25.0,     // SPN_gridDensity

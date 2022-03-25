@@ -33,7 +33,7 @@ switch _state do
 		_chance = _this select 3;
 		_name =  getText(configFile >> "CfgVehicles" >> _berry >> "displayName");
 		_quant =  getNumber(configFile >> "CfgVehicles" >> _berry >> "stackedMax");
-		_randnum = random _chance;
+		_randnum = round(random _chance);
 		if (_randnum<1) then {
 			_newItem = [_berry,_person] call player_addInventory;
 			if(_quant == 0)then{
