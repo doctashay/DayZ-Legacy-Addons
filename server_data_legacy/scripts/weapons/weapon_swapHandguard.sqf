@@ -22,6 +22,11 @@ if (_hasFlashlight) exitWith
 	[_person,format["You must remove attachments to the %1 first",displayName _tool2],"colorAction"] call fnc_playerMessage;
 };
 
+// using NoCheck variant, because you have condition set to 'false' on the handle.
+// normal swap would not be performed because of this.
+_tool1 swapItemsNoCheck _tool2;
+
+/*
 //move old one to old position	
 if (!isNull _source) then
 {
@@ -44,3 +49,5 @@ if (!_r) exitWith
 	[_person,format["Failed to attach the %1",displayName _tool2],"colorImportant"] call fnc_playerMessage;
 	_r = _parent moveToInventory _tool2;
 };
+*/
+
