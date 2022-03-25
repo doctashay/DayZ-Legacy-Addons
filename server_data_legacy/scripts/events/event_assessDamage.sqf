@@ -28,6 +28,10 @@ if (_isZombie) then
 		case (_diseaseChance < 0.2): {[0,_agent,"WoundInfection"] call event_modifier;};	//infection
 	};
 };
+//else
+//{
+//	admin_log format ['Source is:: %1.',_source];
+//};
 //hint(str _damage);
 _bone = (((_this select 5) select 1) select 0);
 
@@ -38,10 +42,46 @@ if (count (_this select 5) > 1) then
 else
 {
 	//undefined, so fall damage
-	_bone = "Pelvis";
-	_selection = "legs";
-	(_agent itemInSlot "Feet") setDamage 1;
-	_final = _damage;
+	//_bone = "Pelvis";
+	_bone = "";
+		
+	//handle damage script is probably called for each hit selection separately, so if some actions should be done only once during hit we need if below
+	if(_selection == "feet") then
+	{
+		_legdmg = _damage*0.7;
+		_legactdmg = (_agent getHitPointDamage 'HitLegs');
+		//if(_legactdmg < _legdmg)then{ //in case I dont want to cummulate damage in leg, but damage leg based on height of each fall independently
+		_agent setHit ['legs',(_legactdmg+_legdmg)];
+		
+		//};
+		
+		//remove blood for falldamage
+		if(_damage > 0.25) then
+		{
+			_admg = ((_agent getVariable ['blood',2500]) - _damage*1500);
+			_agent setVariable ['blood',_admg];
+		};
+		//kill player instantly
+		if(_damage > 1.4) then
+		{
+			_agent setDamage 1;
+		};
+		
+		//damage gear
+		_shoes = (_agent itemInSlot "Feet");
+		_currfdmg = (damage _shoes) + _damage*0.9;
+		_shoes setDamage _currfdmg;	
+		
+		_pants = (_agent itemInSlot "Legs");
+		_currpdmg = (damage _pants) + _damage/2;
+		_pants setDamage _currpdmg;	
+		if(_currpdmg > 0.6) then
+		{	//damage items in pants
+			{
+				_x setDamage ((damage _x) + _damage/2);
+			} forEach itemsInCargo _pants;
+		};
+	};
 };
 
 _config = configFile >> "cfgBody" >> _bone;
@@ -123,12 +163,23 @@ call damage_fnc_generateSlots;
 	};
 	
 	//Damage Interior Items
+	if (_damage > 0.05) then 
 	{
-		_x setDamage ((damage _x) + _damage);
-	} forEach itemsInCargo _item;		
+		{
+			if ((damage _x) < 1) then
+			{
+				_condition = 1 - (damage _x);
+				_x setDamage ((damage _x) + _damage);
+				_damage = (_damage - (_condition / 4)) max 0;
+			};
+		} forEach itemsInCargo _item;
+	};	
 } forEach _items;
 
-//statusChat [format["Hit: %1; Selection: %2; Damage: %3; Slots: %4; Items: %5",_bone,_selection,_damage,_slots,_items],""];
+// don't do damage for dead bodies
+if(!alive _agent) exitWith {0; ProfileStop "event_assessDamage.sqf";};
+
+
 
 /*
 APPLY BODY DAMAGE
