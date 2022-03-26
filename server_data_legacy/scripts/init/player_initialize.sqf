@@ -107,9 +107,9 @@ if (isServer) then
 	};
 	
 	
-	// //set muscle cramp
+	//set muscle cramp
 	// _musclec = _agent getVariable["musclecramp",0];
-	// _agent SetMuscleCramp _musclec;
+	 //_agent SetMuscleCramp _musclec;
 	
 	//event handlers
 	_firedEH = _agent addEventHandler ["fired", {_this spawn event_weaponFired}];

@@ -261739,7 +261739,7 @@ class CfgModifiers
 				{
 					"Character_Mad"
 				};
-				statementEnter="_person setVariable ['musclecramp',0.05];_person SetMuscleCramp 0.05;";
+				statementEnter="";
 				statementExit="";
 			};
 			class 1: 0
@@ -261750,7 +261750,7 @@ class CfgModifiers
 				{
 					"Character_Mad"
 				};
-				statementEnter="_person setVariable ['musclecramp',0.1];_person SetMuscleCramp 0.1;";
+				statementEnter="";
 				statementExit="";
 			};
 			class 2: 1
@@ -261761,7 +261761,7 @@ class CfgModifiers
 				{
 					"Character_Mad"
 				};
-				statementEnter="_person setVariable ['musclecramp',0.3];_person SetMuscleCramp 0.3";
+				statementEnter="";
 				statementExit="";
 			};
 			class 3: 2
@@ -261772,7 +261772,7 @@ class CfgModifiers
 				{
 					"Character_Mad"
 				};
-				statementEnter="_person setVariable ['musclecramp',0.5];_person SetMuscleCramp 0.5;";
+				statementEnter="";
 				statementExit="";
 			};
 			class 4: 3
@@ -261783,7 +261783,7 @@ class CfgModifiers
 				{
 					"Character_Mad"
 				};
-				statementEnter="_person setVariable ['musclecramp',0.7];_person SetMuscleCramp 0.7;";
+				statementEnter="";
 				statementExit="";
 			};
 			class Shake: 4
@@ -261795,7 +261795,7 @@ class CfgModifiers
 					"Character_Mad"
 				};
 				condition="true";
-				statementEnter="_person setVariable ['musclecramp',1];_person SetMuscleCramp 1;";
+				statementEnter="";
 				statementExit="";
 			};
 		};
