@@ -39,7 +39,7 @@ if (isClass _config) then
 	_ammo = getText (_config >> "ammoItems");
 	if (getNumber (_config >> "destroyOnEmpty") == 1) then
 	{
-		_parent removeFromInventory _mag;
+		//_parent removeFromInventory _mag;
 		deleteVehicle _mag;
 	}
 	else

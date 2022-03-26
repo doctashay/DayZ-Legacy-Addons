@@ -13,9 +13,7 @@ if (_destroy) then
 	_actual = ((itemInHands _unit) itemInSlot "magazine");
 	if (magazineAmmo _actual == 0) then
 	{
-		_parent = itemParent _actual;
-		_parent removeFromInventory _actual;
-		deleteVehicle _actual
+		deleteVehicle _actual;
 	};
 };
 

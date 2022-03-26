@@ -24,7 +24,7 @@ if (_hasFlashlight) exitWith
 
 // using NoCheck variant, because you have condition set to 'false' on the handle.
 // normal swap would not be performed because of this.
-_tool1 swapItemsNoCheck _tool2;
+//_tool1 swapItemsNoCheck _tool2;
 
 /*
 //move old one to old position	

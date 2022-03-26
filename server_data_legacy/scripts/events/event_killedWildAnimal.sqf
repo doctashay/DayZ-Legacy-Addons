@@ -2,7 +2,7 @@ private["_agent","_uid"];
 _agent = _this select 0;
 _killer = _this select 1;
 
-dbStats ["hunt",_killer,1];
+//dbStats ["hunt",_killer,1];
 
 _type = typeOf _agent;
 _last_pos = getPosATL _agent;

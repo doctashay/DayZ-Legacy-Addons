@@ -83,7 +83,7 @@ _fullMaturityTime = _fullMaturityTime * _lifeTimeCoef;
 _spoilTimer = _spoilTimer * _lifeTimeCoef;
 _spoiledRemoveTimer = _spoiledRemoveTimer * _lifeTimeCoef;
 
-------------PLANT STAGES-------------
+/* ------------PLANT STAGES-------------
 -----------------------------------*/
 
 

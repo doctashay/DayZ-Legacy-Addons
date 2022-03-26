@@ -177,7 +177,7 @@ call damage_fnc_generateSlots;
 } forEach _items;
 
 // don't do damage for dead bodies
-if(!alive _agent) exitWith {0; ProfileStop "event_assessDamage.sqf";};
+if(!alive _agent) exitWith {0};
 
 
 

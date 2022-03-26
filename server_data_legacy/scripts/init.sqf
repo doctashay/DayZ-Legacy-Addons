@@ -37,6 +37,7 @@ event_clearModifiers = 	compile preprocessFileLineNumbers "\dzlegacy\server_data
 event_playerKilled = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_playerKilled.sqf";
 event_hitZombie =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_hitZombie.sqf";
 event_bloodTransfusion = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_bloodTransfusion.sqf";
+event_vehicleDamaged = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_vehicleDamaged.sqf";
 event_killedWildAnimal = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_killedWildAnimal.sqf";
 event_killedZombie = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_killedZombie.sqf";
 event_gasLight = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_gasLight.sqf";
@@ -61,7 +62,7 @@ player_applyDefibrillator = 	compile preprocessFileLineNumbers "\dzlegacy\server
 player_moveToInventory =	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_moveToInventory.sqf";
 
 player_mendItem = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_mendItem.sqf";
-//player_igniteFireplace = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_igniteFireplace.sqf";
+player_igniteFireplace = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_igniteFireplace.sqf";
 player_RabbitSnareTrap = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_RabbitSnareTrap.sqf";
 player_bearTrap		 = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_bearTrap.sqf";
 player_landMine		 = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_landMine.sqf";
@@ -1219,13 +1220,13 @@ player_fnc_processStomach = {
 			_energyGathered = _consumableEnergy * _scale; // energy actually gathered from serving		
 			_energy = _energy + _energyGathered;
 			_person setVariable ["energy",_energy];
-			dbStats ["calories",_person,_energyGathered];
+			//dbStats ["calories",_person,_energyGathered];
 
 			// change water
 			_waterGathered = _consumableWater * _scale; // water actually gathered from serving
 			_water = _water + _waterGathered;
 			_person setVariable ["water",_water];
-			dbStats ["water",_person,_waterGathered];
+			//dbStats ["water",_person,_waterGathered];
 			
 			// change diet
 			_dietGathered = _consumableNutriIndex * _scale * 0.01; // nutrients actually gathered from serving	

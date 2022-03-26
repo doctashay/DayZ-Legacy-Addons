@@ -21,7 +21,7 @@ if (isServer) then
 		private["_agent"];
 		_agent = _this select 1;
 		_agent moveToHands objNull;
-	};*/
+	};
 	"playerWet"	addPublicVariableEventHandler
 	{
 		private["_agent"];

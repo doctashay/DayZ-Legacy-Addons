@@ -132,7 +132,7 @@ class FSM
            "" \n
            "if ((player itemInSlot ""headgear"") isKindOf ""Cover_BurlapSack"") then " \n
            " { " \n
-           "	setEVUser -5; //setAperture 10000; //should be handled at newui level	-> //titleText ["""",""BLACK OUT"",0];" \n
+           "	//setEVUser -5; //setAperture 10000; //should be handled at newui level	-> //titleText ["""",""BLACK OUT"",0];" \n
            "	1 fadeSound 0.4;" \n
            "	1 fadeSpeech 0.4;" \n
            "	1 fadeRadio 0.4; " \n
@@ -176,10 +176,10 @@ class FSM
        "//_musclec = player getVariable [""musclecramp"",0];" \n
        "//player SetMuscleCramp _musclec;" \n
        "" \n
-       "setEVUser 0; //setAperture -1;" \n
+       "//setEVUser 0; //setAperture -1;" \n
        "" \n
        "if((player itemInSlot ""headgear"") isKindOf ""Cover_BurlapSack"" )then{" \n
-       "	setEVUser -5; //setAperture 10000; //should be handled at newui level	-> //titleText ["""",""BLACK OUT"",0];" \n
+       "	//setEVUser -5; //setAperture 10000; //should be handled at newui level	-> //titleText ["""",""BLACK OUT"",0];" \n
        "	4 fadeSound 0.4;	" \n
        "	4 fadeSpeech 0.4;" \n
        "	4 fadeRadio 0.4; " \n

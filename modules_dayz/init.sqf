@@ -285,7 +285,21 @@ melee_startAttack = 	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\sc
 melee_finishAttack = 	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\melee_finishAttack.sqf";
 event_playerBleed = 	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\event_playerBleed.sqf";
 
+//init
+init_fireplace = compile preprocessFileLineNumbers			"\dzlegacy\modulesDayZ\scripts\init\fireplace_initialize.sqf";
+init_cooking_food = compile preprocessFileLineNumbers		"\dzlegacy\modulesDayZ\scripts\init\cooking_food_initialize.sqf";
+init_gascooker = compile preprocessFileLineNumbers			"\dzlegacy\modulesDayZ\scripts\init\gascooker_initialize.sqf";
+init_gascanister = compile preprocessFileLineNumbers		"\dzlegacy\modulesDayZ\scripts\init\gascanister_initialize.sqf";
+init_cooking_equipment = compile preprocessFileLineNumbers			"\dzlegacy\modulesDayZ\scripts\init\cooking_equipment_initialize.sqf";
+//action conditions
+cooking_action_condition = compile preprocessFileLineNumbers 	"\dzlegacy\modulesDayZ\scripts\cooking\cooking_action_condition.sqf";
+fireplace_action_condition = compile preprocessFileLineNumbers 	"\dzlegacy\modulesDayZ\scripts\cooking\fireplace_action_condition.sqf";
+fireplace_state_condition = compile preprocessFileLineNumbers 	"\dzlegacy\modulesDayZ\scripts\cooking\fireplace_state_condition.sqf";
+barrel_action_condition = compile preprocessFileLineNumbers 	"\dzlegacy\modulesDayZ\scripts\cooking\barrel_action_condition.sqf";
 
+//event
+event_explosives = compile preprocessFileLineNumbers 	"\dzlegacy\modulesDayZ\scripts\event\event_explosives.sqf";
+event_ammo = compile preprocessFileLineNumbers 			"\dzlegacy\modulesDayZ\scripts\event\event_ammo.sqf";
 
 melee_fnc_checkHitLocal = {
 	if (!_processHit) exitWith {};
