@@ -135,12 +135,12 @@ onPlayerDisconnected _disconnectPlayer;
 	_array = _this select 1;
 	_id = _array select 2;
 	diag_log format ["CLIENT %1 request to spawn %2",_id,_this];
-	_id spawnForClient {statusChat ['testing 1 2 3','']};
+	///_id spawnForClient {statusChat ['testing 1 2 3','']};
 	
 	_savedChar = dbFindCharacter (getClientUID _id);
-	if (_savedChar select 0) exitWith {
-		diag_log format ["CLIENT %1 spawn request rejected as already alive character",_id];
-	};
+	// if (_savedChar select 0) exitWith {
+	// 	diag_log format ["CLIENT %1 spawn request rejected as already alive character",_id];
+	// };
 		
 	_charType = _array select 0;
 	_charInv = _array select 1;
@@ -168,7 +168,7 @@ onPlayerDisconnected _disconnectPlayer;
 	_v = _agent createInInventory "Medical_Bandage";_v setVariable ["amount",100];
 	_v = _agent createInInventory "M4A1";
 	_v = _agent createInInventory "Mosin9130";
-	_v = _agent createInInventory "BagMountain_Blue";
+	_v = _agent createInInventory "BagHunting";
 	_v = _agent createInInventory "BallisticHelmet_Black";
 	_v = _agent createInInventory "M_STANAG_30Rnd";
 	_v = _agent createInInventory "M_STANAG_30Rnd";
@@ -176,9 +176,9 @@ onPlayerDisconnected _disconnectPlayer;
 	_v = _agent createInInventory "TTsKO_Jacket_Camo";
 	_v = _agent createInInventory "TTsKO_Pants_Camo";
 	_v = _agent createInInventory "UKAssVest_Black";
-	_v = _agent createInInventory "Attachment_Buttstock_M4MP_Black";
-	_v = _agent createInInventory "Attachment_Handguard_MP";
-	_v = _agent createInInventory "Attachment_Optic_ACOG";
+	_v = _agent createAttachment "Attachment_Buttstock_M4MP_Black";
+	_v = _agent createAttachment "Attachment_Handguard_MP";
+	_v = _agent createAttachment "Attachment_Optic_ACOG";
 	_v = _agent createInInventory "Attachment_Suppressor_556";
 	_v = _agent createInInventory "CombatKnife";
 	_v = _agent createInInventory "Consumable_GasCanisterLarge";
@@ -186,8 +186,7 @@ onPlayerDisconnected _disconnectPlayer;
 	_v = _agent createInInventory "Container_FirstAidKit";
 	_v = _agent createInInventory "Cooker_PortableStove";
 	_v = _agent createInInventory "Cookware_FryingPan";
-	_v = _agent createInInventory "ItemGPS";
-	_v = _agent createInInventory "MiscItem_Tent";
+	_v = _agent createInInventory "TentMedium_Packed";
 	_v = _agent createInInventory "Consumable_Matchbox";
 	_v = _agent createInInventory "Magnum";
 	_v = _agent createInInventory "Ammo_357_20Rnd";
