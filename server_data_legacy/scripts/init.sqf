@@ -62,7 +62,7 @@ player_applyDefibrillator = 	compile preprocessFileLineNumbers "\dzlegacy\server
 player_moveToInventory =	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_moveToInventory.sqf";
 
 player_mendItem = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_mendItem.sqf";
-player_igniteFireplace = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_igniteFireplace.sqf";
+//player_igniteFireplace = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_igniteFireplace.sqf";
 player_RabbitSnareTrap = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_RabbitSnareTrap.sqf";
 player_bearTrap		 = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_bearTrap.sqf";
 player_landMine		 = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_landMine.sqf";
