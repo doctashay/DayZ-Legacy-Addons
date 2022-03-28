@@ -114,6 +114,6 @@ _agent setVariable ["isdryingstate",_isDrying];
 
 
 _playerTemperature = _agent getVariable ["bodytemperature",36.5];
-_heatComfort = _heatpackon+(_totalHeatIsolation*(1-_playerWet)*2 - (_playerTemperature - (airTemperature + worldLightScale*2 - windSpeed*3 - (getPosASL _agent select 2)/100)));
+_heatComfort = (_totalHeatIsolation*(1-_playerWet)*2 - (_playerTemperature - (airTemperature + worldLightScale*2 - windSpeed*3 - (getPosASL _agent select 2)/100)));
 
 _agent setVariable ["heatcomfort",_heatcomfort];
