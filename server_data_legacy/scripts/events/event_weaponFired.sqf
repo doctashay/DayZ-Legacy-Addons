@@ -11,13 +11,16 @@ _destroy = getNumber (configFile >> "CfgMagazines" >> _magazine >> "destroyOnEmp
 if (_destroy) then
 {
 	_actual = ((itemInHands _unit) itemInSlot "magazine");
-	if (magazineAmmo _actual == 0) then {deleteVehicle _actual};
+	if (magazineAmmo _actual == 0) then
+	{
+		deleteVehicle _actual;
+	};
 };
 
 _shot = getText (configFile >> "CfgWeapons" >> _weapon >> "shotAction");
 if (_shot != "") then
 {
-	//_qty = _unit ammo _weapon;
-	//if (_qty == 0) exitWith {};
-	//_unit playAction _shot;
+	_qty = _unit ammo _weapon;
+	if (_qty == 0 and !_destroy) exitWith {};
+	_unit playAction _shot;
 };

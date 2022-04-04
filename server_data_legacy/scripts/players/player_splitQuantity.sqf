@@ -7,6 +7,7 @@ private["_person","_sender","_receiver","_max","_senderQty","_receiverQty","_exc
 _person = _owner;
 _sender = _tool1;
 _type = typeOf _sender;
+_sound = _this;
 
 _config = 	configFile >> "CfgVehicles" >> _type;
 _name = 	getText (_config >> "displayName");
@@ -30,12 +31,13 @@ _receiverQty = floor(_senderQty / 2);
 _senderQty = _senderQty - _receiverQty;
 
 //save results
-_sender setVariable ["quantity",_senderQty];
+_sender setQuantity _senderQty;
 
 //new pile
 _parent = itemParent _sender;
 _pile = [_type,_parent,_person] call player_addInventory;
-_pile setVariable ["quantity",_receiverQty];
+_pile setQuantity _receiverQty;
+_pile setDamage (damage _sender);
 if (_type == "Consumable_Rags") then
 {
 	if (_dirty) then
@@ -47,5 +49,6 @@ if (_type == "Consumable_Rags") then
 _dirty = false;
 
 //send response
-[_person,"craft_rounds"] call event_saySound;
+//[_person,"craft_rounds"] call event_saySound;
+[_person,_sound] call event_saySound;
 [_person,format["I have split the %1",_name],"colorAction"] call fnc_playerMessage;

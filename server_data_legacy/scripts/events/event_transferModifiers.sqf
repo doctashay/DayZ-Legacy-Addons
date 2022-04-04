@@ -3,83 +3,126 @@
 	
 	author: Peter Nespesny
 */
-private["_target","_source","_method","_interactionWeight","_headWear","_obstructionHead","_obstruction"];
-
-//hint "DBG>> checking transfer";
+private["_target","_source","_method","_interactionWeight","_headWear","_handsWear","_obstructionHead","_handsWear","_obstruction"];
+	    
+//hint "Checking transfer";
 
 _target = _this select 0;
 _source = _this select 1;
 _method = _this select 2;
-_interactionWeight = _this select 3; 		// interaction weight value of given action for use in disease transfer formula
+_interactionWeight = _this select 3; // interaction weight value of given action for use in disease transfer formula
 
 //hint str(_this);
 //hint str(_interactionWeight);
 
-_headWear = _person itemInSlot "Headgear"; 			// get item weared on player's head such as masks, glasses... etc
-//_handsWear = _person itemInSlot "Handsgear";		// get item weared on player's hands such as gloves... etc
-_obstructionHead = getNumber (configFile >> "CfgVehicles" >> typeOf _headWear >> "DamageArmor" >> "biological");			// physical obstruction value of DRESSED item (like masks, gloves..) for use in disease transfer formula
-_obstructionHands = 0; //getNumber (configFile >> "CfgVehicles" >> typeOf _handsWear >> "DamageArmor" >> "biological");	// physical obstruction value of DRESSED item (like masks, gloves..) for use in disease transfer formula
-_obstruction = _obstructionHead + _obstructionHands;
+/*
+// Get items weared on player such as helmets, glasses, masks, gloves... etc
+_headWear = _target itemInSlot "Headgear"; 
+_glassWear = _target itemInSlot "Headgear";
+_maskWear = _target itemInSlot "Mask";
+_handsWear = _target itemInSlot "Handsgear";
+// physical obstruction value of DRESSED items (like masks, gloves..) for use in disease transfer formula
+_obstructionHead = getNumber (configFile >> "CfgVehicles" >> typeOf _headWear >> "DamageArmor" >> "biological");
+_obstructionGlass = getNumber (configFile >> "CfgVehicles" >> typeOf _glassWear >> "DamageArmor" >> "biological");
+_obstructionMask = getNumber (configFile >> "CfgVehicles" >> typeOf _maskWear >> "DamageArmor" >> "biological");
+_obstructionHands = getNumber (configFile >> "CfgVehicles" >> typeOf _handsWear >> "DamageArmor" >> "biological");
+
+_obstruction = _obstructionHead + _obstructionGlass + _obstructionMask + _obstructionHands;
+//hint str(_obstruction);
+_debugText11 = format ["DBG>> obstr total:%5 = head:%1 + glass:%2 + mask:%3 + hands:%4",_obstructionHead,_obstructionGlass,_obstructionMask,_obstructionHands,_obstruction];
+statusChat [_debugText11,""];
+*/
+
+_obstruction = 0;
 
 {
 	private["_a","_b","_modifiers"];
-	// iterate through each combination of target and source
+	// Iterate through each combination of target and source
 	_a = _x select 0;	// target
 	_b = _x select 1;	// source	
 	
-	_modifiers = _b getVariable ["modifiers",[]];
+	//diag_log format ["TRANSFER>> target: %1 source: %2",_a,_b];
+	
+	if (typeName _b == "OBJECT") then
+	{
+		_modifiers = _b getVariable ["modifiers",[]];
+		
+		//diag_log format ["TRANSFER>> source: %1 and its modifiers: %2",_b,_modifiers];
+	}
+	else
+	{
+		_modifiers = getArray (configFile >> "CfgVehicles" >> _b >> "diseases");
+		
+		//diag_log format ["TRANSFER>> source: %1 and its modifiers: %2",_b,_modifiers];
+	};
+	
 	{
 		private["_modifier","_config"];
 		_modifier = _x;
 		
-		// check if modifier have a transmission class (if it is a disease)
+		//diag_log format ["TRANSFER>> currently tested modifier: %1",_modifier];
+		
+		// Check if modifier have a transmission class (if it is a disease)
 		_config = configFile >> "CfgModifiers" >> _modifier;
+		
 		if (isClass (_config >> "Transmission")) then
 		{
-			/*
-				This section will only run if the modifier has a transmission class!
-			*/					
+			// This section will only run if the modifier has a transmission class!
 			private["_transferability","_probability","_probabilityToNotTransfer","_randomNum"];
-			_transferability = getNumber (_config >> "Transmission" >> _method >> "transferability"); //efficiency rate of penetrate receptive person AKA chance of spread
+			
+			// Don't check or add modifier if it's already in player's modifiers array
+			_currentModifiers = _a getVariable "modifiers";
+			_inModifiers = _modifier in _currentModifiers;
 
-			// for each one (_x) run some kind of test to see if transfer	
-			_probability = _interactionWeight - _obstruction + _transferability; 	//probability to transfer disease
-			_probabilityToNotTransfer = 1 - _probability; 	//probability of not getting disease on player
+			if (_inModifiers) exitWith
+			{
+				//diag_log format ["TRANSFER>> Not going to add %1 as it's already in %2 modifiers",_modifier,_a];
+			};
+			
+			// Continue as modifier isn't in player's modifier array			
+			_transferability = getNumber (_config >> "Transmission" >> _method >> "transferability"); // Efficiency rate of penetrate receptive person AKA chance of spread
+
+			// For each one (_x) run some kind of test to see if transfer	
+			_probability = _interactionWeight - _obstruction + _transferability; // probability to transfer disease
+			_probabilityToNotTransfer = 1 - _probability; // probability of not getting disease on player
 			_randomNum = random 1;
 			
-			//_debugText1 = format ["DBG>> interact:%1 - obstruct:%2 + transfer:%3 = probab:%4",_interactionWeight,_obstruction,_transferability,_probability];
-			//_debugText2 = format ["DBG>> random:%1 VS. probNotToTransf:%2",_randomNum,_probabilityToNotTransfer];
-			//statusChat [_debugText1,""];
-			//statusChat [_debugText2,""];
+			//diag_log format ["TRANSFER>> interact: %1 - obstruct: %2 + transfer: %3 = probab: %4",_interactionWeight,_obstruction,_transferability,_probability];
+			//diag_log format ["TRANSFER>> random: %1 VS. probability not to transfer: %2",_randomNum,_probabilityToNotTransfer];
 
-			// insert variable for if transmit
+			// Insert variable for if transmit
 			if (_randomNum >= _probabilityToNotTransfer) then
 			{
-				statusChat ["DBG>> gonna transfer..",""];
+				//diag_log format ["TRANSFER>> Transfer between source and target was successful",""];
 				
-				// check if target is a player
+				// Check if target is a player
 				if (_a isKindOf "SurvivorBase") then
 				{	
-					/*
-						This section will only run if the target is a survivor class!
-					*/	
-					private ["_invasivity","_survivorBlood","_immunityStrength"];
+					// This section will only run if the target is a survivor class!
+					private ["_invasivity","_toxicity","_survivorBlood","_survivorHealth","_survivorDiet","_survivorExposure","_immunityStrength","_allStages","_stagesCount","_stagesStep"];
 					
-					statusChat ["DBG>> ..to survivor!",""];				
+					//diag_log format ["TRANSFER>> Transfering modifier to survivor",""];					
 					
 					_invasivity = getNumber (_config >> "Transmission" >> "invasivity");
-					//_toxicity = getNumber (_config >> "Transmission" >> "toxicity"); 	// we probably don't need the toxicity
-					
-					_survivorBlood = _person getVariable "blood";
-					_survivorHealth = _person getVariable "health";
-					_survivorExposure = _person getVariable "exposure";
-					_survivorDiet = _person getVariable "diet";
+					_toxicity = getNumber (_config >> "Transmission" >> "toxicity");
 										
-					_immunityStrength = (_survivorDiet + (_survivorBlood/5000) + (_survivorHealth/5000) + _survivorExposure) / 4; // draft of immunity strength formula
+					_survivorDiet = _a getVariable "diet";
+					_survivorBlood = _a getVariable "blood";	
+					_survivorHealth = _a getVariable "health";				
+					//_survivorExposure = _a getVariable "exposure";
+										
+					//diag_log format ["TRANSFER>> Diet = %1, Blood = %2, Health = %3)",_survivorDiet,_survivorBlood,_survivorHealth];
 					
-					//statusChat [str(_immunityStrength),""]; // DEBUG
+					_immunityStrength = (_survivorDiet + (_survivorBlood/5000) + (_survivorHealth/5000)) / 3;  // Draft of immunity strength formula
+					//_immunityStrength = (_survivorDiet + (_survivorBlood/5000) + (_survivorHealth/5000) + _survivorExposure) / 4;
 					
-					////_medicalRecord = DOES HE HAD DISEASE IN PAST?; // probably use immune stage of modifier to assure he not gets it for a while...
+					//diag_log format ["TRANSFER>> Immunity strength = %1",_immunityStrength];					
+					//diag_log format ["TRANSFER>> Impact on player = %1, (immunity strength = %2 / toxicity = %3)",_toxicity / _immunityStrength,_immunityStrength,_toxicity];
+					
+					// Put all available stages of modifier into the array
+					_allStages = configFile >> "CfgModifiers" >> _modifier >> "Stages";
+					_stagesCount = count _allStages;
+					_stagesStep = 1 / _stagesCount;
 					
 					if (_invasivity >= _immunityStrength) then
 					{
@@ -87,57 +130,77 @@ _obstruction = _obstructionHead + _obstructionHands;
 
 						statusChat ["DBG>> And he gets it in ... stage!!!",""];
 						
-						_impactOnPlayer = _immunityStrength / _invasivity; //higher the number is, the lighter impact disease have on player
+						_impactOnPlayer =  _toxicity / _immunityStrength; // Higher the number is, the lighter impact disease have on player (lower number == heavier impact)
+												
+						//diag_log format ["TRANSFER>> Stages count = %1, stages step = %2",_stagesCount,_stagesStep];
 						
-						//statusChat [str(_impactOnPlayer),""]; // DEBUG
-						
-						switch true do
+						for "_i" from (_stagesCount - 1) to 1 step -1 do
+						//for "_i" from 0 to (_stagesCount - 1) step 1 do
 						{	
-							/*
-								This section will decide what is the impact of the disease on player
-							*/
-							case (_impactOnPlayer > 1):
+							//diag_log format ["TRANSFER>> Comparing impact with stage #%1: %2; Impact = %3 >= Stage cap = %4 <<<",_i,_allStages select _i,_impactOnPlayer,_stagesStep * _i];
+							
+							if (_impactOnPlayer >= (_stagesStep * _i)) exitWith
 							{
-							};
-							case (_impactOnPlayer >= 0.8):
-							{
-								//hint "DBG>> carrier impact";								
-								[2,_a,_x,0] call event_modifier;
-							};
-							case (_impactOnPlayer >= 0.6):
-							{
-								//hint "DBG>> light impact";								
-								[2,_a,_x,1] call event_modifier;
-							};
-							case (_impactOnPlayer >= 0.4):
-							{
-								//hint "DBG>> medium impact";								
-								[2,_a,_x,2] call event_modifier;
-							};
-							case (_impactOnPlayer >= 0.2):
-							{
-								//hint "DBG>> hard impact";								
-								[2,_a,_x,3] call event_modifier;
-							};
-							case (_impactOnPlayer > 0):
-							{
-								//hint "DBG>> deadly impact";								
-								[2,_a,_x,4] call event_modifier;
+								[2,_a,_x,_i] call event_modifier;
+								//diag_log format ["TRANSFER>> Impact on player = %1, stage treshold = %2, modifier added in stage %3",_impactOnPlayer,(_stagesStep * _i),(_allStages select _i)];
 							};
 						};
-						//hint "DBG>> immunity";
-						//[0,_a,_x,10] call event_modifier;
+						/*
+						_stagesArray = [];
+						
+						for "_i" from 0 to ((count _allStages) - 1) do 
+						{
+							_stage = _allStages select _i;
+							diag_log format [str(_stage),""];
+							_stagesArrayLenght = count _stagesArray;
+							if (_stagesArrayLenght == 0) then
+							{
+								_stagesArray set [0,_stage];
+							}
+							else
+							{
+								_stagesArray set [_stagesArrayLenght,_stage];
+							};				
+						};
+						
+						diag_log format [str(_stagesArray),""];
+						diag_log format [str(count _stagesArray),""];
+						*/						
+					}
+					else
+					{	
+						// Add immunity stage of the modifier
+						//diag_log format["DBG>> adding modifier in immunity stage %1",(_allStages select 0)];
+						//[2,_a,_x,0] call event_modifier;							
 					};
 				}
 				else
-				{	
+				{
+					// This section will only run if the target is NOT a survivor class!
+					
 					/*
-						This section will only run if the target is NOT a survivor class!
-					*/	
-					statusChat ["DBG>> ..to item",""];					
-					[2,_a,_x,0] call event_modifier;
+					if (_a isKindOf "Medical_TetracyclineAntibiotics") exitWith
+					{
+						diag_log format ["TRANSFER>> Exit as it's tabs",""]; //hotfix
+					};		
+					*/
+					
+					// Check if disease can be transfered back from player to item (example Influenza can be, Brain disease cannot be transfered from player)
+					_fromPlayer = getNumber (_config >> "Transmission" >> "Direct" >> "fromPlayer");
+					
+					if (_fromPlayer == 1) then
+					{
+						//diag_log format ["TRANSFER>> Transfering modifier to the item in carrier stage",""];
+						[2,_a,_x,1] call event_modifier;					
+					}
 				};
 			};
+		}
+		else
+		{
+			//diag_log format ["TRANSFER>> Not transferable modifier",""];
 		};
+		
 	} forEach _modifiers;
+	
 } forEach [[_target,_source],[_source,_target]];	

@@ -10,6 +10,7 @@ Otherwise it returns false
 _tapeItem = _this select 0;
 _damageditem = _this select 1;
 _allowRepair = true;
+ductTapeRepairDamage = 0.5; // Damage tolerance. No repairing below this amount.
 
 if (damage _damageditem > ductTapeRepairDamage+0.001 && damage _damageditem < 1 && damage _tapeItem < 1) then
 {
@@ -20,27 +21,35 @@ if (damage _damageditem > ductTapeRepairDamage+0.001 && damage _damageditem < 1 
 		//Melee weapons
 		"MeleeItemBase",
 		//Ammo
-		"ChamberedRound",
+		"ChamberedRound", "AmmunitionItemBase", "AmmunitionBoxItemBase",
 		//Crafting
 		"CraftingItemBase",
 		//Tools
-		"ToolBase", "Consumable_DuctTape", "Consumable_Stone", "Consumable_Firewood", "Consumable_Battery9V",
+		"ToolBase", "Consumable_DuctTape", "Consumable_Stone", "Consumable_Firewood", "Consumable_Battery9V", "OrienteeringCompass", "Compass", 
 		//Food and drinks
 		"FoodItemBase", "DrinksItemBase",
 		//Medical
 		"MedicalItemBase",
 		//Consumable
-		"Consumable_Chemlight_Base", "Consumable_Hook", "Consumable_Bait"
+		"Consumable_Chemlight_Base", "Consumable_Hook", "Consumable_Bait", "Consumable_BarkBase", "consumable_bones",
+		//Horticulture
+		"SeedItemBase", "Consumable_PlantMaterial",
+		// Other / junk
+		"Fireplace"
 	];
 	
 	//These kinds are exceptions to the previous array and are forcefully included:
 	_includedKinds = [
 		//Weapons
-		"FlareSprayBomb", "WeaponLightBase",
+		"FlareSprayBomb", "WeaponLightBase", "Crafting_Spear",
 		//Tools
 		"Tool_Transmitter", "Tool_Flashlight",
 		//Medical
-		"Medical_BandageBase", "Medical_Epinephrine", "BloodBase", "Medical_Splint", "Medical_Thermometer", "Medical_Defibrillator"
+		"Medical_BandageBase", "Medical_Epinephrine", "BloodBase", "Medical_Splint", "Medical_Thermometer", "Medical_Defibrillator",
+		//Seeds pack
+		"Cultivation_TomatoSeedsPack", "Cultivation_PepperSeedsPack", "Cultivation_PumpkinSeedsPack", "Cultivation_ZucchiniSeedsPack",
+		//Food
+		"Food_Marmalade"
 	];
 	
 	{

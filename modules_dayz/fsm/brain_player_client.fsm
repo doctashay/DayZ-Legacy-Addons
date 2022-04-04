@@ -129,7 +129,14 @@ class FSM
            "		sleep 1;" \n
            "	};" \n
            "};" \n
-           ""/*%FSM</ACTION""">*/;
+           "" \n
+           "if ((player itemInSlot ""headgear"") isKindOf ""Cover_BurlapSack"") then " \n
+           " { " \n
+           "	//setEVUser -5; //setAperture 10000; //should be handled at newui level	-> //titleText ["""",""BLACK OUT"",0];" \n
+           "	1 fadeSound 0.4;" \n
+           "	1 fadeSpeech 0.4;" \n
+           "	1 fadeRadio 0.4; " \n
+           " };"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -164,7 +171,19 @@ class FSM
        "//Health" \n
        "	_health = 	_this getVariable[""health"",5000];" \n
        "	_blood = 	_this getVariable[""blood"",5000];" \n
-       "	_this call rainCheck;"/*%FSM</STATEINIT""">*/;
+       "	_this call rainCheck;" \n
+       "" \n
+       "//_musclec = player getVariable [""musclecramp"",0];" \n
+       "//player SetMuscleCramp _musclec;" \n
+       "" \n
+       "//setEVUser 0; //setAperture -1;" \n
+       "" \n
+       "if((player itemInSlot ""headgear"") isKindOf ""Cover_BurlapSack"" )then{" \n
+       "	//setEVUser -5; //setAperture 10000; //should be handled at newui level	-> //titleText ["""",""BLACK OUT"",0];" \n
+       "	4 fadeSound 0.4;	" \n
+       "	4 fadeSpeech 0.4;" \n
+       "	4 fadeRadio 0.4; " \n
+       "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -201,7 +220,7 @@ class FSM
           to="restrained";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"captive _body"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"TitleText [""You are restrained..."", ""PLAIN"",1];" \n
+          action=/*%FSM<ACTION""">*/"TitleText [""I am restrained"", ""PLAIN"",1];" \n
            "" \n
            "struggle_keyAction1 = (findDisplay 46) displayAddEventHandler [""KeyUp"", ""if ((_this select 1) in DZ_KEYS_STUGGLE) then	{struggling = false};""];" \n
            "struggle_keyAction2 = (findDisplay 46) displayAddEventHandler [""KeyDown"", ""if ((_this select 1) in DZ_KEYS_STUGGLE) then	{struggling = true};""];" \n
@@ -265,8 +284,8 @@ class FSM
     class dead
     {
       name = "dead";
-      init = /*%FSM<STATEINIT""">*/"titleText [""You are dead"",""BLACK FADED"",10e10];" \n
-       "setAperture 1000;"/*%FSM</STATEINIT""">*/;
+      init = /*%FSM<STATEINIT""">*/"titleText [""You are dead"",""BLACK OUT"",10];" \n
+       ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {

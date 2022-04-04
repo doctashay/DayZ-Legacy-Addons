@@ -5,6 +5,7 @@ _isSea = surfaceIsWater _pos;
 _isWater = surfaceType _pos == "FreshWater";
 _bones = [];
 _delta = 0;
+_totalHeatIsolation = 0;
 _playerWet = _agent getVariable ["wet",0];
 _isDrying = true;
 	
@@ -108,3 +109,11 @@ else
 //Process wetness of player
 _agent setVariable ["wet",_playerWet];
 _agent setVariable ["isdryingstate",_isDrying];
+
+//TEMPERATURE
+
+
+_playerTemperature = _agent getVariable ["bodytemperature",36.5];
+_heatComfort = (_totalHeatIsolation*(1-_playerWet)*2 - (_playerTemperature - (airTemperature + worldLightScale*2 - windSpeed*3 - (getPosASL _agent select 2)/100)));
+
+_agent setVariable ["heatcomfort",_heatcomfort];

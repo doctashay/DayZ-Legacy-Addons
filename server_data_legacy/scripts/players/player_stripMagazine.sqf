@@ -36,8 +36,16 @@ if (isClass _config) then
 {
 	//deal with magazine
 	_quantity = MagazineAmmo _mag;	
-	_ammo = getText (_config >> "ammoItem");
-	if (getNumber (_config >> "destroyOnEmpty") == 1) then {deleteVehicle _mag} else {_mag setMagazineAmmo 0};
+	_ammo = getText (_config >> "ammoItems");
+	if (getNumber (_config >> "destroyOnEmpty") == 1) then
+	{
+		//_parent removeFromInventory _mag;
+		deleteVehicle _mag;
+	}
+	else
+	{
+		_mag setMagazineAmmo 0;
+	};
 }
 else
 {

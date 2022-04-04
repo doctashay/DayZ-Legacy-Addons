@@ -6,14 +6,29 @@ _isBodyFree = false;
 _isCurrentToolUsable = false;
 
 if (_tool isKindOf "KnifeBase" or _tool isKindOf "BayonetBase") then
-{_isCurrentToolUsable = true} else {_isCurrentToolUsable = false};
+{
+	_isCurrentToolUsable = true
+}
+else
+{
+	_isCurrentToolUsable = false
+};
 
 _isBodyBeingUsed = _body getVariable "isBeingSkinned";
-if (isNil "_isBodyBeingUsed") then {_isBodyFree = true} else {_isBodyFree = false};
+
+
+if (isNil "_isBodyBeingUsed") then
+{
+	_isBodyFree = true
+}
+else
+{
+	_isBodyFree = false
+};
 
 if (!isNil "_body") then {
 	if ( 
-		(((_body isKindOf "DZ_AnimalBase" or _body isKindOf "SurvivorBase") && !alive _body) or _body isKindOf "FishCorpseBase") &&			
+		(((_body isKindOf "AnimalBase" or _body isKindOf "SurvivorBase") && !alive _body) or (_body isKindOf "Food_Carp" or _body isKindOf "Food_Mackerel")) &&			
 		_isCurrentToolUsable			&&
 		damage _tool < 1 				&&
 		_body distance _user < 1.75		&&
