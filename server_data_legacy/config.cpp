@@ -1,6 +1,6 @@
 class CfgServerHost
 {
-	adress="http://localhost:5000/DayZServlet/";
+	adress="http://107.172.21.184:5000/DayZServlet/";
 };
 class CfgPatches
 {
