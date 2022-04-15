@@ -164,11 +164,11 @@ onPlayerDisconnected _disconnectPlayer;
 	diag_log format["SERVER: Creating %1 at %2 for clientId %3 (DB result %4)",_mySkin,_pos,_id,_res1];
 	
 	_agent = createAgent [_mySkin,  _pos, [], 0, "NONE"];
-	{null = _agent createInInventory _x} forEach ["TTsKO_Jacket_Camo","TTsKO_Pants_Camo","MilitaryBoots_Bluerock"];
+	{null = _agent createInInventory _x} forEach ["TTsKO_Jacket_Camo","ttsko_pants_Beige","MilitaryBoots_Bluerock"];
 	// _v = _agent createInInventory "TTsKO_Jacket_Camo";
 	// _v = _agent createInInventory "TTsKO_Pants_Camo";
 	// _v = _agent createInInventory "MilitaryBoots_Bluerock";
-	_v = _agent createInInventory "BagHunting";
+	_v = _agent createInInventory "BagMountain_Red";
 	_v = _agent createInInventory "UKAssVest_Black";
 	_v = _agent createInInventory "M4A1";
 	_v = _agent createInInventory "BallisticHelmet_Black";
