@@ -363,6 +363,11 @@ class cfgCharacterScenes
 	{
 		class default
 		{
+			target[]={60497.789,-79032.57,-39.779999};
+			position[]={2887.0801,2704.8201,1.23};
+			fov=0.491;
+			date[]={3000,12,1,7,27};
+			aperture=18;
 		};
 	};
 };
