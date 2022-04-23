@@ -1,26 +1,26 @@
 //basic defines
 DZ_DEBUG = true;
-DZ_MP_CONNECT = false;
+DZ_MP_CONNECT = true;
 
 //Simulation defines
 DZ_TICK = 2;			//how many seconds between each tick
 DZ_TICK_COOKING = 4;	//how many seconds between each cooking tick
-DZ_THIRST_SEC = 0.13;	// (original was 0.034) how much per second a healthy player needs to drink to stay normal at rest
+DZ_THIRST_SEC = 0.034;	// (original was 0.034) how much per second a healthy player needs to drink to stay normal at rest
 DZ_METABOLISM_SEC = 0.07; //  (original was 0.05) how much kcal per second a healthy player needs to maintain basal metabolism at rest
 DZ_SCALE_SOAK = 1;		//How much an item will soak with water when submerged per tick
 DZ_SCALE_DRY = 1;			//Scales how fast things dry
 DZ_WET_COOLING = 6;		//The degrees by which a fully wet item will reduce temperature
 DZ_COOLING_POINT = 0;	//point at which body changes between warming/cooling
 DZ_BODY_TEMP = 36.8;		//Degrees Celcius
-DZ_MELEE_SWING = 1.3;		//number of seconds between melee attacks
-DZ_FLAME_HEAT = 0.01;	//degrees per second for heating
+DZ_MELEE_SWING = 1.2;		//number of seconds between melee attacks
+DZ_FLAME_HEAT = 0.03;	//degrees per second for heating
 DZ_BOILING_POINT = 99.97; //degrees of boiling point
 DZ_DEW_POINT = 5;		//below which air will fog from player
-DZ_WEATHER_CHANGE = 5;	//number of seconds to smooth weather changes in
+DZ_WEATHER_CHANGE = 2;	//number of seconds to smooth weather changes in
 DZ_DIGESTION_RATE = 1;	//number of ml to consume per second
 
 //medical defines
-DZ_BLOOD_UNCONSCIOUS = 500;	//minimum blood before player becomes unconscious
+DZ_BLOOD_UNCONSCIOUS = 250;	//minimum blood before player becomes unconscious
 unconscious = false;	//remove this with lifeState is synchronized
 
 //control defines
@@ -28,8 +28,8 @@ DZ_KEYS_STUGGLE = [30,32,203,205];	//DIK codes for keys that action struggle out
 
 //zombie defines
 dayz_areaAffect = 3;				//used during attack calculations
-zombieActivateDistance = 500;		//The distance which to activate zombies and make them move around
-zombieAlertCooldown = 60;		//The distance which to activate zombies and make them move around
+zombieActivateDistance = 400;		//The distance which to activate zombies and make them move around
+zombieAlertCooldown = 120;		//The distance which to activate zombies and make them move around
 zombieClass = ["zombieBase"];		//These are the classes of the zombies, and will be woken by players
 totalitems = 0;
 
@@ -40,14 +40,14 @@ struggling = false;	//set to true when player is struggling (client only)
 meleeAttackType = 1;	//alternates between two attacks
 
 //New player defines
-DZ_ENERGY = 1000;	// actual energy from all food and drink consumed
+DZ_ENERGY = 2000;	// actual energy from all food and drink consumed
 DZ_HUNGER = 0;	//0 to 6000ml size content of stomach, zero is empty
 DZ_THIRST = 0; 	//0 to 6000ml size content of stomach, zero is empty
-DZ_WATER = 1800;	// actual water from all food and drink consumed
-DZ_STOMACH = 1000; // actual volume in stomach
-DZ_DIET = 0.5; // actual diet state
-DZ_HEALTH = 5000;
-DZ_BLOOD = 5000;
+DZ_WATER = 3600;	// actual water from all food and drink consumed
+DZ_STOMACH = 2000; // actual volume in stomach
+DZ_DIET = 1.0; // actual diet state
+DZ_HEALTH = 10000;
+DZ_BLOOD = 10000;
 DZ_TEMPERATURE = 36.5;
 DZ_HEATCOMFORT = 0;
 DZ_TOTALWEIGHT = 0;
@@ -291,6 +291,7 @@ init_cooking_food = compile preprocessFileLineNumbers		"\dzlegacy\modulesDayZ\sc
 init_gascooker = compile preprocessFileLineNumbers			"\dzlegacy\modulesDayZ\scripts\init\gascooker_initialize.sqf";
 init_gascanister = compile preprocessFileLineNumbers		"\dzlegacy\modulesDayZ\scripts\init\gascanister_initialize.sqf";
 init_cooking_equipment = compile preprocessFileLineNumbers			"\dzlegacy\modulesDayZ\scripts\init\cooking_equipment_initialize.sqf";
+
 //action conditions
 cooking_action_condition = compile preprocessFileLineNumbers 	"\dzlegacy\modulesDayZ\scripts\cooking\cooking_action_condition.sqf";
 fireplace_action_condition = compile preprocessFileLineNumbers 	"\dzlegacy\modulesDayZ\scripts\cooking\fireplace_action_condition.sqf";
@@ -322,6 +323,10 @@ isUnderRoof = {
 	_hits = lineHit [_pos,_pos0,"shadow",_this,objNull,0];
 	_hits
 };
+
+// fnc_vehRepair = { 
+// 	player addAction ["Repair vehicle","repairVehicle.sqf","",1,true,true,"","(cursorTarget isKindOf 'LandVehicle' || cursorTarget isKindOf 'Air' || cursorTarget isKindOf 'Ship') && getDammage cursorTarget > 1 && player distance cursorTarget < 4"];
+// };
 
 rainCheck =
 {
@@ -469,33 +474,6 @@ effect_PumpWater_particle =
 		[_source, _this] spawn {sleep 4;deleteVehicle (_this select 0);(_this select 1) setVariable["waterSources",((_this select 1) getVariable "waterSources")-1];};
 };
 
-effect_createSteam = {
-	_cl = 1;
-	_int = 1;
-	_source = "#particlesource" createVehicleLocal getPosATL _cooker;
-	_source setParticleParams
-	/*Sprite*/		[["\dz\data\data\ParticleEffects\Universal\Universal", 16, 12, 8],"",// File,Ntieth,Index,Count,Loop(Bool)
-	/*Type*/			"Billboard",
-	/*TimmerPer*/		1,
-	/*Lifetime*/		0.5*_int,
-	/*Position*/		[0,0,0.3],
-	/*MoveVelocity*/	[0, 0, 0.5*_int],
-	/*Simulation*/	0, 0.05, 0.04, 0.05,	//rotationVel,weight,volume,rubbing
-	/*Scale*/		[0.1, 0.6,2],
-	/*Color*/		[[_cl, _cl, _cl, 0.05],[_cl, _cl, _cl, 0.2],[_cl, _cl, _cl, 0.4],[0.05+_cl, 0.05+_cl, 0.05+_cl, 0.3],[0.1+_cl, 0.1+_cl, 0.1+_cl, 0.2],[0.2+_cl, 0.2+_cl, 0.2+_cl, 0.05], [1,1,1, 0]],
-	/*AnimSpeed*/		[0.8,0.3,0.25],
-	/*randDirPeriod*/	1,
-	/*randDirIntesity*/	0,
-	/*onTimerScript*/	"",
-	/*DestroyScript*/	"",
-	/*Follow*/		_cooker];
-	//[lifeTime, position, moveVelocity, rotationVelocity, size, color, randomDirectionPeriod, randomDirectionIntensity, {angle}, bounceOnSurface]
-	_source setParticleRandom [2, [0, 0, 0], [0.0, 0.0, 0.0], 0, 0.5, [0, 0, 0, 0.1], 0, 0, 10];
-	_source setDropInterval (0.02*_int);
-	_cooker setVariable ["cookingParticleSource",_source];
-	_source particleAttachObject [_cooker, [0,0,0]];
-};
-
 event_fnc_gasLight = {
 	private["_sfx"];
 	_lamp = _this;
@@ -508,7 +486,7 @@ event_fnc_gasLight = {
 	else
 	{
 		//stop light
-		//deleteVehicle (_lamp getVariable ["lightObject",objNull]);
+		deleteVehicle (_lamp getVariable ["lightObject",objNull]);
 		//stop monitor 
 		terminate (_lamp getVariable ["lightMonitor",null]); 
 	};
@@ -772,7 +750,7 @@ event_fnc_fireplaceIntensity =
 	if !(_is_fire) exitWith {};
 	
 	//debuglog
-	//[player, format["Fire intensity = %1, temperature = %2", _fire_intensity, _fire_temp], "colorStatusChannel"] call fnc_playerMessage;
+	[player, format["Fire intensity = %1, temperature = %2", _fire_intensity, _fire_temp], "colorStatusChannel"] call fnc_playerMessage;
 	
 	//small fire
 	if (_fire_temp <= _mid_fireplace_temp and 
@@ -805,7 +783,7 @@ fnc_fuelFire_start =
 	call effect_createFireplaceSparks;
 	
 	//debuglog
-	//[player, format["Starting fuel fire..."], "colorStatusChannel"] call fnc_playerMessage;
+	[player, format["Starting fuel fire..."], "colorStatusChannel"] call fnc_playerMessage;
 };
 
 fnc_fuelFire_stop =
@@ -820,7 +798,7 @@ fnc_fuelFire_stop =
 	deleteVehicle _fireplaceSparks;
 	
 	//debuglog
-	//[player, format["Stopping fuel fire..."], "colorStatusChannel"] call fnc_playerMessage;
+	[player, format["Stopping fuel fire..."], "colorStatusChannel"] call fnc_playerMessage;
 };
 
 //FIREPLACE WITH KINDLING ONLY
@@ -834,7 +812,7 @@ fnc_kindlingFire_start =
 	call effect_createKindlingSparks;
 	
 	//debuglog
-	//[player, format["Starting kindling fire..."], "colorStatusChannel"] call fnc_playerMessage;
+	[player, format["Starting kindling fire..."], "colorStatusChannel"] call fnc_playerMessage;
 };
 
 fnc_kindlingFire_stop =
@@ -849,7 +827,7 @@ fnc_kindlingFire_stop =
 	deleteVehicle _kindlingSparks;
 	
 	//debuglog
-	//[player, format["Stopping kindling fire..."], "colorStatusChannel"] call fnc_playerMessage;
+	[player, format["Stopping kindling fire..."], "colorStatusChannel"] call fnc_playerMessage;
 };
 
 effect_createFireplaceFlames =
@@ -1646,7 +1624,7 @@ fnc_getNearestObject =
 	};
 	
 	//debuglog
-	//hint format["_objects = %1, typeOf _nearest_obj = %2", _objects, typeOf _nearest_obj];
+	hint format["_objects = %1, typeOf _nearest_obj = %2", _objects, typeOf _nearest_obj];
 	
 	_nearest_obj
 };
