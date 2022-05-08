@@ -16,7 +16,8 @@ class cfgBody
 		inventorySlots[]=
 		{
 			"headgear",
-			"eyewear"
+			"eyewear",
+			"mask"
 		};
 	};
 	class Neck: Head
@@ -32,7 +33,8 @@ class cfgBody
 		{
 			"vest",
 			"body",
-			"back"
+			"back",
+			"gloves"
 		};
 	};
 	class Spine: Chest

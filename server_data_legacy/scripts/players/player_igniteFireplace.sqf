@@ -24,38 +24,19 @@ switch _state do
 		
 		//discard one match
 		(itemInHands _person) addQuantity -1;
-
+		
+		//check if player stands in the water (thus he is trying to ignite fireplace in/under the water		
+		if (surfaceIsWater (position _person)) exitWith
+		{
+			[_person,format['I cannot ignite fireplace in the water'],'colorAction'] call fnc_playerMessage;
+		};
+		
 		//check rain
 		if (_person getVariable ['gettingWet',false]) exitWith 
 		{
 			[_person,format['Match went out because of the rain'],'colorAction'] call fnc_playerMessage;
 		};
 
-		 //test collision
-		 _pos = getPosASL _fireplace;
-		 _xPos = _pos select 0;
-		 _yPos = _pos select 1;
-		 _bbox = (collisionBox [[_xPos, _yPos, (_pos select 2 ) + 1.4], [1,1,2.5] ,[[1,0,0], [0, 0, 1]], _person]);
-		if ( _bbox ) exitWith
-		{
-			[_person,format['I cannot ignite the fireplace, its not safe'],'colorAction'] call fnc_playerMessage;
-		};
-
-		//check if player stands in the water (thus he is trying to ignite fireplace in/under the water
-		_sur = surfaceTypeASL [_xPos, _yPos, _pos select 2];
-		if ( _sur == "FreshWater" || _sur == "sea") exitWith
-		{
-			[_person,format['I cannot ignite fireplace in the water'],'colorAction'] call fnc_playerMessage;		
-		};
-
-/*		
-		//check if player stands in the water (thus he is trying to ignite fireplace in/under the water
-		if (surfaceIsWater (position _person)) exitWith
-		{
-			[_person,format['I cannot ignite fireplace in the water'],'colorAction'] call fnc_playerMessage;
-		};
-*/
-		
 		//check wind
 		_windStrength = (wind select 0) + (wind select 1) + (wind select 2);
 		_probability = 0;
@@ -98,8 +79,8 @@ switch _state do
 			//_string = format["[1,%1] call player_igniteFireplace",_fireplace]; //str(_fireplace)
 			//diag_log _string;
 			//_person playAction ['ItemUseShort',compile _string]; 	
-					
-			_person playAction ['startFire',{}];			
+						
+			_person playAction ['ItemUseShort',{}];			
 			this setVariable ['fire',true];
 			this powerOn true;
 			this animate['BurntWood',0];

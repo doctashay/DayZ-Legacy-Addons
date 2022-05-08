@@ -62,7 +62,7 @@ player_applyDefibrillator = 	compile preprocessFileLineNumbers "\dzlegacy\server
 player_moveToInventory =	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_moveToInventory.sqf";
 
 player_mendItem = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_mendItem.sqf";
-//player_igniteFireplace = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_igniteFireplace.sqf";
+player_igniteFireplace = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_igniteFireplace.sqf";
 player_RabbitSnareTrap = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_RabbitSnareTrap.sqf";
 player_bearTrap		 = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_bearTrap.sqf";
 player_landMine		 = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_landMine.sqf";
@@ -84,7 +84,7 @@ building_spawnLoot =	compile preprocessFileLineNumbers "\dzlegacy\server_data\sc
 init_spawnLoot = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnLoot.sqf";
 init_spawnZombies = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnZombies.sqf";
 init_spawnWildAnimals = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnWildAnimals.sqf";
-//init_spawnServerEvent = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnServerEvent.sqf";
+init_spawnServerEvent = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnServerEvent.sqf";
 player_queued = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_queued.sqf";
 
 //functions

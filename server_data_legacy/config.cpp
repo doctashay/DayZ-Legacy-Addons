@@ -254033,7 +254033,7 @@ class CfgObjectActions
 			{
 				"action"
 			};
-			condition="_canUseActions && damage this < 1 && _inHands isKindOf 'AxeBase'";
+			condition="damage this < 1 && _inHands isKindOf 'AxeBase'";
 			statement="if(damage _inHands < 1)then{_inHands setDamage ((damage _inHands)+0.015);(this setDamage ((damage this) + (1/(parseNumber(""2"")*2))));if((damage this) == 1)then{_owner playAction ['GestureMeleeAxeSlash',{for [{_x=0},{_x<parseNumber(""2"")},{_x=_x+1}] do{	_wood = ['Consumable_Firewood',_this] call player_addInventory;_wood setQuantity 1;_wood2=['Crafting_LongWoodenStick',_this] call player_addInventory;_wood2 setQuantity 1;};[_this,'I have chopped some firewood.',''] call fnc_playerMessage;}]}else{_owner playAction 'GestureMeleeAxeSlash';};}else{[_owner,'The axe is ruined.','colorImportant'] call fnc_playerMessage;};";
 		};
 		class SearchForBranch
@@ -254047,7 +254047,7 @@ class CfgObjectActions
 			{
 				"action"
 			};
-			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			condition="damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
 			statement="[0,_owner,'Crafting_LongWoodenStick',0] call player_pickBerry;";
 		};
 		class SearchForBark
@@ -254061,7 +254061,7 @@ class CfgObjectActions
 			{
 				"action"
 			};
-			condition="_canUseActions && _owner getVariable ['isUsingSomething',0] == 0 && damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
+			condition="damage this < 1 && (_inHands isKindOf 'KnifeBase' or _inHands isKindOf 'BayonetBase' or _inHands isKindOf 'AxeBase')";
 			statement="[0,_owner,'Consumable_Bark_Oak',0] call player_pickBerry;";
 		};
 		class ChopwoodChain

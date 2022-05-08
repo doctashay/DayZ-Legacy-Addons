@@ -178,6 +178,7 @@ onPlayerDisconnected _disconnectPlayer;
 	_v = _agent createInInventory "Medical_Bandage";_v setVariable ["quantity",100];
 	_v = _agent createInInventory "Light_PortableLamp";
 	_v = _agent createInInventory "Consumable_GasCanisterLarge";_v setVariable ["quantity",100];
+	_v = _agent createInInventory "Consumable_Firewood";_v setVariable ["quantity",2];
 	_v = _agent createInInventory "CombatKnife";
 	_v = _agent createInInventory "TentMedium_Packed";
 	_v = _agent createInInventory "M_STANAG_30Rnd";

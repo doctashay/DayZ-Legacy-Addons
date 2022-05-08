@@ -12,29 +12,18 @@ switch _state do
 		private["_person","_berry"];
 		_person = _this select 1;
 		_berry = _this select 2;
-		_chance = _this select 3;
-		_result = format["[1,_this,%1,%2] call player_pickBerry",str(_berry),_chance];	
-		_person setVariable ["isUsingSomething",1];		
-		_person playAction ["searchBerries",compile _result];
+		_result = format["[1,_this,%1] call player_pickBerry",str(_berry)];			
+		_person playAction ["PlayerCraft",compile _result];
 	};
 	case 1:
 	{
 		private["_person","_berry"];
 		_person = _this select 1;
-		
-		_actionCanceled = _person getVariable ["isUsingSomething",0];
-		if (_actionCanceled == 2) exitWith
-		{
-			[_person,"Current action was canceled",""] call fnc_playerMessage;	
-			_person setVariable ["isUsingSomething",0];				
-		};
-		
 		_berry = _this select 2;
-		_chance = _this select 3;
 		_name =  getText(configFile >> "CfgVehicles" >> _berry >> "displayName");
 		_quant =  getNumber(configFile >> "CfgVehicles" >> _berry >> "stackedMax");
-		_randnum = round(random _chance);
-		if (_randnum<1) then {
+		_randnum = round (random 7);
+		if (_randnum==1) then {
 			_newItem = [_berry,_person] call player_addInventory;
 			if(_quant == 0)then{
 				_newItem setQuantity 0;
@@ -45,7 +34,5 @@ switch _state do
 		} else {
 			[_person,"I have not found a thing.",""] call fnc_playerMessage;	
 		};
-		_person setVariable ["isUsingSomething",0];
 	};
 }
-

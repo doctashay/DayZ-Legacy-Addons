@@ -14,12 +14,6 @@ _client = owner _person;
 _parent = itemParent _mag;
 _config = configFile >> "CfgMagazines" >> _type;
 _quantity = 0;
-_magdmg = 0;
-
-//to transfer damage from ammo box to pile o rounds
-if(_mag isKindOf "AmmunitionBoxItemBase")then{
-	_magdmg = damage _mag;
-};
 
 //statusChat [format["parent: %1, item: %2",displayName _parent,_name],""];
 
@@ -36,16 +30,8 @@ if (isClass _config) then
 {
 	//deal with magazine
 	_quantity = MagazineAmmo _mag;	
-	_ammo = getText (_config >> "ammoItems");
-	if (getNumber (_config >> "destroyOnEmpty") == 1) then
-	{
-		//_parent removeFromInventory _mag;
-		deleteVehicle _mag;
-	}
-	else
-	{
-		_mag setMagazineAmmo 0;
-	};
+	_ammo = getText (_config >> "ammoItem");
+	if (getNumber (_config >> "destroyOnEmpty") == 1) then {deleteVehicle _mag} else {_mag setMagazineAmmo 0};
 }
 else
 {
@@ -66,7 +52,7 @@ if (_quantity <= 0) exitWith
 //distribute to existing piles
 if (!isNull _parent) then
 {
-	_magdmg call player_fnc_roundsDistribute;
+	call player_fnc_roundsDistribute;
 };
 //send feedback
 if (isClass (configFile >> "CfgWeapons" >> typeOf _parent)) then 
