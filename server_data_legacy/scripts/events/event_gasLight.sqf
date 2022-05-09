@@ -49,7 +49,6 @@ switch (_state) do
 	};
 	case 1:
 	{
-
 		_sfx = objNull;
 		
 		if (hasPower _lamp) then
@@ -75,6 +74,5 @@ switch (_state) do
 			};
 			_lamp setVariable ["light",true];
 		};
-
 	};
 };

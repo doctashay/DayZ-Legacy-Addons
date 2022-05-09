@@ -13,19 +13,18 @@ if (isServer) then
 	//check if server task manager is running
 	if (isNil "DZ_ServerBrain") then
 	{
-		DZ_ServerBrain = [] execFSM "\dzlegacy\server_data\scripts\fsm\server_taskmanager.fsm";
+		DZ_ServerBrain = [] execFSM "\dz\server\scripts\fsm\server_taskmanager.fsm";
 	};
 		
 	_agent setVariable ["p1",getPosATL _agent];
+	
+	//_eh = _agent addEventHandler ["AnimHook",{_this call event_animHook}];
 		
 	_agent synchronizeVariable ["bleedingsources",0.5,{_this call event_playerBleed}];
 	_agent synchronizeVariable ["vomit",1,{null = _this spawn effect_playerVomit}];
 	_agent synchronizeVariable ["blood",0.5];
 	_agent synchronizeVariable ["health",0.5];
 	_agent synchronizeVariable ["shock",0.5];
-	_agent synchronizeVariable ["bodytemperature",0.5];
-	_agent synchronizeVariable ["heatcomfort",0.5];
-	_agent synchronizeVariable ["wet",0.5];
 	
 	//set start time
 	_agent setVariable ["starttime",diag_tickTime];
@@ -42,9 +41,8 @@ if (isServer) then
 	};
 	
 	//assign blindness
-
 	diag_log [format ["headgear slot: %1, type of: %2",(_agent itemInSlot "headgear"),typeOf (_agent itemInSlot "headgear")],""]; // DEBUG
-	if (typeOf (_agent itemInSlot "headgear") == "Cover_BurlapSack") then
+	if ((_agent itemInSlot "headgear") isKindOf "Cover_BurlapSack") then
 	{	
 		diag_log [format ["setting the aperture, fading sound, fading speech"],""]; // DEBUG
 		_agent spawnForPlayer {setAperture 10000;1 fadeSound 0.4;1 fadeSpeech 0.4;};
@@ -105,11 +103,6 @@ if (isServer) then
 			sleep DZ_TICK;
 		};
 	};
-	
-	
-	//set muscle cramp
-	// _musclec = _agent getVariable["musclecramp",0];
-	 //_agent SetMuscleCramp _musclec;
 	
 	//event handlers
 	_firedEH = _agent addEventHandler ["fired", {_this spawn event_weaponFired}];

@@ -1,14 +1,14 @@
 private["_agent","_uid"];
 _agent = _this select 0;
 _killer = _this select 1;
-//respawn new
-diag_log format ["ZOMBIE DIED: %1 spawned",_zombie];
+
+_type = typeOf _agent;
+_last_pos = getPosATL _agent;
 
 //cleanup
-_cleanup_delay = 120 + floor(random(60));
+_cleanup_delay = floor(random(60));
 sleep _cleanup_delay;
 deleteVehicle _agent;
-
 
 _Z_spawnparams = [
   1 / 25.0,     // SPN_gridDensity
@@ -35,8 +35,10 @@ _zombie = createAgent [_types select _rnd, _pos, [], 1, "NONE"];
 _zombie addeventhandler ["HandleDamage",{_this call event_hitZombie} ];
 _zombie addeventhandler ["killed",{null = _this spawn event_killedZombie} ];
 _zombie setDir floor(random 360);
+
 if ((itemInHands _killer) isKindOf "DefaultWeapon") then
 {
 	_zombie reveal [_killer, 4];
 };
+
 diag_log format ["ZOMBIE DIED: %1, %2 spawned",_type,_zombie];

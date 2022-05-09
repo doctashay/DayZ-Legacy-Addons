@@ -5,9 +5,9 @@ _isSea = surfaceIsWater _pos;
 _isWater = surfaceType _pos == "FreshWater";
 _bones = [];
 _delta = 0;
-_totalHeatIsolation = 0;
 _playerWet = _agent getVariable ["wet",0];
-_isDrying = true;
+_gettingWet = _agent getVariable ["gettingWet",false];
+_isDrying = !_gettingWet;
 	
 //SeaWater or Water
 if (_isWater or _isSea) then
@@ -66,21 +66,37 @@ if (_isWater or _isSea) then
 }
 else
 {
-	_isDrying = true;
-	//skin temp + temperature + sunshine
-	_delta = -(
-		(32 * 0.01)		//skin temperature
-		+ (airTemperature * 0.01)	//air temperature 
-		+ worldLightScale		//sunshine
-		+ (windSpeed * 0.01)	//wind
-	) * 0.0001 * DZ_SCALE_DRY * DZ_TICK; //reduce to small value
-	
-	_bones = [
-		["Head",1],
-		["Chest",0.6],
-		["Pelvis",0.2],
-		["LeftFoot",0.3]
-	];
+	if (!_gettingWet) then
+	{
+		//probably drying
+		_isDrying = true;
+		//skin temp + temperature + sunshine
+		_delta = -(
+			(32 * 0.01)		//skin temperature
+			+ (airTemperature * 0.01)	//air temperature 
+			+ worldLightScale		//sunshine
+			+ (windSpeed * 0.01)	//wind
+		) * 0.0001 * DZ_SCALE_DRY * DZ_TICK; //reduce to small value
+		
+		_bones = [
+			["Head",1],
+			["Chest",0.6],
+			["Pelvis",0.2],
+			["LeftFoot",0.3]
+		];
+	}
+	else
+	{
+		//getting rained on
+		_delta = 0.02 * rain * DZ_SCALE_SOAK * DZ_TICK;	//increase in wetness
+		_bones = [
+			["Head",1],
+			["Chest",1],
+			["Back",0.7],
+			["Pelvis",0.7],					
+			["LeftFoot",0.7]
+		];
+	};
 };
 
 //check slots assigned to each bone
@@ -110,10 +126,7 @@ else
 _agent setVariable ["wet",_playerWet];
 _agent setVariable ["isdryingstate",_isDrying];
 
-//TEMPERATURE
-
-
-_playerTemperature = _agent getVariable ["bodytemperature",36.5];
-_heatComfort = (_totalHeatIsolation*(1-_playerWet)*2 - (_playerTemperature - (airTemperature + worldLightScale*2 - windSpeed*3 - (getPosASL _agent select 2)/100)));
-
-_agent setVariable ["heatcomfort",_heatcomfort];
+if (_playerWet > 0) then
+{ 
+	[0,_agent,"Wet"] call event_modifier;
+};

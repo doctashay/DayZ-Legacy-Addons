@@ -10,11 +10,9 @@ _projectile = 	_this select 6;
 _destroy = getNumber (configFile >> "CfgMagazines" >> _magazine >> "destroyOnEmpty") == 1;
 if (_destroy) then
 {
+	hint "destroy";
 	_actual = ((itemInHands _unit) itemInSlot "magazine");
-	if (magazineAmmo _actual == 0) then
-	{
-		deleteVehicle _actual;
-	};
+	if (magazineAmmo _actual == 0) then {deleteVehicle _actual};
 };
 
 _shot = getText (configFile >> "CfgWeapons" >> _weapon >> "shotAction");

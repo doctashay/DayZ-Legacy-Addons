@@ -7,7 +7,6 @@ private["_person","_sender","_receiver","_max","_senderQty","_receiverQty","_exc
 _person = _owner;
 _sender = _tool1;
 _type = typeOf _sender;
-_sound = _this;
 
 _config = 	configFile >> "CfgVehicles" >> _type;
 _name = 	getText (_config >> "displayName");
@@ -49,6 +48,5 @@ if (_type == "Consumable_Rags") then
 _dirty = false;
 
 //send response
-//[_person,"craft_rounds"] call event_saySound;
-[_person,_sound] call event_saySound;
+[_person,"craft_rounds"] call event_saySound;
 [_person,format["I have split the %1",_name],"colorAction"] call fnc_playerMessage;

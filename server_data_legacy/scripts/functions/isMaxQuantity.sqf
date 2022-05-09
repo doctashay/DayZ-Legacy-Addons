@@ -11,7 +11,5 @@
 	Returns:
 	Boolean (true if object is at max ammo count).
 */
-
-private ["_itemType","_max","_qty","_result"];
-_result = 	(_this getVariable["quantity",0]) >= getNumber(configFile >> "CfgVehicles" >> typeOf _this >> "stackedMax");
+_result = 	(quantity _this) >= (maxQuantity _this);
 _result

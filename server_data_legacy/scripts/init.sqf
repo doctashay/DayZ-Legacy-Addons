@@ -1,9 +1,3 @@
-//DayZ Legacy 0.44
-//initServer.sqf - Initializes server events and functions.
-//This script has been redirected from dz\modulesDayz and dz\server_data to provide better ability to add or extend functionality.
-
-diag_log "Arrived at redirected initServer.sqf";
-
 DZ_MAX_ZOMBIES = 1000;
 DZ_MAX_ANIMALS = 500;
 
@@ -26,99 +20,84 @@ for "_i" from 0 to (count _hitPoints - 1) do {
 };
 
 //events
-event_saySound =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_saySound.sqf";
-event_weaponFired =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_weaponFired.sqf";
-event_craftMessage = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_craftMessage.sqf";
-event_modifier = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_modifier.sqf";
-event_assessDamage = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_assessDamage.sqf";
-event_transferModifiers = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_transferModifiers.sqf";
-event_igniteObject = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_igniteObject2.sqf";
-event_clearModifiers = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_clearModifiers.sqf";
-event_playerKilled = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_playerKilled.sqf";
-event_hitZombie =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_hitZombie.sqf";
-event_bloodTransfusion = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_bloodTransfusion.sqf";
-event_vehicleDamaged = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_vehicleDamaged.sqf";
-event_killedWildAnimal = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_killedWildAnimal.sqf";
-event_killedZombie = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_killedZombie.sqf";
-event_gasLight = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_gasLight.sqf";
-event_openCan = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\events\event_openCan.sqf";
-player_combineQuantity = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_combineQuantity.sqf";
-player_splitQuantity = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_splitQuantity.sqf";
-player_useItem =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_useItem.sqf";
-player_useItemEnd =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_useItemEnd.sqf";
-player_fillBottle =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_fillBottle.sqf";
-player_stripMagazine = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_stripMagazine.sqf";
-player_loadMagazine = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_loadMagazine.sqf";
-player_addInventory = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_addInventory.sqf";
-player_actionOnTarget = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_actionOnTarget.sqf";
-player_actionOnSelf = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_actionOnSelf.sqf";
-player_actionOnItem = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_actionOnItem.sqf";
-player_combineMoney = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_combineMoney.sqf";
-player_applyBandage = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_applyBandage.sqf";
-player_chamberRound = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_chamberRound.sqf";
-player_loadWeapon = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_loadWeapon.sqf";
-player_pickBerry =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_pickBerry.sqf";
-player_applyDefibrillator = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_applyDefibrillator.sqf";
-player_moveToInventory =	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_moveToInventory.sqf";
+event_saySound =		compile preprocessFileLineNumbers "\dz\server\scripts\events\event_saySound.sqf";
+event_weaponFired =		compile preprocessFileLineNumbers "\dz\server\scripts\events\event_weaponFired.sqf";
+event_craftMessage = 	compile preprocessFileLineNumbers "\dz\server\scripts\events\event_craftMessage.sqf";
+event_modifier = 		compile preprocessFileLineNumbers "\dz\server\scripts\events\event_modifier.sqf";
+event_assessDamage = 	compile preprocessFileLineNumbers "\dz\server\scripts\events\event_assessDamage.sqf";
+event_transferModifiers = 	compile preprocessFileLineNumbers "\dz\server\scripts\events\event_transferModifiers.sqf";
+event_igniteObject = 	compile preprocessFileLineNumbers "\dz\server\scripts\events\event_igniteObject2.sqf";
+event_clearModifiers = 	compile preprocessFileLineNumbers "\dz\server\scripts\events\event_clearModifiers.sqf";
+event_playerKilled = 	compile preprocessFileLineNumbers "\dz\server\scripts\events\event_playerKilled.sqf";
+event_hitZombie =		compile preprocessFileLineNumbers "\dz\server\scripts\events\event_hitZombie.sqf";
+event_bloodTransfusion = compile preprocessFileLineNumbers "\dz\server\scripts\events\event_bloodTransfusion.sqf";
+event_killedWildAnimal = compile preprocessFileLineNumbers "\dz\server\scripts\events\event_killedWildAnimal.sqf";
+event_killedZombie = compile preprocessFileLineNumbers "\dz\server\scripts\events\event_killedZombie.sqf";
+event_gasLight = compile preprocessFileLineNumbers "\dz\server\scripts\events\event_gasLight.sqf";
 
-player_mendItem = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_mendItem.sqf";
-//player_igniteFireplace = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_igniteFireplace.sqf";
-player_RabbitSnareTrap = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_RabbitSnareTrap.sqf";
-player_bearTrap		 = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_bearTrap.sqf";
-player_landMine		 = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_landMine.sqf";
-player_plantStages = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_plantStages.sqf";
-//player_digGreenhouse=		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_digGreenhouse.sqf";
-player_dryClothes = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_dryClothes.sqf";
-player_gutDeadBodyCheck = compile preprocessFileLineNumbers "dzlegacy\server_data\scripts\players\player_gutDeadBodyCheck.sqf";
-player_gutDeadBodyStart = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_gutDeadBodyStart.sqf";
-player_gutDeadBodyEnd = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_gutDeadBodyEnd.sqf";
-player_gutDeadBodyCancel = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_gutDeadBodyCancel.sqf";
-player_useDuctTapeOnItem = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_useDuctTapeOnItem.sqf";
-//player_DigTile = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_DigTile.sqf";
+//players
+//player_checkStealth = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_checkStealth.sqf";
+player_combineQuantity = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_combineQuantity.sqf";
+player_splitQuantity = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_splitQuantity.sqf";
+player_useItem =		compile preprocessFileLineNumbers "\dz\server\scripts\players\player_useItem.sqf";
+player_useItemEnd =		compile preprocessFileLineNumbers "\dz\server\scripts\players\player_useItemEnd.sqf";
+player_fillBottle =		compile preprocessFileLineNumbers "\dz\server\scripts\players\player_fillBottle.sqf";
+player_stripMagazine = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_stripMagazine.sqf";
+player_loadMagazine = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_loadMagazine.sqf";
+player_addInventory = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_addInventory.sqf";
+player_actionOnTarget = compile preprocessFileLineNumbers "\dz\server\scripts\players\player_actionOnTarget.sqf";
+player_actionOnSelf = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_actionOnSelf.sqf";
+player_actionOnItem = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_actionOnItem.sqf";
+player_combineMoney = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_combineMoney.sqf";
+player_applyBandage = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_applyBandage.sqf";
+player_chamberRound = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_chamberRound.sqf";
+player_loadWeapon = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_loadWeapon.sqf";
+player_pickBerry =		compile preprocessFileLineNumbers "\dz\server\scripts\players\player_pickBerry.sqf";
+player_moveToInventory =	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_moveToInventory.sqf";
+player_applyDefibrillator = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_applyDefibrillator.sqf";
+player_mendItem = compile preprocessFileLineNumbers "\dz\server\scripts\players\player_mendItem.sqf";
+player_igniteFireplace = compile preprocessFileLineNumbers "\dz\server\scripts\players\player_igniteFireplace.sqf";
+player_RabbitSnareTrap = compile preprocessFileLineNumbers "\dz\server\scripts\players\player_RabbitSnareTrap.sqf";
 
 //weapons
-weapon_swapHandguard =compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\weapons\weapon_swapHandguard.sqf";
+weapon_swapHandguard =compile preprocessFileLineNumbers "\dz\server\scripts\weapons\weapon_swapHandguard.sqf";
 
 //server
-building_spawnLoot =	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\server\building_spawnLoot.sqf";
-init_spawnLoot = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnLoot.sqf";
-init_spawnZombies = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnZombies.sqf";
-init_spawnWildAnimals = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnWildAnimals.sqf";
-//init_spawnServerEvent = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\spawnServerEvent.sqf";
-player_queued = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_queued.sqf";
+building_spawnLoot =	compile preprocessFileLineNumbers "\dz\server\scripts\server\building_spawnLoot.sqf";
+init_spawnLoot = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\spawnLoot.sqf";
+init_spawnZombies = 	compile preprocessFileLineNumbers "\dz\server\scripts\init\spawnZombies.sqf";
+init_spawnWildAnimals = 	compile preprocessFileLineNumbers "\dz\server\scripts\init\spawnWildAnimals.sqf";
+init_spawnServerEvent = 	compile preprocessFileLineNumbers "\dz\server\scripts\init\spawnServerEvent.sqf";
+player_queued = 		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\player_queued.sqf";
 
 //functions
-
-fnc_generateTooltip = compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\fn_generateTooltip.sqf";
-fnc_inString = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\fn_inString.sqf";
-fnc_inAngleSector =  	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\fn_inAngleSector.sqf";
-fnc_isMaxQuantity = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\isMaxQuantity.sqf";
-BIS_fnc_findSafePos =	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\fn_findSafePos.sqf";
-fnc_generateQuantity =compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\fn_generateQuantity.sqf";
-dayz_losCheck =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\dayz_losCheck.sqf";
-dayz_losChance = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\dayz_losChance.sqf";
-dayz_bulletHit = 		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\dayz_bulletHit.sqf";
-fnc_playerMessage =	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\fn_playerMessage.sqf";
-runZombieBrain =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\runZombieBrain.sqf";
-tick_modifiers =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\tick_modifiers.sqf";
-tick_states =		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\tick_states.sqf";
-tick_environment = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\tick_environment.sqf";
-randomValue =		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\randomValue.sqf";
-dbLoadPlayer = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\dbLoadPlayer.sqf";
-world_surfaceNoise = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\functions\fn_surfaceNoise.sqf";
-farmingFunctions =		[] execVM "\dzlegacy\server_data\scripts\functions\farming.sqf";
-cutoutSeedsFunctions = 	[] execVM "\dzlegacy\server_data\scripts\functions\cutoutSeedsFunctions.sqf";
+fnc_generateTooltip = compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_generateTooltip.sqf";
+fnc_inString = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_inString.sqf";
+fnc_inAngleSector =  	compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_inAngleSector.sqf";
+fnc_isMaxQuantity = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\isMaxQuantity.sqf";
+BIS_fnc_findSafePos =	compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_findSafePos.sqf";
+fnc_generateQuantity =compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_generateQuantity.sqf";
+dayz_losCheck =		compile preprocessFileLineNumbers "\dz\server\scripts\functions\dayz_losCheck.sqf";
+dayz_losChance = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\dayz_losChance.sqf";
+dayz_bulletHit = 		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\dayz_bulletHit.sqf";
+fnc_playerMessage =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_playerMessage.sqf";
+runZombieBrain =		compile preprocessFileLineNumbers "\dz\server\scripts\functions\runZombieBrain.sqf";
+tick_modifiers =		compile preprocessFileLineNumbers "\dz\server\scripts\functions\tick_modifiers.sqf";
+tick_states =		compile preprocessFileLineNumbers "\dz\server\scripts\functions\tick_states.sqf";
+tick_environment = 	compile preprocessFileLineNumbers "\dz\server\scripts\functions\tick_environment.sqf";
+randomValue =		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\randomValue.sqf";
+dbLoadPlayer = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\dbLoadPlayer.sqf";
+world_surfaceNoise = 	compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_surfaceNoise.sqf";
 
 //initialize
-zombie_initialize = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\zombie_initialize.sqf";
-player_initialize = 	compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\player_initialize.sqf";
-init_battery = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\battery_initialize.sqf";
-init_cooker = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\cooker_initialize.sqf";
-init_fireplace = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\fireplace_initialize.sqf";
-init_kindling = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\kindling_initialize.sqf";
-init_flare = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\flare_initialize.sqf";
-init_torch = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\torch_initialize.sqf";
-init_wreck = 		compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init\wreck_initialize.sqf";
+zombie_initialize = 	compile preprocessFileLineNumbers "\dz\server\scripts\init\zombie_initialize.sqf";
+player_initialize = 	compile preprocessFileLineNumbers "\dz\server\scripts\init\player_initialize.sqf";
+init_battery = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\battery_initialize.sqf";
+init_cooker = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\cooker_initialize.sqf";
+init_fireplace = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\fireplace_initialize.sqf";
+init_kindling = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\kindling_initialize.sqf";
+init_flare = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\flare_initialize.sqf";
+init_wreck = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\wreck_initialize.sqf";
 init_lamp =
 {
 	if (isServer) then
@@ -138,14 +117,6 @@ init_newPlayer =
 	_this setVariable ["water",DZ_WATER];
 	_this setVariable ["stomach",DZ_STOMACH];
 	_this setVariable ["diet",DZ_DIET];
-	_this setVariable ["bodytemperature",DZ_TEMPERATURE];
-	_this setVariable ["heatComfort",DZ_HEATCOMFORT];
-	_this setVariable ["wet",0];
-	_this setVariable ["musclecramp",DZ_MUSCLECRAMP];
-	_this setVariable ["restrainedwith",0];
-	_this setVariable ["totalHeatIsolation",DZ_TOTALHEATISOLATION];
-	_this setVariable ["totalWeight",DZ_TOTALWEIGHT];
-	[0,_this,'HitLegs'] call event_modifier; //leg fracture check
 	
 	//get blood type
 	_bloodTypes = getArray (configFile >> "cfgSolutions" >> "bloodTypes"); 
@@ -171,19 +142,8 @@ init_newBody =
 	//move player into body
 	_id selectPlayer _agent;
 	_agent call player_initialize;	
-	[_id] spawnForClient compile "player execFSM '\dzlegacy\modulesDayZ\fsm\brain_player_client.fsm'";
+	[_id] spawnForClient compile "player execFSM '\dz\modulesDayZ\fsm\brain_player_client.fsm'";
 	_agent addEventHandler ["HandleDamage",{_this call event_assessDamage} ];
-		
-	//attach inventory handlers
-	_agent addEventHandler ["ItemAttached",{_this call event_conatinerAttachedToPlayer} ];
-	_agent addEventHandler ["ItemDetached",{_this call event_conatinerDetachedFromPlayer} ];
-	
-	_agent addEventHandler ["InventoryIn",{_this call event_itemInContainer} ];
-	_agent addEventHandler ["InventoryOut",{_this call event_itemOutOfContainer} ];
-	
-	_agent call calc_heatweight;
-	
-	
 	myNotifiers = _agent getVariable ["myNotifiers",[]];
 	_id publicVariableClient "myNotifiers";
 };
@@ -218,6 +178,29 @@ dbSavePlayerPrep =
 	} forEach DZ_PlayerHitpoints;
 	_agent setVariable ["damageArray",_array];
 	//diag_log format ["Saved %1",_array];
+};
+
+dbSavePlayer =
+{
+	if ((lifeState _agent == "ALIVE") and (not captive _agent)) then
+	{
+		_agent call dbSavePlayerPrep;
+		dbServerSaveCharacter _agent;
+		diag_log "Saved as alive";
+	}
+	else
+	{
+		if (!isNull _agent) then
+		{
+			dbKillCharacter _uid;
+			_agent setDamage 1;
+			diag_log "Saved as dead";
+		}
+		else
+		{
+			diag_log "No save, null";
+		};
+	};
 };
 
 player_warningMessage = {
@@ -304,9 +287,9 @@ fnc_generateRscQuantity = {
 	_str = format ["%1%%",_qty];
 	_str
 };
-
+/*
 player_suicide = {
-	_fsm = [_person,_this] execFSM "\dzlegacy\server_data_legacy\scripts\fsm\player_suicide.fsm";
+	_fsm = [_person,_this] execFSM "\dz\server\scripts\fsm\player_suicide.fsm";
 	_person setVariable ["fsm_suicide",_fsm];
 };
 
@@ -331,30 +314,19 @@ event_animHook =
 		};
 	};
 };
-
+*/
 player_transferWater = {
 	_receiverQty = quantity _tool2;
 	_senderQty = quantity _tool1;
-	_name2 = displayName _tool2;
-	_name1 = displayName _tool1;
-	_type = _tool1 getVariable ["liquidType", ""];
+	_name1 = displayName _tool2;
 	
 	if (_receiverQty >= maxQuantity _tool2) exitWith 
 	{
-		[_owner,format["The %1 is already full",_name2],""] call fnc_playerMessage;
-	};
-	if (quantity _tool1 == 0) exitWith 
-	{
-		[_owner,format["The %1 is empty",_name1],""] call fnc_playerMessage;
+		[_owner,format["The %1 is already full",_name1],""] call fnc_playerMessage;
 	};
 	if (damage _tool2 >= 1 || damage _tool1 >= 1) exitWith 
 	{
-		[_owner,format["The %1 is too badly damaged",_name2],""] call fnc_playerMessage;
-	};
-	
-	if ( quantity _tool2 > 0 && (quantity _tool2 < (maxQuantity _tool2) && _tool2 getVariable ["liquidType",""] != _type ) ) exitWith 
-	{
-		[_owner,format["There is already something in the %1",_name2],""] call fnc_playerMessage;
+		[_owner,format["The %1 is too badly damaged",_name1],""] call fnc_playerMessage;
 	};
 	
 	_exchanged = ((_receiverQty + _senderQty) min (maxQuantity _tool2)) - _receiverQty;
@@ -363,32 +335,7 @@ player_transferWater = {
 	_tool2 setQuantity _receiverQty;
 	_tool1 setQuantity _senderQty;
 	
-	_temperature1 = _tool1 getVariable ['temperature',0];
-	_temperature2 = _tool2 getVariable ['temperature',0];
-	_temperature = (_temperature1 + _temperature2) / 2 min 100; //max temp for liduids is set to 100 degree Celsius
-	_tool2 setVariable ['temperature', _temperature];
-	
-	_tool2 setVariable [ "liquidType", _type];
-	
-	[_tool1,_tool2,"Direct",1] call event_transferModifiers;
-	[_owner,format["You have poured the %2 into the %1",_name2,_name1],"colorAction"] call fnc_playerMessage;
-};
-
-player_canUseDrinkAction =
-{
-	_canUse = true;
-	_item =  _this select 0;
-	_person = _this select 1;
-
-	if ( _person getVariable ['isUsingSomething',0] != 0 ) then {_canUse = false;};
-	
-	if ( quantity _item <= 0 ) then {_canUse = false;};
-	
-	if ( !(isNull itemInHands _person) && (isNull itemParent _item)) then {_canUse = false;};
-	
-	if (((itemParent _item) isKindOf 'FireplaceBase')) then {_canUse = false;}; //is attached to fireplace
-	
-	_canUse
+	[_owner,format["You have poured the %2 into the %1",_name1,displayName _tool1],"colorAction"] call fnc_playerMessage;
 };
 
 player_paintItem = {
@@ -433,18 +380,12 @@ player_paintItem = {
 		//move attachments to new weapon
 		_array = getArray(_newItemCfg >> "attachments");
 		{
-			_hattn = (_tool1 itemInSlot _x);
 			//prevents removing of flashlight on m4
-			if (_hattn isKindOf "HandguardBase") then {
-				_hatt = _newItem createInInventory (typeOf _hattn);
-				_hatt setDamage (damage _hattn);
-			}else{
-				if (_hattn isKindOf "Att_Light_Universal") then {
-					_light = _hattn;
-					_hasLight = true;
-				} else {
-					_newItem moveToInventory _hattn;
-				};
+			if ((_tool1 itemInSlot _x) isKindOf "Attachment_Light_Universal") then {
+				_light = (_tool1 itemInSlot _x);
+				_hasLight = true;
+			} else {
+				_newItem moveToInventory (_tool1 itemInSlot _x);
 			};
 		} forEach _array;
 		if (_hasLight) then {
@@ -524,31 +465,39 @@ fnc_processItemWetness = {
 		_this refers to whether item is parented to player or not
 	*/
 	
-	//if there are no clothes on that part of body, dry/wet player instead
-	if (isNull _item)exitWith{
-		_playerWet = ((_playerWet + (_delta * 0.2 * _scale)) min 1) max 0;
-	};
-	
-	//if clothes are already dry, dry player instead
-	_wetness = _item getVariable ["wet",0];
-	if(_wetness == 0 and _isDrying)exitWith{
-	_playerWet = ((_playerWet + (_delta * 0.01 * _scale)) min 1) max 0;
-	};
-	
-	//if clothes are already soaked, wet player instead
-	_absorbancy = getNumber(configFile >> "cfgVehicles" >> typeOf _item >> "absorbency");
-	if((_wetness == _absorbancy or _absorbancy == 0) and !_isDrying)exitWith{
-		//if player has waterproof clothes and is in water he gets wet, if its just raining, then not
-		if(_isWater)then{
-			_playerWet = ((_playerWet + (_delta * (_absorbancy+0.2) * _scale)) min 1) max 0;
-		};
+	if (!isNull _item) then
+	{
+		if (_this) then {_filledSlots = _filledSlots + 1};
+		
+		//is the player getting wet?
+		_wetness = _item getVariable ["wet",0];
+		if (_isDrying and (_wetness == 0)) exitWith {};
+		
+		//is the item actually absorbent?
+		_absorbancy = getNumber(configFile >> "cfgVehicles" >> typeOf _item >> "absorbency");
+		if (_absorbancy == 0) exitWith {};
 
+		//is the item already wet enough?
+		private["_change"];
+		_change = (_delta * _scale);
+		if ((_wetness >= _scale) and !_isDrying) exitWith {};
+
+		//calculate wetness
+		_wetness = (((_wetness + (_delta * _scale)) min 1) max 0) * _absorbancy;
+		if (_this) then
+		{
+			//check if should make player wet or dry
+			if ((_wetness == 1) or (_wetness == 0)) then
+			{
+				_playerWet = (((_playerWet + _change) min 1) max 0);
+			};			
+		};
+		_item setVariable ["wet",_wetness];
+	}
+	else
+	{
+		_playerWet = (((_playerWet + (_delta * _scale)) min 1) max 0);
 	};
-	
-	//dry/wet clothes
-	//_wetness = (((_wetness + (_delta * _scale)) min 1) max 0) * _absorbancy;
-	_wetness = ((_wetness + (_delta * _scale)) min _absorbancy) max 0;
-	_item setVariable ["wet",_wetness];
 };
 
 /*
@@ -702,25 +651,19 @@ player_fnc_useItemEnd =
 
 event_fnc_sendActvMessage = {
 	//send an activation message
-	private["_messages","_style","_output","_statement","_print"];
+	private["_messages","_style","_output","_statement"];
 	//_stages = _cfgModifier >> "Stages";
 	//_cfgStage = _stages select _stage;
 
 	// don't do damage for dead bodies
 	if(!alive _person) exitWith {};
 
-	_postpone = getNumber (_cfgStage >> "postponeMessageUntilCooldown");
-	
-	if(_postpone == 0) then {
-	
-		_messages = getArray (_cfgStage >> "messages");
-		if (count _messages > 0) then
-		{
-			_style = getText (_cfgStage >> "messageStyle");
-			_output = (_messages select (floor random(count _messages)));
-			[_person,_output,_style] call fnc_playerMessage;
-		};
-		
+	_messages = getArray (_cfgStage >> "messages");
+	if (count _messages > 0) then
+	{
+		_style = getText (_cfgStage >> "messageStyle");
+		_output = (_messages select (floor random(count _messages)));
+		[_person,_output,_style] call fnc_playerMessage;
 	};
 	
 	_myNotifiers = _person getVariable ["myNotifiers",[]];
@@ -950,7 +893,6 @@ event_fnc_advanceModifier = {
 /*
 	PLAYER FUNCTIONS
 */
-
 player_fnc_roundsDistribute = {
 	/*
 	Used when distributing rounds amongst piles
@@ -958,7 +900,7 @@ player_fnc_roundsDistribute = {
 	*/
 	private["_pile","_receiverQty","_exchanged","_max"];
 	/*
-	_max = 	getNumber (configFile >> "CfgVehicles" >> _ammo >> "count");
+	_max = 	getNumber (configFile >> "CfgVehicles" >> _ammo >> "stackedMax");
 	if (_quantity <= 0) exitWith {};
 	_pile = objNull;
 	{
@@ -980,33 +922,28 @@ player_fnc_roundsDistribute = {
 	if (_quantity > 0) then 
 	{
 		_pile = [_ammo,_parent,_person] call player_addInventory;
-		_pile setMagazineAmmo _quantity;
+		_pile setQuantity _quantity;
 	};
 	*/
-	_magdmg = _this;
-	_max = 	getNumber (configFile >> "CfgVehicles" >> _ammo >> "count");
+	_max = 	getNumber (configFile >> "CfgVehicles" >> _ammo >> "stackedMax");
 	_sound = getText (configFile >> "CfgVehicles" >> _ammo >> "emptySound");
 	if (_quantity > _max)then{
 		_amam = floor (_quantity/_max);
 		if(_amam < 8)then{
 			for [{_x=0},{_x<_amam},{_x=_x+1}] do{
 				_pile = [_ammo,_parent,_person] call player_addInventory;
-				_pile setMagazineAmmo _max;
+				_pile setQuantity _max;
 			};
 			if(_amam*_max != _quantity)then{
 				_pile = [_ammo,_parent,_person] call player_addInventory;
-				_pile setMagazineAmmo (_quantity-(_amam*_max));
+				_pile setQuantity (_quantity-(_amam*_max));
 			};
 			[_person,_sound] call event_saySound;
 		};
 	}else{
 		_pile = [_ammo,_parent,_person] call player_addInventory;
-		_pile setMagazineAmmo _quantity;
+		_pile setQuantity _quantity;
 		[_person,_sound] call event_saySound;
-	};
-	//if unpacked ammo box is damaged pass it to ammo
-	if(_magdmg != 0)then{
-		_pile setDamage _magdmg;
 	};
 };
 
@@ -1130,17 +1067,7 @@ player_fnc_processStomach = {
 		Calculates how much total volume in the stomach should change based on energy/water used by player for actions or food/drink consumed by player
 	*/	
 	_person = _this select 0;
-	_item = _this select 1;	 
-	
-	if (typename _item == "STRING") then
-	{
-		_itemClass = _item;
-	}
-	else
-	{
-		_itemClass = typeOf _item;
-	};
-	
+	_itemClass = _this select 1;
 	_itemCfg = configFile >> "CfgVehicles" >> _itemClass;
 	if (count _this > 2) then
 	{
@@ -1163,56 +1090,20 @@ player_fnc_processStomach = {
 	_isFood = _itemClass isKindOf "FoodItemBase";
 	_isDrink = _itemClass isKindOf "DrinksItemBase";
 	_isMedicine = _itemClass isKindOf "MedicalItemBase";
-	_randomLiquid = _itemClass isKindOf "BottleBase";
 	
 	switch true do
 	{
-		case (_isFood || _isDrink || _randomLiquid):
+		case (_isFood or _isDrink):
 		{
 			// pull food and drink nutritions parameters from Nutrition class
 			_nutritionConfig = _itemCfg >> "Nutrition";
-/*
-			if ( _randomLiquid ) then
-			{
-				_liquidType = (itemInHands _person) getVariable ["liquidType", ""];
-				
-				if ( _liquidType != "") then
-				{
-					_nutritionConfig = configFile >> "cfgLiquidTypes" >> _liquidType >> "Nutrition";
-				};
-			};
-*/
-			_totalVolume = 0;
-			_consumableWater = 0;
-			_consumableEnergy = 0;
-			_consumableNutriIndex = 0;
+			_totalVolume = getNumber (_nutritionConfig >> "totalVolume");
+			_consumableWater = getNumber (_nutritionConfig >> "water");
+			_consumableEnergy = getNumber (_nutritionConfig >> "energy");
+			_consumableNutriIndex = getNumber (_nutritionConfig >> "nutritionalIndex");
 			
-			if ( !( isNumber (_nutritionConfig >> 'totalVolume'))) then
-			{
-				// pull food and drink nutritions parameters from Stages class
-				//_item = _person getVariable "inUseItem";
-				
-				_food_stage = _item getVariable 'food_stage';
-				_food_stage_name = _food_stage select 0;
-				_food_stage_params = getArray (_itemCfg >> "Stages" >> _food_stage_name);
-				_nutrition_values = _food_stage_params select 0;
-				
-				_totalVolume = _nutrition_values select 0;
-				_consumableWater = _nutrition_values select 2;
-				_consumableEnergy = _nutrition_values select 1;
-				_consumableNutriIndex = _nutrition_values select 3;
-			}
-			else
-			{
-				_totalVolume = getNumber (_nutritionConfig >> "totalVolume");
-				_consumableWater = getNumber (_nutritionConfig >> "water");
-				_consumableEnergy = getNumber (_nutritionConfig >> "energy");
-				_consumableNutriIndex = getNumber (_nutritionConfig >> "nutritionalIndex");
-			};
-
 			//statusChat [format ["D> energy:%1, water:%2, stomach:%3, scale:%4 (%5)",_energy,_water,_stomach,_scale,isNil "_scale"],""]; // debug: actual values of states
-			//statusChat [format ["D> _totalVolume:%1, _consumableWater:%2, _consumableEnergy:%3, _consumableNutriIndex: %4",_totalVolume,_consumableWater,_consumableEnergy, _consumableNutriIndex],""]; 
-
+			
 			// volume of portion actually eaten/drunk/used
 			_portionVolume = _totalVolume * _scale; // ??Am I sure to get proper scale from actionOnSelf??
 			
@@ -1220,13 +1111,11 @@ player_fnc_processStomach = {
 			_energyGathered = _consumableEnergy * _scale; // energy actually gathered from serving		
 			_energy = _energy + _energyGathered;
 			_person setVariable ["energy",_energy];
-			//dbStats ["calories",_person,_energyGathered];
-
+			
 			// change water
 			_waterGathered = _consumableWater * _scale; // water actually gathered from serving
 			_water = _water + _waterGathered;
 			_person setVariable ["water",_water];
-			//dbStats ["water",_person,_waterGathered];
 			
 			// change diet
 			_dietGathered = _consumableNutriIndex * _scale * 0.01; // nutrients actually gathered from serving	
@@ -1236,23 +1125,6 @@ player_fnc_processStomach = {
 			// change stomach volume
 			_stomach = _stomach + _portionVolume;
 			_person setVariable ["stomach",_stomach];
-			
-			/*
-			//transfer item modifiers
-			if (typename _item == "STRING") then
-			{
-				
-				_modifiers = getArray (configFile >> "CfgVehicles" >> _b >> "diseases");				
-			}
-			else
-			{
-				_modifiers = _item getVariable ['modifiers',[]];
-			};
-			
-			{
-				[0,_person,_x] call event_modifier;
-			} foreach _modifiers;
-			*/
 		};
 		case _isMedicine:
 		{
@@ -1284,13 +1156,11 @@ player_vomit = {
 		[_agent,"action_vomit"] call event_saySound;
 		
 		//remove contents
-		
-		_energy = (_energy - 600) max -1;
-		_agent setVariable ["energy",_energy];		
-
-
 		_stomach = 0;
 		_agent setVariable ["stomach",_stomach];
+			
+		_energy = (_energy - 600) max 100;
+		_agent setVariable ["energy",_energy];		
 			
 		_water = (_water - 1000);
 		_agent setVariable ["water",_water];
@@ -1304,6 +1174,7 @@ player_vomit = {
 	};
 };
 
+
 /*
 
 FISHING 
@@ -1313,7 +1184,7 @@ FISHING
 fishing_event_add={
 	_owner = _this select 0;
 	fishingpos =  _this select 1;
-	_owner addEventHandler ['AnimChanged','_owner=_this select 0;if(abs (((getPosATL _owner) select 0) - fishingpos) > 0.1)then{_owner call fishing_event_remove;itemInHands _owner powerOn false;}'];
+	_owner addEventHandler ['AnimChanged','_owner=_this select 0;if(abs (((getPosATL _owner) select 0) - fishingpos) > 0.00001)then{_owner call fishing_event_remove;itemInHands _owner powerOn false;}'];
 };
 
 fishing_event_remove={
@@ -1349,266 +1220,12 @@ build_TentContainer =
 	};
 };
 
-
 pack_TentContainer = 
 {
 	if ( isServer ) then
 	{
-		deleteVehicle nearestobject [_this select 0, "Tent_ClutterCutter"]; // delete cutter
-
-		_hp = damage (_this select 0);
 		deleteVehicle (_this select 0);
-
 		_person = (_this select 1);
 		_tent = [(_this select 2),_person] call player_addInventory;
-		_tent setDamage _hp;
 	};
-};
-
-player_drown = {
-	_agent = _this select 0;
-	_branch = _this select 1;
-	_dmg = _agent getVariable ["underwater",0];
-	if(_branch == 0)then{
-		if(_dmg > 0)then{
-			_agent setVariable ["underwater",0];
-		};
-	}else{
-		_dmg = _dmg + 1;
-		if(_dmg > 30)then{_agent setDamage 1;}else{
-			if(_dmg > 27)then{[_agent,"I am drowning","colorImportant"] call fnc_playerMessage;
-				if (isPlayer _agent) then
-				{
-					effectDazed = true;
-					(owner _agent) publicVariableClient "effectDazed";
-				};
-			}else{
-				if(_dmg > 23)then{[_agent,"I am going to drown","colorImportant"] call fnc_playerMessage;}else{
-					if(_dmg > 15)then{[_agent,"I am running out of air",""] call fnc_playerMessage;};
-				};
-			};
-		};
-		_agent setVariable ["underwater",_dmg];
-	};
-};
-
-
-//Returns global X,Y pos according to given offset and direction
-fnc_getRelativeXYPos = {
-	_x = (_this select 0) select 0;
-	_y = (_this select 0) select 1;
-	_offsetX = (_this select 1) select 0;
-	_offsetY = (_this select 1) select 1;
-	_dir = _this select 2;
-	
-	_xPos = _x + (sin _dir * _offsetX);
-	_yPos = _y + (cos _dir * _offsetX);
-	_xPos = _xPos + (sin (_dir+90) * _offsetY);
-	_yPos = _yPos + (cos (_dir+90) * _offsetY);
-	[_xPos, _yPos];
-};
-
-/*
-	Adds quantity to given item and keeps it within its limits.
-	Negative parameter is supported and the item is automatically deleted when its quantity is <= 0
-	Return value is resulted quantity
-	[_item, _addedQuantity] call fnc_addQuantity;
-*/
-fnc_addQuantity = {
-	_item = _this select 0;
-	_amount = _this select 1;
-	_resultedQuantity = quantity _item + _amount;
-	if (_resultedQuantity > 0) then {
-		if (_resultedQuantity > maxQuantity _item) then {
-			_resultedQuantity = maxQuantity _item;
-		};
-		_item setQuantity _resultedQuantity;
-		_resultedQuantity;
-	}else{ //Delete empty items
-		deleteVehicle _item;
-		_resultedQuantity;
-	};
-};
-
-/*
-	Adds multiple items of the same type into the user's inventory.
-	Returns array of those items.
-	[_itemType, _itemCount, _user] call fnc_addItemCount;
-*/
-fnc_addItemCount = {
-	_itemType = _this select 0;
-	_itemCount = _this select 1;
-	_user = _this select 2;
-	_listOfCreatedItems = [];
-	while {_itemCount > 0} do
-	{
-		_itemCount = _itemCount - 1;
-		_item = [_itemType, _user] call player_addInventory;
-		_item setQuantity maxQuantity _item;
-		_listOfCreatedItems = _listOfCreatedItems + [_item];
-	};
-	_listOfCreatedItems;
-};
-
-/*
-	Used in cutting firewood into smaller sticks.
-	[_user, _tool, _axedFirewood, _typeOfResultedObject, _quantityOfResultedObject] call fnc_axeFirewoodIntoSticks;
-*/
-fnc_axeFirewoodIntoSticks = {
-	_user = _this select 0;
-	_tool = _this select 1;
-	_wood = _this select 2;
-	_resultObject = [_this select 3, _user] call player_addInventory;
-	_resultQuantity = _this select 4;
-	
-	_resultObject setQuantity _resultQuantity;
-	_tool setDamage (damage _tool + 0.001);
-	[_user, format['I have made %1 wooden sticks out of 1 %2.',quantity _resultObject, displayName _wood],'colorAction'] call fnc_playerMessage;
-	[_wood, -1] call fnc_addQuantity;
-};
-
-/*
-	Changes food stage with visual representation.
-	[_food, _food_stage_name_new] call fnc_changeFoodStage;
-*/
-fnc_changeFoodStage =
-{
-	//clear modifiers
-	_food_clear_modifiers = ['FoodPoisoning_MediumImpact','FoodPoisoning_LightImpact','Cholera','Salmonellosis']; 	//list of modifiers to be cleared
-	_clear_modifiers =
-	{
-		_food_object =  _this;
-		
-		{
-			_modifier = _x;
-			
-			[1, _food_object, _modifier] call event_modifier;
-		
-		} foreach _food_clear_modifiers;
-	};
-	
-	_can_change_to_stage = 
-	{
-		private["_food_stage","_action_and_stage","_can_change","_food","_config_name","_food_stage_params","_config_food","_new_stage","_stage","_food_stages"];
-		_food = _this select 0;
-		_new_stage = _this select 1;
-		_config_name = "CfgVehicles";
-		_config_food = configFile >> _config_name >> typeOf _food;
-		_food_stage = _food getVariable ['food_stage', ['Raw',0,0,0]];
-		_food_stage_name = _food_stage select 0;
-		_food_stage_params = getArray (_config_food >> "Stages" >> _food_stage_name);
-		_food_stages = _food_stage_params select 4;
-		
-		_can_change = false;
-		for [{_i = 0}, {_i < (count _food_stages)}, {_i = _i + 1}] do
-		{
-			_action_and_stage = _food_stages select _i;
-			_stage = _action_and_stage select 1;
-			
-			if (_stage == _new_stage) then
-			{
-				_can_change = true;
-			};
-		};
-		
-		_can_change
-	};
-	
-	//transfer modifiers
-	_transfer_food_modifiers =
-	{
-		private["_food_object","_food_stage_name","_food_stage_params","_modifiers"];
-		_food_object = _this select 0;
-		_food_stage_name = _this select 1;
-		
-		//food params (new)
-		_food_stage_params = getArray (_config_food >> "Stages" >> _food_stage_name);
-		_modifiers = _food_stage_params select 2;	
-		
-		{
-			_modifier = _x;
-			
-			//debugLog
-			//diag_log format["Modifier %1 transfered to %2.", _modifier, _food_object];
-			
-			[0, _food_object, _modifier] call event_modifier;
-		
-		} foreach _modifiers;
-		
-		//debugLog
-		//diag_log format["Modifiers transfer done! (modifiers count %1).", count _modifiers];
-	};	
-	
-	private["_food","_food_stage","_food_stage_name_new","_food_stage_params","_food_stage_set","_food_selection_index","_food_texture_index","_food_material_index"];
-	_food = _this select 0;
-	_food_stage_name_new = _this select 1;
-	
-	//food stage transitional condition - can change from-to?
-	//except for init phase
-	_food_stage = _food getVariable 'food_stage';
-	_can_change_stage = [_food, _food_stage_name_new] call _can_change_to_stage;
-	if (!(isNil "_food_stage") and 
-		!_can_change_stage ) exitWith {};
-	
-	//get food params (new stage)
-	_config_name = "CfgVehicles";
-	_config_food = configFile >> _config_name >> typeOf _food;
-	_food_stage_params = getArray (_config_food >> "Stages" >> _food_stage_name_new);
-	_food_appearance = _food_stage_params select 3;
-	
-	_food_selection_index = _food_appearance select 0;	
-	_food_texture_index = _food_appearance select 1;
-	_food_material_index = _food_appearance select 2;
-	
-	_food_stage = _food getVariable ['food_stage', ['Raw',0,0,0]];
-	_food_stage_name = _food_stage select 0;
-	
-	//TRANSFER MODIFIERS
-	//clear modifiers 
-	_food_min_temp_to_cook = (_food_stage_params select 1) select 0;
-	_food_temperature = _food getVariable ['temperature', 0];
-	if ( _food_temperature >= _food_min_temp_to_cook ) then
-	{	
-		_food call _clear_modifiers;  //clear modifiers only if the food changed stage because of heat
-	};
-	
-	//transfer new modifiers
-	[_food, _food_stage_name_new] call _transfer_food_modifiers;
-	
-	//merge stages
-	//merge food stage name
-	_food_stage set [0, _food_stage_name_new];
-	
-	//merge selection
-	if (_food_selection_index >= 0) then 
-	{
-		_food_stage set [1, _food_selection_index];
-	};
-	
-	//merge texture
-	if (_food_texture_index >= 0) then 
-	{
-		_food_stage set [2, _food_texture_index];
-	};
-	
-	//merge material
-	if (_food_material_index >= 0) then 
-	{
-		_food_stage set [3, _food_material_index];
-	};
-	
-	//set food stage
-	_food setVariable ["food_stage", _food_stage]; 
-	
-	//refresh visual		
-	_food call event_fnc_foodStage;
-};
-
-//checks if given surface is soft
-fnc_isSoftSurface = {
-	_surCheck = _this;
-	if (_surCheck in ["hlina", "CRGrass1", "CRGrass2", "CRForest1", "CRForest2", "CRGrit1", "Carpet2"]) exitWith {
-		true;
-	};
-	false;
 };

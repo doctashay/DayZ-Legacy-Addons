@@ -96,7 +96,7 @@ switch _state do
 		//move item into hands
 		_inHands = itemInHands _person;
 		if (_inHands != _item) exitWith
-		{	
+		{
 			_person setVariable ["inUseItem",_item];
 			_person setVariable ["inUseTool",_tool2];
 			_person setVariable ["previousItem",_inHands];
@@ -104,16 +104,7 @@ switch _state do
 			//_string = format["null = [2,%3,_this] spawn player_actionOnItem",str(_item),str(_tool2),str(_actionName)];
 			_person playAction ["disarm",compile _string];
 		};		
-		/*
-		if (!_override) then	//runs only if not needed to swap something into hands
-		{
-			_person setVariable ["previousItem",_inHands];
-		};
-		*/		
-		
-		_person setVariable ["inUseItem",_item];
-		_person setVariable ["inUseTool",_tool2];
-		
+				
 		//conduct action
 		//_string = format["[1,%1,_this,%2,%3] call player_actionOnItem",str(_itemType),_scale,str(_actionName)];
 		//[0,[_tool1,_tool2],_name,_owner] call player_actionOnItem;
@@ -123,7 +114,7 @@ switch _state do
 	};
 	case 1:
 	{	
-		//hint str(_this);
+		hint str(_this);
 		
 		_person = _this select 1;
 		_actionName = _this select 2;

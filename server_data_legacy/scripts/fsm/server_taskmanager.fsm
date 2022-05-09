@@ -3,7 +3,7 @@
 /*
 item0[] = {"init",0,250,50.000000,-275.000000,150.000000,-225.000000,0.000000,"init"};
 item1[] = {"is_server",4,4314,50.000000,-200.000000,150.000000,-150.000000,0.000000,"is" \n "server"};
-item2[] = {"process_saves",2,250,50.000000,-125.000000,150.000000,-75.000000,0.000000,"process" \n "saves"};
+item2[] = {"do_nothing_",2,250,50.000000,-125.000000,150.000000,-75.000000,0.000000,"do nothing!"};
 item3[] = {"wait",4,218,50.000000,-50.000000,150.000000,0.000000,0.000000,"wait"};
 item4[] = {"",7,210,21.000000,-104.000000,29.000000,-96.000000,0.000000,""};
 item5[] = {"recalculate_world",2,250,50.000000,25.000000,150.000000,75.000000,0.000000,"recalculate" \n "world" \n "variables"};
@@ -21,8 +21,8 @@ link6[] = {5,6};
 link7[] = {6,7};
 link8[] = {7,4};
 link9[] = {8,9};
-globals[] = {25.000000,1,0,0,0,640,480,1,152,6316128,1,-119.836777,320.316467,210.986923,-323.828613,823,1000,1};
-window[] = {2,-1,-1,-1,-1,1152,210,1181,210,3,845};
+globals[] = {25.000000,1,0,0,0,640,480,1,152,6316128,1,-124.054108,464.641388,299.419952,-330.047913,823,880,1};
+window[] = {2,-1,-1,-1,-1,1062,120,1091,120,3,845};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -52,7 +52,7 @@ class FSM
         class is_server
         {
           priority = 0.000000;
-          to="process_saves";
+          to="do_nothing_";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"isServer"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"worldLightScale = 0;" \n
@@ -67,7 +67,7 @@ class FSM
            "[""infected"",""building""] setTargetDistanceLimit 0; " \n
            "[""infected"",""player""] setTargetDistanceLimit 200;" \n
            "" \n
-           "call compile preprocessFileLineNumbers ""\dzlegacy\server_data\scripts\initEvents.sqf"";" \n
+           "call compile preprocessFileLineNumbers ""\dz\server\scripts\initEvents.sqf"";" \n
            "" \n
            "if (DZ_MP_CONNECT) then" \n
            "{" \n
@@ -80,29 +80,31 @@ class FSM
            "				_x call dbSavePlayerPrep;" \n
            "				if (alive _x) then {" \n
            "					_result = dbServerSaveCharacter _x;" \n
-           "					_pos = _x getVariable [""p1"",[0,0,0]];" \n
-           "					if (_pos distance _x > 1000) then" \n
-           "					{" \n
-           "						_x setPosATL _pos;" \n
-           "						[owner _x] spawnForClient {disableUserInput true};" \n
-           "					};" \n
            "				};" \n
-           "				_x setVariable [""p1"",getPosATL _x];		" \n
            "			} forEach players;" \n
            "			sleep 120;" \n
            "		};" \n
            "	};" \n
-           "};"/*%FSM</ACTION""">*/;
+           "};" \n
+           "" \n
+           "_totalPlayers = 0;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
     };
     /*%FSM</STATE>*/
-    /*%FSM<STATE "process_saves">*/
-    class process_saves
+    /*%FSM<STATE "do_nothing_">*/
+    class do_nothing_
     {
-      name = "process_saves";
+      name = "do_nothing_";
       init = /*%FSM<STATEINIT""">*/"_waitTime = diag_tickTime;" \n
+       "" \n
+       "if (_totalPlayers != count players) then" \n
+       "{" \n
+       "	diag_log ""SERVER: New players, sending weather update"";" \n
+       "	publishForecast;" \n
+       "	_totalPlayers = count players;" \n
+       "};" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -177,7 +179,7 @@ class FSM
         class true
         {
           priority = 0.000000;
-          to="process_saves";
+          to="do_nothing_";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
