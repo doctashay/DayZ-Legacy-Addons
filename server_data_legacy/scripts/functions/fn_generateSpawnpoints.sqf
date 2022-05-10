@@ -1,4 +1,4 @@
-call compile preprocessFileLineNumbers "\dz\modulesDayZ\init.sqf";
+call compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\init.sqf";
 
 fn_generateSpawnPoints = 
 {
