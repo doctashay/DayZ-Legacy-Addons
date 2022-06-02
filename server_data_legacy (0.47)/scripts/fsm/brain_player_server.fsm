@@ -1,0 +1,392 @@
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, DayZ Player Watcher">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"init",0,250,50.000000,-275.000000,150.000000,-225.000000,0.000000,"init"};
+item1[] = {"player_control",4,218,50.000000,-200.000000,150.000000,-150.000000,0.000000,"player" \n "control"};
+item2[] = {"action_tick",2,250,50.000000,-125.000000,150.000000,-75.000000,0.000000,"action tick"};
+item3[] = {"tick",4,218,-75.000000,-125.000000,25.000000,-75.000000,0.000000,"tick"};
+item4[] = {"",7,210,-28.999992,196.000000,-21.000008,204.000000,0.000000,""};
+item5[] = {"long",4,218,50.000000,100.000000,150.000000,150.000000,1.000000,"long"};
+item6[] = {"consider_saving",2,250,50.000000,175.000000,150.000000,225.000000,0.000000,"consider saving"};
+item7[] = {"save",4,218,50.000000,250.000000,150.000000,300.000000,1.000000,"save"};
+item8[] = {"process_save",2,250,50.000000,325.000000,150.000000,375.000000,0.000000,"process save"};
+item9[] = {"",7,210,-29.000000,346.000000,-21.000000,354.000000,0.000000,""};
+item10[] = {"dead",4,218,200.000000,150.000000,300.000000,200.000000,4.000000,"dead"};
+item11[] = {"null",4,218,200.000000,50.000000,300.000000,100.000000,0.000000,"null"};
+item12[] = {"end",1,250,325.000000,100.000000,425.000000,150.000000,0.000000,"end"};
+item13[] = {"true",8,218,50.000000,-50.000000,150.000000,0.000000,0.000000,"true"};
+item14[] = {"reaction_tick",2,250,50.000000,25.000000,150.000000,75.000000,0.000000,"reaction tick"};
+item15[] = {"",7,210,-28.999998,46.000004,-21.000002,54.000000,0.000000,""};
+item16[] = {"____FAKE____",9,640,0.000000,0.000000,0.000000,0.000000,0.000000,"____FAKE____"};
+link0[] = {1,2};
+link1[] = {2,10};
+link2[] = {2,11};
+link3[] = {2,13};
+link4[] = {3,2};
+link5[] = {4,15};
+link6[] = {5,6};
+link7[] = {6,4};
+link8[] = {6,7};
+link9[] = {6,10};
+link10[] = {6,11};
+link11[] = {7,8};
+link12[] = {8,9};
+link13[] = {8,10};
+link14[] = {8,11};
+link15[] = {9,4};
+link16[] = {10,12};
+link17[] = {11,12};
+link18[] = {13,14};
+link19[] = {14,5};
+link20[] = {14,10};
+link21[] = {14,11};
+link22[] = {14,15};
+link23[] = {15,3};
+link24[] = {16,1};
+globals[] = {25.000000,1,0,0,0,640,480,1,149,6316128,1,-159.764725,542.588013,505.206970,-348.198425,823,1000,1};
+window[] = {2,-1,-1,-1,-1,1062,120,1091,120,3,845};
+*//*%FSM</HEAD>*/
+class FSM
+{
+  fsmName = "DayZ Player Watcher";
+  class States
+  {
+    /*%FSM<STATE "init">*/
+    class init
+    {
+      name = "init";
+      init = /*%FSM<STATEINIT""">*/"_agent = 		_this;" \n
+       "_saveTime = diag_tickTime;" \n
+       "_savedPos = getPosATL _agent;" \n
+       "_lastInventory = (count itemsInInventory _agent);" \n
+       "_lastCargo = (count itemsInCargo _agent);" \n
+       "" \n
+       "//variable defs" \n
+       "_output = """";" \n
+       "_modifiers = [];" \n
+       "_audial = 0;" \n
+       "_visual = 0;" \n
+       "" \n
+       "if (isNil ""DZ_DisableDebug"") then {" \n
+       "	//Deans debug code" \n
+       "	diag_log format[""Server monitor activated for player... %1"",_agent];" \n
+       "};" \n
+       "" \n
+       "	_visibleSize = 1;" \n
+       "" \n
+       "//state max/mins" \n
+       "	_bloodMax = 5000; //max blood (litres)" \n
+       "" \n
+       "//scales" \n
+       "	_tickWater = 		0.034;	//litres" \n
+       "	_tickHunger = 	0.05;	//calories" \n
+       "" \n
+       "//warning cooldowns" \n
+       "	_hungerCooldown = 	floor(random 10) + 5;" \n
+       "	_thirstCooldown = 	floor(random 10) + 5;" \n
+       "	_noShoesCooldown = floor(random 10) + 5;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "action_tick">*/
+    class action_tick
+    {
+      name = "action_tick";
+      init = /*%FSM<STATEINIT""">*/"/*" \n
+       "	At this time the server conducts required variable updates" \n
+       "	for the player" \n
+       "*/" \n
+       "_waitTime = diag_tickTime;" \n
+       "_controlled = isPlayer _agent;" \n
+       "_position = getPosATL _agent;" \n
+       "_speed = [0,0,0] distance (velocity _agent);" \n
+       "_array = _agent call world_surfaceNoise;" \n
+       "_surfaceType = _array select 0;" \n
+       "_footDamageType = _array select 1;" \n
+       "_isInside = _array select 2;" \n
+       "_displayMe = 0;" \n
+       "" \n
+       "//Calculate foot damage to apply" \n
+       "	_footwear = _agent itemInSlot 'Feet';" \n
+       "	_footDamage = _footDamageType * (_speed * 0.002);" \n
+       "" \n
+       "	//Apply damage" \n
+       "	_damageFeet = 	_agent getVariable[""feet"",0];" \n
+       "	if (!isNull _footwear) then {" \n
+       "		//wearing shoes" \n
+       "		_footDamage = _footDamage * 0.3;		//reduce damage amount" \n
+       "		_footwear setDamage ((damage _footwear) + _footDamage);" \n
+       "		_displayMe = (damage _footwear);" \n
+       "	} else {" \n
+       "		//no shoes" \n
+       "		_feetUndamaged =	_damageFeet < 1;" \n
+       "		_damageFeet = _damageFeet + _footDamage;		//apply damage to players feet" \n
+       "		_displayMe = _damageFeet;" \n
+       "		if (_damageFeet > 1 and _feetUndamaged) then {" \n
+       "			[0,_agent,""FootInjury""] call event_modifier;" \n
+       "		};" \n
+       "		_agent setVariable [""feet"",_damageFeet];" \n
+       "	};" \n
+       "" \n
+       "//Health" \n
+       "	_health = 	_agent getVariable[""health"",5000];" \n
+       "	_blood = 	_agent getVariable[""blood"",_bloodMax];" \n
+       "	_hunger = _agent getVariable[""hunger"",-500];" \n
+       "	_thirst = 	_agent getVariable[""thirst"",-1000];" \n
+       "" \n
+       "_modifiers = _agent getVariable [""modifiers"",[]];" \n
+       "_modArray = _agent getVariable [""modstates"",[]];"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "dead">*/
+        class dead
+        {
+          priority = 4.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!alive _agent"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "true">*/
+        class true
+        {
+          priority = 0.000000;
+          to="reaction_tick";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "null">*/
+        class null
+        {
+          priority = 0.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"isNull _agent"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "consider_saving">*/
+    class consider_saving
+    {
+      name = "consider_saving";
+      init = /*%FSM<STATEINIT""">*/"_saveTime = diag_tickTime;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "dead">*/
+        class dead
+        {
+          priority = 4.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!alive _agent"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "save">*/
+        class save
+        {
+          priority = 1.000000;
+          to="process_save";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(_savedPos distance _position > 10)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "tick">*/
+        class tick
+        {
+          priority = 0.000000;
+          to="action_tick";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(diag_tickTime - _waitTime) > DZ_TICK"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"_health = _agent getVariable[""health"",5000];" \n
+           "_blood = _agent getVariable[""blood"",5000];" \n
+           "//_agent setVariable [""health"",_health];" \n
+           "//_agent setVariable [""blood"",_blood];"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "null">*/
+        class null
+        {
+          priority = 0.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"isNull _agent"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "process_save">*/
+    class process_save
+    {
+      name = "process_save";
+      init = /*%FSM<STATEINIT""">*/"_agent setVariable [""requestSave"",true];" \n
+       "_savedPos = getPosATL _agent;" \n
+       "if (isNil ""DZ_DisableDebug"") then {" \n
+       "	//Deans debug code" \n
+       "	diag_log format[""Character save requested for ... %1"",_agent];" \n
+       "};"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "dead">*/
+        class dead
+        {
+          priority = 4.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!alive _agent"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "tick">*/
+        class tick
+        {
+          priority = 0.000000;
+          to="action_tick";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(diag_tickTime - _waitTime) > DZ_TICK"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"_health = _agent getVariable[""health"",5000];" \n
+           "_blood = _agent getVariable[""blood"",5000];" \n
+           "//_agent setVariable [""health"",_health];" \n
+           "//_agent setVariable [""blood"",_blood];"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "null">*/
+        class null
+        {
+          priority = 0.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"isNull _agent"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "end">*/
+    class end
+    {
+      name = "end";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "reaction_tick">*/
+    class reaction_tick
+    {
+      name = "reaction_tick";
+      init = /*%FSM<STATEINIT""">*/"/*" \n
+       "	At this time the server reacts to any changes in variables for the player" \n
+       "*/" \n
+       "_warned = false;" \n
+       "" \n
+       "//Ticks" \n
+       "_agent call tick_modifiers;	//records changes in any modifiers" \n
+       "_agent call tick_states;		//records changes in any states" \n
+       "_agent call tick_environment; //records changes due to environment"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "dead">*/
+        class dead
+        {
+          priority = 4.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!alive _agent"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "long">*/
+        class long
+        {
+          priority = 1.000000;
+          to="consider_saving";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(diag_tickTime - _saveTime) > 5"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "tick">*/
+        class tick
+        {
+          priority = 0.000000;
+          to="action_tick";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(diag_tickTime - _waitTime) > DZ_TICK"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"_health = _agent getVariable[""health"",5000];" \n
+           "_blood = _agent getVariable[""blood"",5000];" \n
+           "//_agent setVariable [""health"",_health];" \n
+           "//_agent setVariable [""blood"",_blood];"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "null">*/
+        class null
+        {
+          priority = 0.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"isNull _agent"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "____FAKE____">*/
+    class ____FAKE____
+    {
+      name = "____FAKE____";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "player_control">*/
+        class player_control
+        {
+          priority = 0.000000;
+          to="action_tick";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"isPlayer _agent;"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"_client = owner _agent;" \n
+           "//_damageEH = _agent addEventHandler [""HandleDamage"",{_this spawn event_playerDamage;0}];" \n
+           "" \n
+           "diag_log format[""#Server Player Watch started for %1"",_agent];" \n
+           "" \n
+           "_agent setVariable [""unconscious"",false];" \n
+           "" \n
+           "//Health" \n
+           "	_health = 	_agent getVariable[""health"",5000];" \n
+           "	_blood = 	_agent getVariable[""blood"",_bloodMax];" \n
+           "	_damageFeet = 	_agent getVariable[""feet"",0];"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+  };
+  initState="init";
+  finalStates[] =
+  {
+    "end",
+  };
+};
+/*%FSM</COMPILE>*/

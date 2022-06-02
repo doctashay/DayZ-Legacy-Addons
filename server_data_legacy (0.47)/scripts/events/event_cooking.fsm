@@ -1,0 +1,531 @@
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, DayZ Gas Cooker">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"init",0,250,50.000000,-275.000000,150.000000,-225.000000,0.000000,"init"};
+item1[] = {"turn_on",4,218,-75.000000,-225.000000,25.000000,-175.000000,3.000000,"turn on"};
+item2[] = {"turn_off",4,218,-225.000000,-225.000000,-125.000000,-175.000000,4.000000,"turn off"};
+item3[] = {"create_flame_and",2,250,-75.000000,-150.000000,25.000000,-100.000000,0.000000,"create flame" \n "and sound"};
+item4[] = {"stop_flame_and_s",2,250,-225.000000,-150.000000,-125.000000,-100.000000,0.000000,"stop flame" \n "and sound"};
+item5[] = {"heating",2,250,50.000000,-75.000000,150.000000,-25.000000,0.000000,"heating"};
+item6[] = {"pot_removed",4,218,-100.000000,-25.000000,0.000000,25.000000,2.000000,"pot removed"};
+item7[] = {"steaming",4,218,-350.000000,-150.000000,-250.000000,-100.000000,1.000000,"steaming"};
+item8[] = {"turned_off",4,218,-100.000000,50.000000,0.000000,100.000000,2.000000,"turned off"};
+item9[] = {"start_burning",4,218,50.000000,-150.000000,150.000000,-100.000000,2.000000,"start" \n "burning"};
+item10[] = {"",7,210,20.999994,33.499973,29.000006,41.500023,0.000000,""};
+item11[] = {"true",8,218,-225.000000,-75.000000,-125.000000,-25.000000,0.000000,"true"};
+item12[] = {"finish",1,250,-225.000000,0.000000,-125.000000,50.000000,0.000000,"finish"};
+item13[] = {"",7,210,-28.999973,-254.000000,-21.000027,-246.000000,0.000000,""};
+item14[] = {"",7,210,-178.999985,-253.999985,-171.000000,-246.000015,0.000000,""};
+item15[] = {"true",8,218,50.000000,-350.000000,150.000000,-300.000000,0.000000,"true"};
+item16[] = {"do_nothing",1,250,50.000000,-425.000000,150.000000,-375.000000,0.000000,"do nothing"};
+item17[] = {"tick",4,218,175.000000,-75.000000,275.000000,-25.000000,0.000000,"tick"};
+item18[] = {"boiling",4,218,300.000000,-400.000000,400.000000,-350.000000,1.000000,"boiling"};
+item19[] = {"simmering",2,250,300.000000,-325.000000,400.000000,-275.000000,0.000000,"simmering"};
+item20[] = {"wait_for_steam",2,250,-350.000000,-75.000000,-250.000000,-25.000000,0.000000,"wait for steam"};
+item21[] = {"ready",4,218,-350.000000,0.000000,-250.000000,50.000000,0.000000,"ready"};
+item22[] = {"boiled",4,218,300.000000,-250.000000,400.000000,-200.000000,0.000000,"boiled"};
+item23[] = {"sterile",2,250,300.000000,-175.000000,400.000000,-125.000000,0.000000,"sterile"};
+item24[] = {"",7,210,20.999996,-54.000031,29.000004,-45.999969,0.000000,""};
+item25[] = {"boiling",4,218,50.000000,0.000000,150.000000,50.000000,1.000000,"boiling"};
+item26[] = {"simmering_1",2,4346,50.000000,75.000000,150.000000,125.000000,0.000000,"simmering"};
+item27[] = {"",7,210,20.999994,95.999992,29.000006,104.000008,0.000000,""};
+item28[] = {"tick",4,218,175.000000,75.000000,275.000000,125.000000,0.000000,"tick"};
+item29[] = {"boiled",4,218,50.000000,150.000000,150.000000,200.000000,0.000000,"boiled"};
+item30[] = {"____FAKE____",9,1200,0.000000,0.000000,0.000000,0.000000,0.000000,"____FAKE____"};
+link0[] = {0,9};
+link1[] = {0,13};
+link2[] = {0,15};
+link3[] = {1,3};
+link4[] = {2,4};
+link5[] = {3,9};
+link6[] = {3,11};
+link7[] = {4,7};
+link8[] = {4,11};
+link9[] = {5,17};
+link10[] = {5,24};
+link11[] = {5,25};
+link12[] = {6,0};
+link13[] = {7,20};
+link14[] = {8,4};
+link15[] = {9,5};
+link16[] = {10,6};
+link17[] = {10,8};
+link18[] = {11,12};
+link19[] = {13,1};
+link20[] = {13,14};
+link21[] = {14,2};
+link22[] = {15,16};
+link23[] = {17,5};
+link24[] = {18,19};
+link25[] = {19,22};
+link26[] = {20,21};
+link27[] = {21,12};
+link28[] = {22,23};
+link29[] = {24,10};
+link30[] = {25,26};
+link31[] = {26,27};
+link32[] = {26,28};
+link33[] = {26,29};
+link34[] = {27,10};
+link35[] = {28,26};
+link36[] = {29,26};
+link37[] = {30,18};
+globals[] = {25.000000,1,0,0,0,640,480,1,163,6316128,1,-349.228333,342.034546,390.752228,-448.159088,824,880,1};
+window[] = {2,-1,-1,-1,-1,1032,90,1061,90,3,846};
+*//*%FSM</HEAD>*/
+class FSM
+{
+  fsmName = "DayZ Gas Cooker";
+  class States
+  {
+    /*%FSM<STATE "init">*/
+    class init
+    {
+      name = "init";
+      init = /*%FSM<STATEINIT""">*/"_case = _this select 0;" \n
+       "_array = _this select 1;" \n
+       "_cooker = _array select 0;" \n
+       "_position = getPosATL _cooker;" \n
+       "" \n
+       "_temp = 0;" \n
+       "_sfx = objNull;" \n
+       "_sfxBoil = objNull;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "turn_off">*/
+        class turn_off
+        {
+          priority = 4.000000;
+          to="stop_flame_and_s";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_case == 4"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "turn_on">*/
+        class turn_on
+        {
+          priority = 3.000000;
+          to="create_flame_and";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_case == 3"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "start_burning">*/
+        class start_burning
+        {
+          priority = 2.000000;
+          to="heating";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!isNull(_cooker itemInSlot 'CookingPot') and (isOn _cooker) and (hasPower _cooker)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"_waitTime = diag_tickTime;" \n
+           "" \n
+           "//setup vessel" \n
+           "_vessel = _cooker itemInSlot ""cookingPot"";" \n
+           "_temp = _vessel getVariable [""temperature"",airTemperature];" \n
+           "_timeDelay = (_vessel getVariable [""tempTime"",diag_tickTime]);" \n
+           "if ( _timeDelay > 0) then {" \n
+           "	_temp = (_temp - (_timeDelay * DZ_FLAME_HEAT)) max airTemperature;" \n
+           "};" \n
+           "" \n
+           "//sfx pickup" \n
+           "_sfxBoil = _cooker getVariable [""soundSourceCooking"",objNull];" \n
+           "_sfxSteam = _cooker getVariable [""cookingParticleSource"",objNull];" \n
+           "" \n
+           "_pot = _cooker itemInSlot 'CookingPot';" \n
+           "" \n
+           "//heat" \n
+           "_heatPS = (DZ_FLAME_HEAT * DZ_TICK_COOKING);" \n
+           "_heatMax = DZ_BOILING_POINT + 20;"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "true">*/
+        class true
+        {
+          priority = 0.000000;
+          to="do_nothing";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"true"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "create_flame_and">*/
+    class create_flame_and
+    {
+      name = "create_flame_and";
+      init = /*%FSM<STATEINIT""">*/"if (hasPower _cooker) then" \n
+       "{" \n
+       "	//light the flame" \n
+       "	_config = configFile >> ""cfgVehicles"" >> typeOf _cooker >> ""flame"";" \n
+       "	if (isClass _config) then {" \n
+       "		//create sound" \n
+       "		_sfx = createSoundSource [getText(_config >> ""sound""),_position,[],0];" \n
+       "		_cooker setVariable [""soundSource"",_sfx];" \n
+       "" \n
+       "		//set flame" \n
+       "		_cooker setObjectTexture [0,getText(_config >> ""texture"")];" \n
+       "	};" \n
+       "};" \n
+       ""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "start_burning">*/
+        class start_burning
+        {
+          priority = 2.000000;
+          to="heating";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!isNull(_cooker itemInSlot 'CookingPot') and (isOn _cooker) and (hasPower _cooker)"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"_waitTime = diag_tickTime;" \n
+           "" \n
+           "//setup vessel" \n
+           "_vessel = _cooker itemInSlot ""cookingPot"";" \n
+           "_temp = _vessel getVariable [""temperature"",airTemperature];" \n
+           "_timeDelay = (_vessel getVariable [""tempTime"",diag_tickTime]);" \n
+           "if ( _timeDelay > 0) then {" \n
+           "	_temp = (_temp - (_timeDelay * DZ_FLAME_HEAT)) max airTemperature;" \n
+           "};" \n
+           "" \n
+           "//sfx pickup" \n
+           "_sfxBoil = _cooker getVariable [""soundSourceCooking"",objNull];" \n
+           "_sfxSteam = _cooker getVariable [""cookingParticleSource"",objNull];" \n
+           "" \n
+           "_pot = _cooker itemInSlot 'CookingPot';" \n
+           "" \n
+           "//heat" \n
+           "_heatPS = (DZ_FLAME_HEAT * DZ_TICK_COOKING);" \n
+           "_heatMax = DZ_BOILING_POINT + 20;"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "true">*/
+        class true
+        {
+          priority = 0.000000;
+          to="finish";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "stop_flame_and_s">*/
+    class stop_flame_and_s
+    {
+      name = "stop_flame_and_s";
+      init = /*%FSM<STATEINIT""">*/"" \n
+       "_sfx = _cooker getVariable [""soundSource"",objNull];" \n
+       "if (!isNull _sfx) then" \n
+       "{" \n
+       "	deleteVehicle _sfx;" \n
+       "};" \n
+       "" \n
+       "//set flame" \n
+       "_cooker setObjectTexture [0,""""];"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "steaming">*/
+        class steaming
+        {
+          priority = 1.000000;
+          to="wait_for_steam";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!isNull _sfxBoil and !isNull(_cooker itemInSlot 'CookingPot')"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"//_vessel setVariable [""temperature"",_temp];" \n
+           "_vessel setVariable [""tempTime"",diag_tickTime];"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "true">*/
+        class true
+        {
+          priority = 0.000000;
+          to="finish";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "heating">*/
+    class heating
+    {
+      name = "heating";
+      init = /*%FSM<STATEINIT""">*/"_pot setTemperature ((getTemperature _pot) + _heatPS);" \n
+       "_temp = _temp + _heatPS;" \n
+       "" \n
+       "{" \n
+       "	_x setTemperature ((getTemperature _x) + _heatPS);" \n
+       "} forEach itemsInCargo _pot;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "pot_removed">*/
+        class pot_removed
+        {
+          priority = 2.000000;
+          to="init";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"isNull(_cooker itemInSlot 'CookingPot')"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "turned_off">*/
+        class turned_off
+        {
+          priority = 2.000000;
+          to="stop_flame_and_s";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!isOn _cooker"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "boiling">*/
+        class boiling
+        {
+          priority = 1.000000;
+          to="simmering_1";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_temp > DZ_BOILING_POINT"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"if (isNull _sfxBoil) then" \n
+           "{" \n
+           "	//create sound" \n
+           "	_sfxBoil = createSoundSource [""Sound_CookingBoiling"",_position,[],0];" \n
+           "	_cooker setVariable [""soundSourceCooking"",_sfxBoil];" \n
+           "	_cooker setVariable [""steam"",true];" \n
+           "};" \n
+           "" \n
+           "//how long till sterilized?" \n
+           "_sterile = ((random 6) + 12) + diag_tickTime;" \n
+           "_boiled = false;"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "tick">*/
+        class tick
+        {
+          priority = 0.000000;
+          to="heating";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(diag_tickTime - _waitTime) > DZ_TICK_COOKING"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "finish">*/
+    class finish
+    {
+      name = "finish";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "do_nothing">*/
+    class do_nothing
+    {
+      name = "do_nothing";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "simmering">*/
+    class simmering
+    {
+      name = "simmering";
+      init = /*%FSM<STATEINIT""">*/"_pot setTemperature ((getTemperature _pot) + _heatPS);" \n
+       "{" \n
+       "	_x setTemperature ((getTemperature _x) + _heatPS);" \n
+       "} forEach itemsInCargo _pot;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "boiled">*/
+        class boiled
+        {
+          priority = 0.000000;
+          to="sterile";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"diag_tickTime > _sterile"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "wait_for_steam">*/
+    class wait_for_steam
+    {
+      name = "wait_for_steam";
+      init = /*%FSM<STATEINIT""">*/"_waitTime = diag_tickTime;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "ready">*/
+        class ready
+        {
+          priority = 0.000000;
+          to="finish";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(diag_tickTime - _waitTime) > 20"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"if !(isOn _cooker) then" \n
+           "{" \n
+           "	deleteVehicle _sfxBoil;" \n
+           "	_cooker setVariable [""steam"",false];" \n
+           "};"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "sterile">*/
+    class sterile
+    {
+      name = "sterile";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "simmering_1">*/
+    class simmering_1
+    {
+      name = "simmering_1";
+      init = /*%FSM<STATEINIT""">*/"_pot setTemperature (((getTemperature _pot) + _heatPS) min _heatMax);" \n
+       "" \n
+       "{" \n
+       "	_item = _x;" \n
+       "	_itemTemp = ((getTemperature _item) + _heatPS);" \n
+       "	_item setTemperature (_itemTemp min _heatMax);" \n
+       "" \n
+       "	//check recipe" \n
+       "	_recipes = configFile >> ""cfgVehicles"" >> typeOf _item >> ""Cooking"";" \n
+       "" \n
+       "	for ""_i"" from 0 to (count _recipes - 1) do " \n
+       "	{" \n
+       "		_recipe = _recipes select _i;" \n
+       "		if (count getArray(_recipe >> ""results"") > 0) then" \n
+       "		{" \n
+       "			_recipeTemp = getNumber(_recipe >> ""temperature"");" \n
+       "			if (_itemTemp >= _recipeTemp) then" \n
+       "			{" \n
+       "				//success!" \n
+       "				{" \n
+       "					_q = quantity _item;" \n
+       "					_t = getTemperature _item;" \n
+       "					deleteVehicle _item;" \n
+       "					_item = _pot createInCargo _x;" \n
+       "					_item setQuantity _q;" \n
+       "					_item setTemperature _t;" \n
+       "				} forEach getArray(_recipe >> ""results"");" \n
+       "			};" \n
+       "		};" \n
+       "	};" \n
+       "} forEach itemsInCargo _pot;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "pot_removed">*/
+        class pot_removed
+        {
+          priority = 2.000000;
+          to="init";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"isNull(_cooker itemInSlot 'CookingPot')"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "turned_off">*/
+        class turned_off
+        {
+          priority = 2.000000;
+          to="stop_flame_and_s";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!isOn _cooker"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "boiled">*/
+        class boiled
+        {
+          priority = 0.000000;
+          to="simmering_1";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"diag_tickTime > _sterile && !_boiled"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"_boiled = true;" \n
+           "_pot setVariable [""modifiers"",[]];" \n
+           "_cooker setVariable [""modifiers"",[]];" \n
+           "{" \n
+           "	_x setVariable [""modifiers"",[]];" \n
+           "} forEach itemsInCargo _pot"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "tick">*/
+        class tick
+        {
+          priority = 0.000000;
+          to="simmering_1";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"(diag_tickTime - _waitTime) > DZ_TICK_COOKING"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "____FAKE____">*/
+    class ____FAKE____
+    {
+      name = "____FAKE____";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "boiling">*/
+        class boiling
+        {
+          priority = 1.000000;
+          to="simmering";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_temp > DZ_BOILING_POINT"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"if (isNull _sfxBoil) then" \n
+           "{" \n
+           "	//create sound" \n
+           "	_sfxBoil = createSoundSource [""Sound_CookingBoiling"",_position,[],0];" \n
+           "	_cooker setVariable [""soundSourceCooking"",_sfxBoil];" \n
+           "	_cooker setVariable [""steam"",true];" \n
+           "};" \n
+           "" \n
+           "//how long till sterilized?" \n
+           "_sterile = ((random 6) + 12) + diag_tickTime;"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+  };
+  initState="init";
+  finalStates[] =
+  {
+    "finish",
+    "do_nothing",
+  };
+};
+/*%FSM</COMPILE>*/

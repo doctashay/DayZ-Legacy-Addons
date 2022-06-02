@@ -1,0 +1,150 @@
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, DayZ Player Suicide">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"init",0,250,50.000000,-275.000000,150.000000,-225.000000,0.000000,"init"};
+item1[] = {"is_server",4,218,50.000000,-200.000000,150.000000,-150.000000,0.000000,"is" \n "server"};
+item2[] = {"grab_weapon",2,250,50.000000,-125.000000,150.000000,-75.000000,0.000000,"grab weapon"};
+item3[] = {"has_weapon",4,4314,50.000000,-50.000000,150.000000,0.000000,0.000000,"has weapon"};
+item4[] = {"animating",2,250,50.000000,25.000000,150.000000,75.000000,0.000000,"animating"};
+item5[] = {"fired",4,218,50.000000,100.000000,150.000000,150.000000,0.000000,"fired"};
+item6[] = {"dead",1,250,50.000000,175.000000,150.000000,225.000000,0.000000,"dead"};
+item7[] = {"no_ammo",4,218,175.000000,-275.000000,275.000000,-225.000000,0.000000,"no ammo"};
+item8[] = {"not_server",4,218,175.000000,-200.000000,275.000000,-150.000000,0.000000,"not" \n "server"};
+item9[] = {"end",1,250,175.000000,-125.000000,275.000000,-75.000000,0.000000,"end"};
+link0[] = {0,1};
+link1[] = {0,7};
+link2[] = {0,8};
+link3[] = {1,2};
+link4[] = {2,3};
+link5[] = {3,4};
+link6[] = {4,5};
+link7[] = {5,6};
+link8[] = {7,9};
+link9[] = {8,9};
+globals[] = {25.000000,1,0,0,0,640,480,1,158,6316128,1,-263.507355,512.211426,392.806854,-436.637268,823,880,1};
+window[] = {2,-1,-1,-1,-1,944,-15,956,2,3,845};
+*//*%FSM</HEAD>*/
+class FSM
+{
+  fsmName = "DayZ Player Suicide";
+  class States
+  {
+    /*%FSM<STATE "init">*/
+    class init
+    {
+      name = "init";
+      init = /*%FSM<STATEINIT""">*/"_person = _this select 0;" \n
+       "_weapon = _this select 1;" \n
+       "_weaponType = typeOf _weapon;" \n
+       "_ammo = _person ammo _weaponType;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "no_ammo">*/
+        class no_ammo
+        {
+          priority = 0.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_ammo == 0"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "not_server">*/
+        class not_server
+        {
+          priority = 0.000000;
+          to="end";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"!isServer"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+        /*%FSM<LINK "is_server">*/
+        class is_server
+        {
+          priority = 0.000000;
+          to="grab_weapon";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"isServer"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "grab_weapon">*/
+    class grab_weapon
+    {
+      name = "grab_weapon";
+      init = /*%FSM<STATEINIT""">*/"_person moveToHands _weapon"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "has_weapon">*/
+        class has_weapon
+        {
+          priority = 0.000000;
+          to="animating";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"itemInHands _person == _weapon"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"hint ""firing!!"";" \n
+           "_person playAction ""SuicidePistol"";" \n
+           "_fired = false;"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "animating">*/
+    class animating
+    {
+      name = "animating";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+        /*%FSM<LINK "fired">*/
+        class fired
+        {
+          priority = 0.000000;
+          to="dead";
+          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_fired"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"_person fire _weaponType;"/*%FSM</ACTION""">*/;
+        };
+        /*%FSM</LINK>*/
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "dead">*/
+    class dead
+    {
+      name = "dead";
+      init = /*%FSM<STATEINIT""">*/"_person setDamage 1;"/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+    /*%FSM<STATE "end">*/
+    class end
+    {
+      name = "end";
+      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+      class Links
+      {
+      };
+    };
+    /*%FSM</STATE>*/
+  };
+  initState="init";
+  finalStates[] =
+  {
+    "dead",
+    "end",
+  };
+};
+/*%FSM</COMPILE>*/
