@@ -53,11 +53,6 @@ if (isServer) then
 	};
 	"authIn" addPublicVariableEventHandler
 	{
-		diag_log "... authIn event handler called ...";
-		{
-			statusChat ['... authIn event handler called ...',''];
-		} forEach players;
-
 		_array = _this select 1;
 		_id = _array select 2;
 		diag_log format ["CLIENT %1 request to spawn %2",_id,_this];
@@ -81,6 +76,5 @@ if (isServer) then
 		{null = _agent createInInventory _x} forEach [_myTop,_myBottom,_myShoe];
 		_agent call init_newPlayer;
 		call init_newBody;
-
 	};
 };

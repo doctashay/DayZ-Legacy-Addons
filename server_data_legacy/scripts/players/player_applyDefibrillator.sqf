@@ -8,6 +8,7 @@ _agent = _this select 0;
 _person = _this select 1;
 _item = _person getVariable ["inUseItem",objNull];
 _battery = _item itemInSlot "BatteryD";
+
 _batteryPower = _battery getVariable ["power",0];
 
 if (_batteryPower >= 20000) then 

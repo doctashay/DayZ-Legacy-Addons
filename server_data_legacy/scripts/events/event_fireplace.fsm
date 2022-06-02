@@ -13,8 +13,8 @@ link2[] = {2,3};
 link3[] = {4,2};
 link4[] = {4,5};
 link5[] = {5,4};
-globals[] = {25.000000,1,0,0,0,640,480,1,166,6316128,1,-148.062698,241.611374,216.673462,-268.536621,828,1031,1};
-window[] = {2,-1,-1,-1,-1,1167,225,1196,225,3,846};
+globals[] = {25.000000,1,0,0,0,640,480,1,166,6316128,1,-291.864197,385.413879,275.712860,-447.593842,824,880,1};
+window[] = {2,-1,-1,-1,-1,1062,120,1091,120,3,846};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -111,34 +111,7 @@ class FSM
        "			};" \n
        "		};" \n
        "	};" \n
-       "} forEach itemsInCargo _fireplace;" \n
-       "" \n
-       "" \n
-       "_list= nearestObjects [_fireplace,[""SurvivorBase""],2.5];" \n
-       "{" \n
-       "	_agent = _x;" \n
-       "	_oldwet = _agent getVariable[""wet"",0];" \n
-       "	if(((getPosASL _agent) distance (getPosASL _fireplace)) < 0.4)then{" \n
-       "		_agent setVariable [""heatcomfort"",210];" \n
-       "	}else{" \n
-       "		if (_oldwet < 0.3)then{" \n
-       "			_agent setVariable [""heatcomfort"",20];" \n
-       "		}else{" \n
-       "			_agent setVariable [""heatcomfort"",0];" \n
-       "		};" \n
-       "	};" \n
-       "	if(_oldwet > 0)then{" \n
-       "		_heat = 0.018*(2.5 - ((getPosASL _agent) distance (getPosASL _fireplace)));" \n
-       "		_agent setVariable[""wet"",_oldwet -_heat];" \n
-       "		if(_oldwet < 0.3)then{" \n
-       "			_oldtemp = _agent getVariable[""bodytemperature"",37.7];" \n
-       "			if(_oldtemp < 37.6)then{" \n
-       "				_temp = 0.0018*(2.5 - ((getPosASL _agent) distance (getPosASL _fireplace)));" \n
-       "				_agent setVariable[""bodytemperature"",_oldtemp + _temp];" \n
-       "			};" \n
-       "		};" \n
-       "	};" \n
-       "}forEach _list;"/*%FSM</STATEINIT""">*/;
+       "} forEach itemsInCargo _fireplace;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {

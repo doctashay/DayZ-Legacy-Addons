@@ -1,6 +1,3 @@
-/* DayZ Legacy 0.44 */
-/* ui_characterScreen.sqf - Handles functions related to the default character dialog */
-
 _mode = _this select 0;
 _param = _this select 1;
 
@@ -13,7 +10,7 @@ _display = findDisplay 167;
 "colorCorrections" ppEffectCommit 3;
 */
 
-//Functions
+//functions
 
 switch _mode do {
 	case "onUnload":

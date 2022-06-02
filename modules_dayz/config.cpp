@@ -263,6 +263,17 @@ class PreloadVehicles
 		loadStyle=1;
 	};
 };
+
+class CfgSounds
+{
+    class introSong
+    {
+    name="introSong";
+    sound[]={"dzlegacy\modules_dayz\introSong.ogg",0.5,1};
+    titles[] = {};
+    };
+};
+
 class cfgCharacterScenes
 {
 	class ChernarusPlus

@@ -131,21 +131,24 @@ _cleanup = false;
 		private["_messages","_style","_output"];
 		//send message
 		_messages = getArray (_cfgStage >> "messages");
-		if (count _messages > 0) then
+		if (!isUnconscious _person) then
 		{
-			_style = getText (_cfgStage >> "messageStyle");
-			_output = (_messages select (floor random(count _messages)));
-			[_person,_output,_style] call fnc_playerMessage;
+			if (count _messages > 0) then
+			{
+				_style = getText (_cfgStage >> "messageStyle");
+				_output = (_messages select (floor random(count _messages)));
+				[_person,_output,_style] call fnc_playerMessage;
+			};
+			
+			//play sound
+			_sounds = getArray (_cfgStage >> "sounds");
+			if (count _sounds > 0) then
+			{
+				_style = getText (_cfgStage >> "messageStyle");
+				_output = _sounds select (floor random(count _sounds));
+				_person say3D _output;
+			};
 		};
-		
-		//play sound
-		_sounds = getArray (_cfgStage >> "sounds");
-		if (count _sounds > 0) then
-		{
-			_style = getText (_cfgStage >> "messageStyle");
-			_output = _sounds select (floor random(count _sounds));
-			_person say3D _output;
-		};		
 		
 		//reset reminder
 		_array = getArray (_cfgStage >> "cooldown");
@@ -228,7 +231,7 @@ _cleanup = false;
 					//check if should advance within class, otherwise deletes
 					_canGoBack = getNumber (_cfgStage >> "canGoBack") == 1;
 					_cStage = _stage + 1;
-					_latestCfgStageIndex = (count (_cfgStages)) - 1;					
+					_latestCfgStageIndex = (count (_cfgStages)) - 1;				
 					
 					if (_cStage <= _latestCfgStageIndex) then
 					{
