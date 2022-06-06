@@ -2,11 +2,11 @@
 /*%FSM<HEAD>*/
 /*
 item0[] = {"init",0,250,50.000000,-275.000000,150.000000,-225.000000,0.000000,"init"};
-item1[] = {"done",4,4314,50.000000,-200.000000,150.000000,-150.000000,0.000000,"done"};
-item2[] = {"normal_state",2,250,50.000000,-125.000000,150.000000,-75.000000,0.000000,"normal state"};
+item1[] = {"done",4,218,50.000000,-200.000000,150.000000,-150.000000,0.000000,"done"};
+item2[] = {"normal_state",2,4346,50.000000,-125.000000,150.000000,-75.000000,0.000000,"normal state"};
 item3[] = {"wait",4,218,-75.000000,-200.000000,25.000000,-150.000000,0.000000,"wait"};
 item4[] = {"delay_check",4,218,175.000000,-200.000000,275.000000,-150.000000,0.000000,"delay" \n "check"};
-item5[] = {"unconscious",4,218,275.000000,-75.000000,375.000000,-25.000000,6.000000,"unconscious"};
+item5[] = {"unconscious",4,218,300.000000,-75.000000,400.000000,-25.000000,6.000000,"unconscious"};
 item6[] = {"dead",4,218,50.000000,-50.000000,150.000000,0.000000,7.000000,"dead"};
 item7[] = {"captive",4,218,-200.000000,-50.000000,-100.000000,0.000000,5.000000,"captive"};
 item8[] = {"dead",1,250,50.000000,50.000000,150.000000,100.000000,0.000000,"dead"};
@@ -131,7 +131,13 @@ class FSM
            "		sleep 1;" \n
            "	};" \n
            "};" \n
-           ""/*%FSM</ACTION""">*/;
+           "" \n
+           "" \n
+           "" \n
+           "if ((player itemInSlot ""headgear"") isKindOf ""Cover_BurlapSack"") then " \n
+           " { " \n
+           "	setAperture 10000;1 fadeSound 0.4;1 fadeSpeech 0.4;" \n
+           " };"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -267,8 +273,9 @@ class FSM
     class dead
     {
       name = "dead";
-      init = /*%FSM<STATEINIT""">*/"titleText [""You are dead"",""BLACK FADED"",10e10];" \n
-       "setAperture 1000;"/*%FSM</STATEINIT""">*/;
+      init = /*%FSM<STATEINIT""">*/"titleText [""You are dead"",""BLACK OUT"",10];" \n
+       "" \n
+       ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {

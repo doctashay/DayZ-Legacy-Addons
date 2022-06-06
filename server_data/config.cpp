@@ -307839,7 +307839,7 @@ class CfgModifiers
 	{
 		messagesExit[]=
 		{
-			"I am no longer bleeding"
+			"My wound has clotted and the bleeding has stopped"
 		};
 		messageExitStyle="colorFriendly";
 		class Stages
@@ -307849,10 +307849,10 @@ class CfgModifiers
 				cooldown[]={10,30};
 				messages[]=
 				{
-					"I can feel blood dripping",
+					"Blood is soaking my clothes",
 					"My clothes are damp with blood",
 					"I can feel blood dripping off my body",
-					"I feel warm blood on my clothes"
+					"I am bleeding out quickly"
 				};
 				messageStyle="colorImportant";
 				condition="(_this getVariable['bleedingLevel',0]) > 0";
@@ -307871,6 +307871,235 @@ class CfgModifiers
 					"bleeding",
 					{0.54100001,0.030999999,0.030999999,1}
 				};
+				statementEnter="admin_log format ['%1(uid=%2) STARTS BLEEDING.', name _person, getPlayerUID _person];";
+				statementExit="admin_log format ['%1(uid=%2) STOPS BLEEDING.', name _person, getPlayerUID _person];";
+			};
+		};
+	};
+	class Temperature: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="colorFriendly";
+		class Stages
+		{
+			class Init: DefaultStage
+			{
+				messages[]={};
+				messageStyle="";
+				cooldown[]={30,60};
+				notifier[]={};
+				modifiers[]={};
+				condition="_this getVariable['bodytemperature',36.5] < 36.7 && _this getVariable['bodytemperature',36.5] > 35.8 && _this getVariable ['heatcomfort',-15] < -10";
+			};
+			class Warming: Init
+			{
+				messages[]=
+				{
+					"I am slowly warming up"
+				};
+				messageStyle="";
+				cooldown[]={30,60};
+				notifier[]={};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						1,
+						" * 0.001"
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] < 36.7 && _this getVariable['bodytemperature',36.5] > 35.8 && _this getVariable ['heatcomfort',-15] >= -10";
+			};
+			class HypothermiaLight: Warming
+			{
+				messages[]=
+				{
+					"I am cold",
+					"I am shaking"
+				};
+				messageStyle="colorImportant";
+				cooldown[]={20,20};
+				notifier[]=
+				{
+					8,
+					"cold",
+					{0.52499998,0.54100001,0.030999999,1}
+				};
+				modifiers[]=
+				{
+					
+					{
+						"energy",
+						-1.1,
+						" * 0.5"
+					},
+					
+					{
+						"bodytemperature",
+						1,
+						" * 0.001"
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] <= 35.8 && _this getVariable['bodytemperature',36.5] >= 35";
+			};
+			class HypothermiaMedium: HypothermiaLight
+			{
+				messages[]=
+				{
+					"I am freezing"
+				};
+				messageStyle="colorImportant";
+				cooldown[]={10,10};
+				notifier[]=
+				{
+					8,
+					"freezing",
+					{0.54100001,0.294,0.030999999,1}
+				};
+				modifiers[]=
+				{
+					
+					{
+						"energy",
+						-1.6,
+						" * 0.5"
+					},
+					
+					{
+						"bodytemperature",
+						1,
+						" * 0.001"
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] < 35 && _this getVariable['bodytemperature',36.5] >= 34.5";
+			};
+			class HypothermiaHeavy: HypothermiaMedium
+			{
+				messages[]=
+				{
+					"I am hypothermic"
+				};
+				messageStyle="colorImportant";
+				cooldown[]={5,5};
+				notifier[]=
+				{
+					8,
+					"hypothermia",
+					{0.54100001,0.030999999,0.030999999,1}
+				};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						1,
+						" * 0.001"
+					},
+					
+					{
+						"energy",
+						-1.05
+					},
+					
+					{
+						"health",
+						-10
+					},
+					
+					{
+						"blood",
+						-5
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] < 34.5";
+			};
+			class HyperthermiaLight: HypothermiaHeavy
+			{
+				messages[]={};
+				messageStyle="colorImportant";
+				cooldown[]={10,10};
+				notifier[]=
+				{
+					8,
+					"hot",
+					{0.52499998,0.54100001,0.030999999,1}
+				};
+				modifiers[]=
+				{
+					
+					{
+						"water",
+						-1,
+						" * 0.1* DZ_THIRST_SEC"
+					},
+					
+					{
+						"bodytemperature",
+						-1,
+						" * 0.0001"
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] >= 37.1 && _this getVariable['bodytemperature',36.5] < 38";
+			};
+			class HyperthermiaMedium: HyperthermiaLight
+			{
+				messages[]=
+				{
+					"I am overheating"
+				};
+				messageStyle="colorImportant";
+				cooldown[]={10,10};
+				notifier[]=
+				{
+					8,
+					"overheating",
+					{0.54100001,0.294,0.030999999,1}
+				};
+				modifiers[]=
+				{
+					
+					{
+						"water",
+						-1,
+						" * DZ_THIRST_SEC"
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] >= 38 && _this getVariable['bodytemperature',36.5] < 40";
+			};
+			class HyperthermiaHeavy: HyperthermiaMedium
+			{
+				messages[]=
+				{
+					"I am hyperthermic"
+				};
+				messageStyle="colorImportant";
+				cooldown[]={10,10};
+				notifier[]=
+				{
+					8,
+					"hyperthermia",
+					{0.54100001,0.030999999,0.030999999,1}
+				};
+				modifiers[]=
+				{
+					
+					{
+						"water",
+						-2,
+						" * DZ_THIRST_SEC"
+					}
+				};
+				condition="_this getVariable['bodytemperature',36.5] >= 40";
+			};
+			class TemperatureStable: HyperthermiaHeavy
+			{
+				messages[]={};
+				messageStyle="colorImportant";
+				cooldown[]={30,60};
+				notifier[]={};
+				modifiers[]={};
+				condition="_this getVariable['bodytemperature',36.5] >= 36.7 && _this getVariable['bodytemperature',36.5] < 37.1";
 			};
 		};
 	};
@@ -307887,7 +308116,7 @@ class CfgModifiers
 					"My stomach grumbles",
 					"I'm feeling hungry",
 					"I want to eat something",
-					"I feel hungry"
+					"I am hungry"
 				};
 				messageStyle="";
 				cooldown[]={60,180};
@@ -307905,7 +308134,7 @@ class CfgModifiers
 				{
 					"I'm extremely hungry",
 					"My stomach grumbled violently",
-					"I'm starving"
+					"I am starving"
 				};
 				messageStyle="";
 				cooldown[]={20,30};
@@ -307998,7 +308227,8 @@ class CfgModifiers
 					
 					{
 						"blood",
-						1
+						1,
+						"*0.5"
 					}
 				};
 				condition="(_this getVariable['energy',0] > 2000) and (_this getVariable['water',0] > 1500)";
@@ -308017,7 +308247,10 @@ class CfgModifiers
 			};
 			class Healing: FullRegeneration
 			{
-				messages[]={};
+				messages[] =		
+				{
+					"I am feeling energized"
+				};
 				messageStyle="colorFriendly";
 				cooldown[]={};
 				modifiers[]=
@@ -308034,11 +308267,15 @@ class CfgModifiers
 					"healing",
 					{0.294,0.54100001,0.030999999,1}
 				};
+				statementEnter="";
 				condition="(_this getVariable['energy',0] > 4000) and (_this getVariable['water',0] > 2500) and (_this getVariable['blood',0] >= 5000) and (_this getVariable['health',0] < 5000)";
 			};
-			class Healthy: FullRegeneration
+			class Healthy: Healing
 			{
-				messages[]={};
+				messages[]=
+				{
+					"I feel envigorated and healthy"
+				};
 				messageStyle="colorFriendly";
 				cooldown[]={};
 				modifiers[]={};
@@ -308048,6 +308285,7 @@ class CfgModifiers
 					"healthy",
 					{0.43900001,0.80400002,0.043099999,1}
 				};
+				statementEnter="_this setDamage 0;";
 				condition="(_this getVariable['blood',0] >= 5000) and (_this getVariable['health',0] >= 5000)";
 			};
 		};
@@ -308070,11 +308308,11 @@ class CfgModifiers
 			{
 				messages[]=
 				{
-					"I feel thirsty",
+					"I'm dehydrated",
 					"I'm thirsty",
 					"I need a drink",
 					"I feel like having a drink",
-					"I want to drink something"
+					"I want a drink"
 				};
 				messageStyle="";
 				cooldown[]={60,180};
@@ -308090,7 +308328,7 @@ class CfgModifiers
 			{
 				messages[]=
 				{
-					"I really need to drink"
+					"I'm feeling very dehydrated"
 				};
 				messageStyle="";
 				cooldown[]={20,30};
@@ -308206,8 +308444,8 @@ class CfgModifiers
 			{
 				messages[]=
 				{
-					"My stomach feels stuffed",
-					"I feel really full",
+					"I don't need to eat anymore",
+					"I'm feeling very full",
 					"My stomach feels completely full"
 				};
 				messageStyle="";
@@ -308224,9 +308462,9 @@ class CfgModifiers
 			{
 				messages[]=
 				{
-					"My stomach feels absolutely stuffed",
+					"I ate way too much",
 					"I feel over-fed",
-					"My stomach feels much more full than it's normal"
+					"My stomach feels like it's about to burst"
 				};
 				messageStyle="";
 				cooldown[]={30,60};
@@ -308257,7 +308495,7 @@ class CfgModifiers
 					{0.54100001,0.030999999,0.030999999,1}
 				};
 			};
-			class DoVomit: DefaultStage
+			class PostVomit: DefaultStage
 			{
 				messages[]={};
 				messageStyle="colorImportant";
@@ -308274,6 +308512,8 @@ class CfgModifiers
 	};
 	class Wet: Default
 	{
+		messagesExit[]={};
+		messageExitStyle="";
 		class Stages
 		{
 			class Damp: DefaultStage
@@ -308281,16 +308521,15 @@ class CfgModifiers
 				cooldown[]={60,120};
 				messages[]=
 				{
-					"I feel damp",
-					"My body feels wet"
+					"I feel damp"
 				};
 				messageStyle="";
-				condition="_this getVariable ['wet',0] > 0.3";
+				condition="_this getVariable ['wet',0] > 0.05";
 				notifier[]=
 				{
 					7,
 					"damp",
-					{0,0.93300003,1,1}
+					{0,0.95300001,1,1}
 				};
 			};
 			class Wet: DefaultStage
@@ -308298,16 +308537,15 @@ class CfgModifiers
 				cooldown[]={60,120};
 				messages[]=
 				{
-					"My clothes are soaked through",
-					"I am completely soaking"
+					"My body feels wet"
 				};
 				messageStyle="";
-				condition="_this getVariable ['wet',0] > 0.6";
+				condition="_this getVariable ['wet',0] > 0.2";
 				notifier[]=
 				{
 					7,
 					"wet",
-					{0,0.616,1,1}
+					{0,0.71600002,1,1}
 				};
 			};
 			class Soaked: DefaultStage
@@ -308315,80 +308553,135 @@ class CfgModifiers
 				cooldown[]={60,120};
 				messages[]=
 				{
-					"My clothes are soaked through",
-					"I am completely soaking"
+					"I am soaked through"
 				};
 				messageStyle="colorImportant";
-				condition="_this getVariable ['wet',0] > 0.9";
+				condition="_this getVariable ['wet',0] > 0.5";
 				notifier[]=
 				{
 					7,
 					"soaked",
-					{0,0.317,1,1}
+					{0,0.417,1,1}
+				};
+			};
+			class Drenched: DefaultStage
+			{
+				cooldown[]={60,120};
+				messages[]=
+				{
+					"I am completely drenched"
+				};
+				messageStyle="colorImportant";
+				condition="_this getVariable ['wet',0] > 0.8";
+				notifier[]=
+				{
+					7,
+					"drenched",
+					{0,0.117,1,1}
+				};
+			};
+		};
+	};
+	class FootInjury: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="";
+		class Stages
+		{
+			class 1: DefaultStage
+			{
+				cooldown[]={60,120};
+				messages[]=
+				{
+					"My feet hurt",
+					"My feet are sore"
+				};
+				messageStyle="colorImportant";
+				condition="(_this getVariable['health',0] > 1000) && (speed _person > 0) && ((isNull (_person itemInSlot 'Feet')) || ( damage (_person itemInSlot 'Feet') >=1 ))";
+				modifiers[]=
+				{
+					
+					{
+						"health",
+						-10,
+						"* getNumber (configFile >> 'CfgSurfaces' >> surfaceType getPosASL _person >> 'rough');"
+					}
 				};
 			};
 		};
 	};
 	class HitLegs: Default
 	{
+		messagesExit[]={};
+		messageExitStyle="";
 		class Stages
 		{
+			class Start: DefaultStage
+			{
+				cooldown[]={};
+				duration[]={1,2};
+				messages[]={};
+				condition="(_person getHitPointDamage 'HitLegs' < 0.15)";
+				notifier[]={};
+			};
 			class Injury: DefaultStage
 			{
-				cooldown[]={60,120};
+				cooldown[]={60,240};
+				duration[]={1,2};
 				messages[]=
 				{
-					"My leg is in pain",
 					"My leg is painful"
 				};
+				condition="(_person getHitPointDamage 'HitLegs' >= 0.15) && (_person getHitPointDamage 'HitLegs' < 0.4)";
+				notifier[]=
+				{
+					6,
+					"sprained ankle",
+					{0.52499998,0.54100001,0.030999999,1}
+				};
+			};
+			class Chipped: DefaultStage
+			{
+				cooldown[]={60,120};
+				duration[]={1,2};
+				messages[]=
+				{
+					"My leg hurts"
+				};
 				messageStyle="colorImportant";
-				condition="_this getHitPointDamage 'HitLegs' > 0.5";
+				condition="(_person getHitPointDamage 'HitLegs' >= 0.4) && (_person getHitPointDamage 'HitLegs' <= 0.9)";
+				notifier[]=
+				{
+					6,
+					"chipped leg",
+					{0.54100001,0.294,0.030999999,1}
+				};
 			};
 			class Fracture: DefaultStage
 			{
 				cooldown[]={30,60};
-				duration[]={86400,604800};
+				duration[]={};
 				messages[]=
 				{
-					"My leg is in extreme pain",
-					"My leg is extremely painful",
-					"I think my leg is broken"
+					"My feet are badly damaged",
+					"My feet are bleeding",
+					"My feet are hurting badly"
 				};
 				messageStyle="colorImportant";
-				condition="_this getHitPointDamage 'HitLegs' == 1";
+				condition="_person getHitPointDamage 'HitLegs' > 0.9";
 				notifier[]=
 				{
 					6,
-					"fracture",
+					"fractured leg",
 					{0.54100001,0.030999999,0.030999999,1}
 				};
-			};
-			class Setting: DefaultStage
-			{
-				cooldown[]={30,60};
-				duration[]={86400,604800};
-				messages[]=
-				{
-					"My leg is in pain",
-					"My leg is painful"
-				};
-				condition="_this getHitPointDamage 'HitLegs' == 1";
-				notifier[]=
-				{
-					6,
-					"fracture",
-					{0.54100001,0.030999999,0.030999999,1}
-				};
-			};
-			class Healed: DefaultStage
-			{
-				condition="_this getHitPointDamage 'HitLegs' == 1";
-				statementEnter="_person setHitPointDamage ['HitLegs',0.3];";
 			};
 		};
 	};
 	class HitHands: Default
 	{
+		messagesExit[]={};
+		messageExitStyle="";
 		class Stages
 		{
 			class Injury: DefaultStage
@@ -308396,11 +308689,11 @@ class CfgModifiers
 				cooldown[]={60,120};
 				messages[]=
 				{
-					"My leg is in pain",
-					"My leg is painful"
+					"My arm is in pain",
+					"My arm is painful"
 				};
 				messageStyle="colorImportant";
-				condition="_this getHitPointDamage 'HitHands' > 0.5";
+				condition="_person getHitPointDamage 'HitHands' > 0.5";
 			};
 			class Fracture: DefaultStage
 			{
@@ -308413,10 +308706,10 @@ class CfgModifiers
 					"I think my arm is broken"
 				};
 				messageStyle="colorImportant";
-				condition="_this getHitPointDamage 'HitHands' == 1";
+				condition="_person getHitPointDamage 'HitHands' == 1";
 				notifier[]=
 				{
-					6,
+					9,
 					"fracture",
 					{0.54100001,0.030999999,0.030999999,1}
 				};
@@ -308427,13 +308720,13 @@ class CfgModifiers
 				duration[]={86400,604800};
 				messages[]=
 				{
-					"My leg is in pain",
-					"My leg is painful"
+					"My arm is in pain",
+					"My arm is painful"
 				};
-				condition="_this getHitPointDamage 'HitHands' == 1";
+				condition="_person getHitPointDamage 'HitHands' == 1";
 				notifier[]=
 				{
-					6,
+					9,
 					"fracture",
 					{0.54100001,0.030999999,0.030999999,1}
 				};
@@ -308454,7 +308747,7 @@ class CfgModifiers
 				cooldown[]={};
 				duration[]={};
 				condition="((_this getVariable['shock',0]) + DZ_BLOOD_UNCONSCIOUS) > _this getVariable['blood',5000]";
-				statementEnter="_person setUnconscious true;";
+				statementEnter="_person setUnconscious true; admin_log format ['Player %1(id=%2) has fallen into unconsciousness.', name _person, getPlayerUID _person];";
 				statementExit="_person setUnconscious false;";
 			};
 			class Revived: LossOfConsciousness
@@ -308520,6 +308813,18 @@ class CfgModifiers
 	{
 		messagesExit[]={};
 		messageExitStyle="";
+		class Transmission
+		{
+			invasivity=1;
+			toxicity=0.2;
+			physicalResistance=1;
+			chemicalResistance=1;
+			class Direct: DefaultDirect
+			{
+				transferability=1;
+				fromPlayer=0;
+			};
+		};
 		class Stages
 		{
 			class 0: DefaultStage
@@ -308611,6 +308916,18 @@ class CfgModifiers
 	{
 		messagesExit[]={};
 		messageExitStyle="";
+		class Transmission
+		{
+			invasivity=1;
+			toxicity=0.17;
+			physicalResistance=1;
+			chemicalResistance=1;
+			class Direct: DefaultDirect
+			{
+				transferability=1;
+				fromPlayer=0;
+			};
+		};
 		class Stages
 		{
 			class 0: DefaultStage
@@ -308732,19 +309049,25 @@ class CfgModifiers
 	{
 		messagesExit[]={};
 		messageExitStyle="";
+		class Transmission
+		{
+			invasivity=1;
+			toxicity=0.15000001;
+			physicalResistance=1;
+			chemicalResistance=1;
+			class Direct: DefaultDirect
+			{
+				transferability=1;
+				fromPlayer=0;
+			};
+		};
 		class Stages
 		{
 			class 0: DefaultStage
 			{
-				cooldown[]={30,60};
-				duration[]={180,420};
-				messages[]=
-				{
-					"I have a funny taste in my mouth",
-					"My mouth tastes funny",
-					"I notice a weird taste",
-					"My mouth tastes weird"
-				};
+				cooldown[]={};
+				duration[]={180,600};
+				messages[]={};
 				messageStyle="";
 				condition="true";
 			};
@@ -309150,6 +309473,18 @@ class CfgModifiers
 			"My wounds are clean now"
 		};
 		messageExitStyle="colorFriendly";
+		class Transmission
+		{
+			invasivity=0.40000001;
+			toxicity=0.80000001;
+			physicalResistance=0.5;
+			chemicalResistance=0.60000002;
+			class Direct: DefaultDirect
+			{
+				transferability=1;
+				fromPlayer=0;
+			};
+		};
 		class Stages
 		{
 			class 0: DefaultStage
@@ -309598,8 +309933,7 @@ class CfgModifiers
 		messageExitStyle="";
 		class Transmission
 		{
-			invasivity=0.40000001;
-			toxicity=0.80000001;
+			invasivity=0.80000001;
 			physicalResistance=0.5;
 			chemicalResistance=0.60000002;
 			class Direct: DefaultDirect
@@ -309613,7 +309947,7 @@ class CfgModifiers
 			class Immunity: DefaultStage
 			{
 				cooldown[]={};
-				duration[]={1209600,2628000};
+				duration[]={86400,259200};
 				messages[]={};
 				messageStyle="";
 				condition="true";
@@ -309625,6 +309959,135 @@ class CfgModifiers
 				messages[]={};
 				messageStyle="";
 				condition="true";
+			};
+			class NegligibleImpact: DefaultStage
+			{
+				cooldown[]={};
+				duration[]={7200,18000};
+				messages[]={};
+				messageStyle="";
+				condition="true";
+				class Stages
+				{
+					class 0: DefaultStage
+					{
+						cooldown[]={300,600};
+						duration[]={7200,10800};
+						messages[]=
+						{
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out",
+							"I feel a rumble in my bowels",
+							"I just soiled myself"
+						};
+						messageStyle="";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.25,
+								" * DZ_THIRST_SEC"
+							}
+						};
+						notifier[]=
+						{
+							0,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
+					};
+					class 1: 0
+					{
+						cooldown[]={180,420};
+						duration[]={7200,14400};
+						messages[]=
+						{
+							"I feel exhausted",
+							"I feel extremely tired",
+							"I feel a rumble in my bowels",
+							"I just soiled myself"
+						};
+						messageStyle="colorImportant";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.5,
+								" * DZ_THIRST_SEC"
+							}
+						};
+						notifier[]=
+						{
+							0,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
+					};
+					class 2: 1
+					{
+						cooldown[]={120,300};
+						duration[]={7200,14400};
+						messages[]=
+						{
+							"I feel cold",
+							"I start to shiver",
+							"I feel shivery",
+							"I'm shivering",
+							"I feel exhausted",
+							"I feel extremely tired",
+							"I feel a rumble in my bowels",
+							"I just soiled myself"
+						};
+						messageStyle="colorImportant";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-2,
+								" * DZ_THIRST_SEC"
+							}
+						};
+						notifier[]=
+						{
+							0,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
+					};
+					class 3: 2
+					{
+						cooldown[]={180,420};
+						duration[]={900,1800};
+						messages[]=
+						{
+							"I feel cold",
+							"I start to shiver",
+							"I feel shivery",
+							"I'm shivering",
+							"I feel exhausted",
+							"I feel extremely tired",
+							"I feel a rumble in my bowels"
+						};
+						messageStyle="";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.1,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+				};
 			};
 			class LightImpact: DefaultStage
 			{
@@ -309802,6 +310265,12 @@ class CfgModifiers
 								-1
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 2: 1
 					{
@@ -309834,6 +310303,12 @@ class CfgModifiers
 								-2
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -309859,6 +310334,12 @@ class CfgModifiers
 								-2,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 				};
@@ -309895,6 +310376,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -309922,6 +310409,12 @@ class CfgModifiers
 								"blood",
 								-2
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
 						};
 					};
 					class 2: 1
@@ -309955,6 +310448,12 @@ class CfgModifiers
 								-3
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -309977,9 +310476,14 @@ class CfgModifiers
 							
 							{
 								"water",
-								-3,
-								" * DZ_THIRST_SEC"
+								-2
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
 						};
 					};
 				};
@@ -310004,21 +310508,107 @@ class CfgModifiers
 		};
 		class Stages
 		{
-			class Immunity: DefaultStage
+			class Carrier: DefaultStage
 			{
 				cooldown[]={};
-				duration[]={604800,1814400};
+				duration[]={86400,259200};
 				messages[]={};
 				messageStyle="colorFriendly";
 				condition="true";
 			};
-			class Carrier: DefaultStage
+			class NegligibleImpact: DefaultStage
 			{
 				cooldown[]={};
-				duration[]={604800,1814400};
+				duration[]={86400,172800};
 				messages[]={};
 				messageStyle="colorImportant";
 				condition="true";
+				class Stages
+				{
+					class 0: DefaultStage
+					{
+						cooldown[]={300,600};
+						duration[]={7200,10800};
+						messages[]=
+						{
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out",
+							"I feel cold",
+							"I start to shiver",
+							"I feel shivery",
+							"I'm shivering"
+						};
+						messageStyle="";
+						modifiers[]={};
+					};
+					class 1: 0
+					{
+						cooldown[]={180,420};
+						duration[]={7200,14400};
+						messages[]=
+						{
+							"My throat is sore",
+							"I feel sore throat",
+							"My throat hurts",
+							"I feel exhausted",
+							"I feel extremely tired",
+							"I feel cold",
+							"I start to shiver",
+							"I feel shivery",
+							"I'm shivering",
+							"I sneeze"
+						};
+						messageStyle="colorImportant";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.01,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+					class 2: 1
+					{
+						cooldown[]={120,300};
+						duration[]={7200,14400};
+						messages[]=
+						{
+							"My throat is sore",
+							"I feel sore throat",
+							"My throat hurts",
+							"I cough",
+							"I sneeze",
+							"runnynose"
+						};
+						messageStyle="colorImportant";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.02,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+					class 3: 2
+					{
+						cooldown[]={180,420};
+						duration[]={900,1800};
+						messages[]=
+						{
+							"I cough"
+						};
+						messageStyle="";
+						sounds[]={};
+						modifiers[]={};
+					};
+				};
 			};
 			class LightImpact: DefaultStage
 			{
@@ -310053,6 +310643,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -310082,6 +310678,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 2: 1
 					{
@@ -310106,6 +310708,12 @@ class CfgModifiers
 								-1.08,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 					class 3: 2
@@ -310155,6 +310763,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -310184,6 +310798,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 2: 1
 					{
@@ -310209,6 +310829,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -310228,6 +310854,12 @@ class CfgModifiers
 								-1.02,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 				};
@@ -310265,6 +310897,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -310294,6 +310932,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 2: 1
 					{
@@ -310319,6 +310963,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -310339,8 +310989,22 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 				};
+			};
+			class Immunity: DefaultStage
+			{
+				cooldown[]={};
+				duration[]={604800,1814400};
+				messages[]={};
+				messageStyle="colorFriendly";
+				condition="true";
 			};
 		};
 	};
@@ -310351,7 +311015,7 @@ class CfgModifiers
 		class Transmission
 		{
 			invasivity=0.80000001;
-			toxicity=0.60000002;
+			toxicity=0.5;
 			physicalResistance=0.30000001;
 			chemicalResistance=0.40000001;
 			class Direct: DefaultDirect
@@ -310362,21 +311026,136 @@ class CfgModifiers
 		};
 		class Stages
 		{
-			class Immunity: DefaultStage
+			class Carrier: DefaultStage
 			{
 				cooldown[]={};
-				duration[]={1209600,2419200};
+				duration[]={86400,259200};
 				messages[]={};
 				messageStyle="colorFriendly";
 				condition="true";
 			};
-			class Carrier: DefaultStage
+			class NegligibleImpact: DefaultStage
 			{
 				cooldown[]={};
-				duration[]={604800,1209600};
+				duration[]={7200,14400};
 				messages[]={};
 				messageStyle="colorImportant";
 				condition="true";
+				class NegligibleStages
+				{
+					class 0: DefaultStage
+					{
+						cooldown[]={300,600};
+						duration[]={3600,14400};
+						messages[]=
+						{
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out",
+							"I feel cold",
+							"I start to shiver",
+							"I feel shivery",
+							"I'm shivering",
+							"I cough"
+						};
+						messageStyle="";
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.02,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+					class 1: 0
+					{
+						cooldown[]={180,420};
+						duration[]={7200,18000};
+						messages[]=
+						{
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out",
+							"I feel cold",
+							"I start to shiver",
+							"I feel shivery",
+							"I'm shivering",
+							"I cough",
+							"I'm sweating",
+							"I'm feeling hot",
+							"It's really warm",
+							"My head pounds",
+							"My head throbs",
+							"My head hurts"
+						};
+						messageStyle="colorImportant";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.08,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+					class 2: 1
+					{
+						cooldown[]={120,300};
+						duration[]={10800,21600};
+						messages[]=
+						{
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out",
+							"I feel cold",
+							"I start to shiver",
+							"I feel shivery",
+							"I'm shivering",
+							"I cough",
+							"I'm sweating",
+							"I'm feeling hot",
+							"It's really warm",
+							"My head pounds",
+							"My head throbs",
+							"My head hurts"
+						};
+						messageStyle="colorImportant";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.05,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+					class 3: 2
+					{
+						cooldown[]={180,420};
+						duration[]={3600,14400};
+						messages[]=
+						{
+							"I cough"
+						};
+						messageStyle="";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.02,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+				};
 			};
 			class LightImpact: DefaultStage
 			{
@@ -310412,6 +311191,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -310445,6 +311230,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 2: 1
 					{
@@ -310477,6 +311268,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -310499,6 +311296,12 @@ class CfgModifiers
 								-1.05,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 				};
@@ -310542,6 +311345,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -310575,6 +311384,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 2: 1
 					{
@@ -310605,6 +311420,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -310627,6 +311448,12 @@ class CfgModifiers
 								-1.08,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 				};
@@ -310671,6 +311498,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -310701,6 +311534,12 @@ class CfgModifiers
 								-1.2,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
 						};
 					};
 					class 2: 1
@@ -310733,6 +311572,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -310757,8 +311602,22 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 				};
+			};
+			class Immunity: DefaultStage
+			{
+				cooldown[]={};
+				duration[]={1209600,2419200};
+				messages[]={};
+				messageStyle="colorFriendly";
+				condition="true";
 			};
 		};
 	};
@@ -310780,21 +311639,122 @@ class CfgModifiers
 		};
 		class Stages
 		{
-			class Immunity: DefaultStage
+			class Carrier: DefaultStage
 			{
 				cooldown[]={};
-				duration[]={1814400,3024000};
+				duration[]={86400,259200};
 				messages[]={};
 				messageStyle="";
 				condition="true";
 			};
-			class Carrier: DefaultStage
+			class NegligibleImpact: DefaultStage
 			{
 				cooldown[]={};
-				duration[]={604800,1814400};
+				duration[]={7200,18000};
 				messages[]={};
 				messageStyle="";
 				condition="true";
+				class NegligibleStages
+				{
+					class 0: DefaultStage
+					{
+						cooldown[]={300,600};
+						duration[]={3600,14400};
+						messages[]=
+						{
+							"My throat is sore",
+							"I feel sore throat",
+							"My throat hurts",
+							"I swallow painfully"
+						};
+						messageStyle="";
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.02,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+					class 1: 0
+					{
+						cooldown[]={180,420};
+						duration[]={7200,18000};
+						messages[]=
+						{
+							"My throat is sore",
+							"I feel sore throat",
+							"My throat hurts",
+							"I swallow painfully",
+							"I cough",
+							"I'm feeling hot",
+							"It's really warm"
+						};
+						messageStyle="colorImportant";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.08,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+					class 2: 1
+					{
+						cooldown[]={120,300};
+						duration[]={10800,21600};
+						messages[]=
+						{
+							"My throat is sore",
+							"I feel sore throat",
+							"My throat hurts",
+							"I swallow painfully",
+							"I cough",
+							"I'm feeling hot",
+							"It's really warm",
+							"I feel a slight pain in my chest",
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out"
+						};
+						messageStyle="colorImportant";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.05,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+					class 3: 2
+					{
+						cooldown[]={180,420};
+						duration[]={3600,14400};
+						messages[]=
+						{
+							"I cough"
+						};
+						messageStyle="";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.02,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+				};
 			};
 			class LightImpact: DefaultStage
 			{
@@ -310826,6 +311786,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -310852,6 +311818,12 @@ class CfgModifiers
 								-1.08,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 					class 2: 1
@@ -310881,6 +311853,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -310903,6 +311881,12 @@ class CfgModifiers
 								-1.05,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 				};
@@ -310943,6 +311927,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -310976,6 +311966,12 @@ class CfgModifiers
 								-1.15,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
 						};
 					};
 					class 2: 1
@@ -311011,6 +312007,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -311034,6 +312036,12 @@ class CfgModifiers
 								-1.08,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.52499998,0.54100001,0.030999999,1}
 						};
 					};
 				};
@@ -311074,6 +312082,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.294,0.030999999,1}
+						};
 					};
 					class 1: 0
 					{
@@ -311106,6 +312120,12 @@ class CfgModifiers
 								-1.2,
 								" * DZ_THIRST_SEC"
 							}
+						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
 						};
 					};
 					class 2: 1
@@ -311140,6 +312160,12 @@ class CfgModifiers
 								" * DZ_THIRST_SEC"
 							}
 						};
+						notifier[]=
+						{
+							5,
+							"sick",
+							{0.54100001,0.030999999,0.030999999,1}
+						};
 					};
 					class 3: 2
 					{
@@ -311168,6 +312194,14 @@ class CfgModifiers
 					};
 				};
 			};
+			class Immunity: DefaultStage
+			{
+				cooldown[]={};
+				duration[]={1814400,3024000};
+				messages[]={};
+				messageStyle="";
+				condition="true";
+			};
 		};
 	};
 	class Salmonellosis: Default
@@ -311188,14 +312222,6 @@ class CfgModifiers
 		};
 		class Stages
 		{
-			class Immunity: DefaultStage
-			{
-				cooldown[]={10,20};
-				duration[]={1209600,1814400};
-				messages[]={};
-				messageStyle="colorFriendly";
-				condition="true";
-			};
 			class Carrier: DefaultStage
 			{
 				cooldown[]={};
@@ -311203,6 +312229,104 @@ class CfgModifiers
 				messages[]={};
 				messageStyle="";
 				condition="true";
+			};
+			class NegligibleImpact: DefaultStage
+			{
+				cooldown[]={};
+				duration[]={7200,28800};
+				messages[]={};
+				messageStyle="";
+				condition="true";
+				class NegligibleStages
+				{
+					class 0: DefaultStage
+					{
+						cooldown[]={300,600};
+						duration[]={3600,14400};
+						messages[]=
+						{
+							"I feel a rumble in my bowels"
+						};
+						messageStyle="";
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.02,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+					class 1: 0
+					{
+						cooldown[]={180,420};
+						duration[]={7200,18000};
+						messages[]=
+						{
+							"I feel a rumble in my bowels",
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out"
+						};
+						messageStyle="colorImportant";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.08,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+					class 2: 1
+					{
+						cooldown[]={120,300};
+						duration[]={10800,21600};
+						messages[]=
+						{
+							"I just soiled myself",
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out"
+						};
+						messageStyle="colorImportant";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.05,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+					class 3: 2
+					{
+						cooldown[]={180,420};
+						duration[]={3600,14400};
+						messages[]=
+						{
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out"
+						};
+						messageStyle="";
+						sounds[]={};
+						modifiers[]=
+						{
+							
+							{
+								"water",
+								-1.02,
+								" * DZ_THIRST_SEC"
+							}
+						};
+					};
+				};
 			};
 			class LightImpact: DefaultStage
 			{
@@ -311222,7 +312346,7 @@ class CfgModifiers
 						duration[]={10800,28800};
 						messages[]=
 						{
-							"I feel cramps in my stomach"
+							"I feel a rumble in my bowels"
 						};
 						messageStyle="";
 						sounds[]={};
@@ -311248,7 +312372,10 @@ class CfgModifiers
 						duration[]={10800,28800};
 						messages[]=
 						{
-							"I feel a rumble in my bowels"
+							"I just soiled myself",
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out"
 						};
 						messageStyle="colorImportant";
 						sounds[]={};
@@ -311274,7 +312401,10 @@ class CfgModifiers
 						duration[]={7200,21600};
 						messages[]=
 						{
-							"I just soiled myself"
+							"I just soiled myself",
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out"
 						};
 						messageStyle="colorImportant";
 						sounds[]={};
@@ -311339,7 +312469,10 @@ class CfgModifiers
 						duration[]={10800,28800};
 						messages[]=
 						{
-							"I feel cramps in my stomach"
+							"I just soiled myself",
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out"
 						};
 						messageStyle="";
 						modifiers[]=
@@ -311364,7 +312497,11 @@ class CfgModifiers
 						duration[]={14400,32400};
 						messages[]=
 						{
-							"I feel a rumble in my bowels"
+							"I just soiled myself",
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out",
+							"I feel cramps in my stomach"
 						};
 						messageStyle="colorImportant";
 						sounds[]={};
@@ -311390,7 +312527,13 @@ class CfgModifiers
 						duration[]={10800,32400};
 						messages[]=
 						{
-							"I just soiled myself"
+							"I just soiled myself",
+							"I feel exhausted",
+							"I feel extremely tired",
+							"I feel cramps in my stomach",
+							"I am close to vomiting",
+							"I think I'm going to vomit...",
+							"I'm going to vomit..."
 						};
 						messageStyle="colorImportant";
 						sounds[]={};
@@ -311416,8 +312559,9 @@ class CfgModifiers
 						duration[]={10800,32400};
 						messages[]=
 						{
-							"I feel exhausted",
-							"I feel extremely tired"
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out"
 						};
 						messageStyle="";
 						sounds[]={};
@@ -311454,7 +312598,13 @@ class CfgModifiers
 						duration[]={10800,32400};
 						messages[]=
 						{
-							"I feel cramps in my stomach"
+							"I just soiled myself",
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out",
+							"I am close to vomiting",
+							"I think I'm going to vomit...",
+							"I'm going to vomit..."
 						};
 						messageStyle="";
 						modifiers[]=
@@ -311479,7 +312629,13 @@ class CfgModifiers
 						duration[]={14400,36000};
 						messages[]=
 						{
-							"I just soiled myself"
+							"I just soiled myself",
+							"I feel exhausted",
+							"I feel extremely tired",
+							"I am close to vomiting",
+							"I think I'm going to vomit...",
+							"I'm going to vomit...",
+							"I feel cramps in my stomach"
 						};
 						messageStyle="colorImportant";
 						sounds[]={};
@@ -311505,7 +312661,13 @@ class CfgModifiers
 						duration[]={14400,32400};
 						messages[]=
 						{
-							"I just soiled myself"
+							"I just soiled myself",
+							"I feel exhausted",
+							"I feel extremely tired",
+							"I am close to vomiting",
+							"I think I'm going to vomit...",
+							"I'm going to vomit...",
+							"I feel cramps in my stomach"
 						};
 						messageStyle="colorImportant";
 						sounds[]={};
@@ -311531,8 +312693,10 @@ class CfgModifiers
 						duration[]={10800,36000};
 						messages[]=
 						{
-							"I feel exhausted",
-							"I feel extremely tired"
+							"I feel cramps in my stomach",
+							"I feel tired",
+							"I feel run-down",
+							"I feel worn-out"
 						};
 						messageStyle="";
 						sounds[]={};
@@ -311553,6 +312717,14 @@ class CfgModifiers
 						};
 					};
 				};
+			};
+			class Immunity: DefaultStage
+			{
+				cooldown[]={10,20};
+				duration[]={1209600,1814400};
+				messages[]={};
+				messageStyle="colorFriendly";
+				condition="true";
 			};
 		};
 	};
@@ -311674,7 +312846,267 @@ class CfgModifiers
 			};
 		};
 	};
-	class Blinded: Default
+	class BrainDisease: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="";
+		class Transmission
+		{
+			invasivity=1;
+			toxicity=0.2;
+			physicalResistance=1;
+			chemicalResistance=1;
+			class Direct: DefaultDirect
+			{
+				transferability=1;
+				fromPlayer=0;
+			};
+		};
+		class Stages
+		{
+			class 0: DefaultStage
+			{
+				cooldown[]={};
+				duration[]={100,150};
+				sounds[]=
+				{
+					"Character_Mad"
+				};
+				statementEnter="";
+				statementExit="";
+			};
+			class 1: 0
+			{
+				cooldown[]={};
+				duration[]={100,150};
+				sounds[]=
+				{
+					"Character_Mad"
+				};
+				statementEnter="";
+				statementExit="";
+			};
+			class 2: 1
+			{
+				cooldown[]={};
+				duration[]={60,120};
+				sounds[]=
+				{
+					"Character_Mad"
+				};
+				statementEnter="";
+				statementExit="";
+			};
+			class 3: 2
+			{
+				cooldown[]={};
+				duration[]={30,60};
+				sounds[]=
+				{
+					"Character_Mad"
+				};
+				statementEnter="";
+				statementExit="";
+			};
+			class 4: 3
+			{
+				cooldown[]={};
+				duration[]={15,30};
+				sounds[]=
+				{
+					"Character_Mad"
+				};
+				statementEnter="";
+				statementExit="";
+			};
+			class Shake: 4
+			{
+				cooldown[]={180,360};
+				duration[]={};
+				sounds[]=
+				{
+					"Character_Mad"
+				};
+				condition="true";
+				statementEnter="";
+				statementExit="";
+			};
+		};
+	};
+	class FeelingCold: Default
+	{
+		messagesExit[]={};
+		messageExitStyle="";
+		class Stages
+		{
+			class 0: DefaultStage
+			{
+				modifiers[]={};
+				messages[]={};
+				messageStyle="";
+				statementEnter="";
+				condition="_this getVariable ['heatcomfort',-15] > -10 && _this getVariable ['heatcomfort',-15] < 18";
+			};
+			class 1: 0
+			{
+				cooldown[]={90,90};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						-1,
+						" * 0.0000125"
+					}
+				};
+				messages[]=
+				{
+					"I am slowly cooling off"
+				};
+				messageStyle="";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] <= -10 && _this getVariable ['heatcomfort',-15] > -15";
+			};
+			class 2: 1
+			{
+				cooldown[]={60,60};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						-1,
+						" * 0.0010125"
+					}
+				};
+				messages[]=
+				{
+					"I am cooling off"
+				};
+				messageStyle="";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] <= -15 && _this getVariable ['heatcomfort',-15] > -20";
+			};
+			class 3: 2
+			{
+				cooldown[]={40,40};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						-1,
+						" * 0.001125"
+					}
+				};
+				messages[]=
+				{
+					"I am promptly cooling off"
+				};
+				messageStyle="";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] <= -20 && _this getVariable ['heatcomfort',-15] > -30";
+			};
+			class 4: 3
+			{
+				cooldown[]={30,30};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						-1,
+						" * 0.002"
+					}
+				};
+				messages[]=
+				{
+					"I am rapidly cooling off"
+				};
+				messageStyle="";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] <= -30";
+			};
+			class 5: 4
+			{
+				cooldown[]={90,90};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						1,
+						" * 0.0001"
+					}
+				};
+				messages[]=
+				{
+					"I am warming up"
+				};
+				messageStyle="";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] >= 18 && _this getVariable ['heatcomfort',-15] < 28";
+			};
+			class 6: 5
+			{
+				cooldown[]={30,30};
+				modifiers[]=
+				{
+					
+					{
+						"bodytemperature",
+						1,
+						" * 0.001"
+					}
+				};
+				messages[]=
+				{
+					"I am rapidly warming up"
+				};
+				messageStyle="";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] >= 28 && _this getVariable ['heatcomfort',-15] < 200";
+			};
+			class 7: 6
+			{
+				cooldown[]={2,2};
+				modifiers[]=
+				{
+					
+					{
+						"health",
+						-100
+					},
+					
+					{
+						"blood",
+						-100
+					},
+					
+					{
+						"water",
+						-15
+					}
+				};
+				messages[]=
+				{
+					"I am burning!",
+					"My face is melting!"
+				};
+				messageStyle="ColorImportant";
+				statementEnter="";
+				postponeMessageUntilCooldown=1;
+				condition="_this getVariable ['heatcomfort',-15] >= 200";
+			};
+		};
+	};
+class Blinded: Default
 	{
 		messagesExit[]={};
 		messageExitStyle="";
@@ -311785,6 +313217,117 @@ class CfgModifiers
 				modifiers[]={};
 				statementEnter="_agent spawnForPlayer compile 'setAperture 0;';";
 			};
+		};
+	};
+};
+class cfgLiquidTypes
+{
+	liquidTypes[]=
+	{
+		"Water",
+		"RiverWater",
+		"Vodka",
+		"Beer",
+		"Gasoline",
+		"Diesel"
+	};
+	class Water
+	{
+		displayName="Water";
+		script="";
+		compatible[]={};
+		flammability=-10;
+		intoxication=-10;
+		class Nutrition
+		{
+			totalVolume=150;
+			energy=0;
+			water=100;
+			nutritionalIndex=75;
+		};
+	};
+	class RiverWater: Water
+	{
+		displayName="Water";
+		compatible[]={};
+		flammability=-10;
+		intoxication=-10;
+		class Nutrition
+		{
+			totalVolume=150;
+			energy=0;
+			water=100;
+			nutritionalIndex=75;
+		};
+	};
+	class Disinfectant: Water
+	{
+		displayName="Disinfectant";
+		compatible[]={};
+		flammability=10;
+		intoxication=50;
+		class Nutrition
+		{
+			totalVolume=160;
+			energy=350;
+			water=30;
+			nutritionalIndex=55;
+		};
+	};
+	class Vodka: Water
+	{
+		displayName="Vodka";
+		compatible[]={};
+		flammability=10;
+		intoxication=50;
+		class Nutrition
+		{
+			totalVolume=375;
+			energy=1650;
+			water=100;
+			nutritionalIndex=75;
+		};
+	};
+	class Beer
+	{
+		displayName="Beer";
+		compatible[]={};
+		flammability=0;
+		intoxication=10;
+		class Nutrition
+		{
+			totalVolume=250;
+			energy=156;
+			water=100;
+			nutritionalIndex=75;
+		};
+	};
+	class Gasoline
+	{
+		displayName="Gasoline";
+		compatible[]={};
+		flammability=50;
+		intoxication=5;
+		class Nutrition
+		{
+			totalVolume=50;
+			energy=-10;
+			water=100;
+			nutritionalIndex=75;
+		};
+	};
+	class Diesel
+	{
+		displayName="Diesel";
+		compatible[]={};
+		flammability=50;
+		intoxication=5;
+		class Nutrition
+		{
+			totalVolume=50;
+			energy=-10;
+			water=100;
+			nutritionalIndex=75;
 		};
 	};
 };

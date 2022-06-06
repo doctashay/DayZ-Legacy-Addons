@@ -269,7 +269,7 @@ class CfgSounds
     class introSong
     {
     name="introSong";
-    sound[]={"dzlegacy\modules_dayz\introSong.ogg",0.5,1};
+    sound[]={"dz\modulesDayz\introSong.ogg",0.5,1};
     titles[] = {};
     };
 };
