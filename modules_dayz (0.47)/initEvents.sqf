@@ -1,4 +1,0 @@
-DEBUGME = true;
-/*
-	CLIENT EVENTS
-*/
