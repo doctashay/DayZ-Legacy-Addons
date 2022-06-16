@@ -25,6 +25,8 @@ switch _state do
 		_itemType = typeOf _item;
 		_unlimited = getNumber(configFile >> "CfgVehicles" >> _itemType >> "UserActions" >> _actionName >> "unlimited") == 1;
 		
+		_person setVariable ["wasCanceled",0];
+		
 		//_person setVariable ["isUsingSomething",1];
 		_person setVariable ["inUseItem",_item];
 		
@@ -38,13 +40,15 @@ switch _state do
 			[_person,"I'm unable to do that now",""] call fnc_playerMessage;	//empty message
 			_person setVariable ["inUseItem",objNull];
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};
 		
 		if (_person distance _target > 2) exitWith
 		{
 			[_person,"I am too far away",""] call fnc_playerMessage;	//empty message
 			_person setVariable ["inUseItem",objNull];
-			_person setVariable ["isUsingSomething",0];			
+			_person setVariable ["isUsingSomething",0];	
+			_person setVariable ["wasCanceled",0];			
 		};
 		
 		if (damage _item == 1) exitWith
@@ -52,17 +56,20 @@ switch _state do
 			[_person,format["The %1 is completely ruined",displayName _item],""] call fnc_playerMessage;	//empty message
 			_person setVariable ["inUseItem",objNull];
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};	
 		if (itemInHands _person != _item) exitWith
 		{
 			[_person,"The item must be in my hands to do this",""] call fnc_playerMessage;	//empty message
 			_person setVariable ["inUseItem",objNull];
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};
 		if (!isNull _inUse) exitWith
 		{
 			[_person,"I am already using something",""] call fnc_playerMessage;	//empty message
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};
 
 		//load data
@@ -82,6 +89,7 @@ switch _state do
 			_person setVariable ["inUseItem",objNull];
 			_person setVariable ["actionTarget",objNull];
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};
 		
 		
@@ -98,6 +106,7 @@ switch _state do
 			//target is dead
 			[_person,_message select 0,_message select 1] call fnc_playerMessage;
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};
 				
 		//notify
@@ -155,6 +164,17 @@ switch _state do
 		_item = _person getVariable ["inUseItem",objNull];
 		//_item = itemInHands _person;
 		
+		// Double check for canceling action if it's not triggered after changing stance or holding down throw key etc.		
+		_actionCanceledDoubleCheck = _person getVariable ["wasCanceled",0];
+		
+		if (_actionCanceledDoubleCheck == 1) exitWith
+		{
+			[_person,"Current action was cancelled",""] call fnc_playerMessage;	// empty message
+			_person setVariable ["inUseItem",objNull];
+			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
+		};
+		
 		if (_target distance _person > 2) exitWith
 		{
 			//target moved away
@@ -170,6 +190,7 @@ switch _state do
 			_person setVariable ["inUseItem",objNull];
 			_person setVariable ["actionTarget",objNull];
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};
 		
 		if ((!alive _target and !_allowDead) or (isNull _target)) exitWith
@@ -186,18 +207,10 @@ switch _state do
 			_person setVariable ["inUseItem",objNull];
 			_person setVariable ["actionTarget",objNull];
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};	
 		
-		/*
-		_actionCanceled = _person getVariable ["isUsingSomething",0];
-		
-		if (_actionCanceled == 2) exitWith
-		{
-			[_person,"Current action was canceled",""] call fnc_playerMessage;	//empty message
-			_person setVariable ["inUseItem",objNull];
-			_person setVariable ["isUsingSomething",0];
-		};
-		*/
+
 		
 		//onStart
 		call compile _onStart;
@@ -233,5 +246,6 @@ switch _state do
 		_person setVariable ["inUseItem",objNull];
 		_person setVariable ["actionTarget",objNull];
 		_person setVariable ["isUsingSomething",0];
+		_person setVariable ["wasCanceled",0];
 	};
 };

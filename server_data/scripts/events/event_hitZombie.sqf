@@ -5,7 +5,6 @@ _source = _this select 3;
 _bone = (((_this select 5) select 1) select 0);
 if ( typeName _bone == "STRING" ) then
 {
-	
 	switch (_bone) do
 	{
 		case "head": 
@@ -20,7 +19,6 @@ if ( typeName _bone == "STRING" ) then
 		};
 	};
 };
-
 if ((itemInHands _source) isKindOf "Chainsaw" )then{
 	if ((isOn (itemInHands _source)))then{
 		_damage = _damage + 1;
@@ -58,8 +56,5 @@ if ((itemInHands _source) isKindOf "StunBaton")then{
 		_damage = _damage + 0.5;
 	};
 };
-
-
-
 //hint format["hit: %1\nDamage: %2\nBone: %3",_selection,(_damage),_bone];
 _damage

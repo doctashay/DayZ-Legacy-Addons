@@ -37,6 +37,14 @@ switch _state do
 			[_person,format['Match went out because of the rain'],'colorAction'] call fnc_playerMessage;
 		};
 
+/*		
+		//check if player stands in the water (thus he is trying to ignite fireplace in/under the water
+		if (surfaceIsWater (position _person)) exitWith
+		{
+			[_person,format['I cannot ignite fireplace in the water'],'colorAction'] call fnc_playerMessage;
+		};
+*/
+		
 		//check wind
 		_windStrength = (wind select 0) + (wind select 1) + (wind select 2);
 		_probability = 0;

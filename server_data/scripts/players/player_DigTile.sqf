@@ -37,19 +37,6 @@ switch _state do
 			[_person, "The terrain is too steep in here.", "colorImportant"] call fnc_playerMessage;
 		};
 		
-		// Check if there isn't water here
-		_sur = surfaceTypeASL [_xPos, _yPos, _zPos];
-		if ( _sur == "FreshWater" || _sur == "sea")
-		exitWith{
-			[_person, "I cannot dig near water.", "colorImportant"] call fnc_playerMessage;
-		};
-		
-		// Check if this place is collision free
-		if (collisionBox [[_xPos, _yPos, _zPos ], [3.3,3.3,2] ,[vectorDir _person, RoadWayNormalAsl [_xPos, _yPos, _zPos]], [_person]])
-		exitWith{
-			[_person, "There is not enough room for digging.", "colorImportant"] call fnc_playerMessage;
-		};
-		
 		// Everything is checked, now start digging
 		_result = format["[1, ""%1"", %2, %3, %4] call player_DigTile", _surface, round _xPos, round _yPos, direction _person];	
 		_person playAction ["digHoe", compile _result];

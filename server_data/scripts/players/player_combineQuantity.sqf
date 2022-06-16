@@ -51,8 +51,6 @@ else
 	deleteVehicle _sender;
 };
 _receiver setQuantity _receiverQty;
-
-
 _receiver setDamage _condition;
 
 //send response

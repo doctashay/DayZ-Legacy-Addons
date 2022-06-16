@@ -49,21 +49,27 @@ DZ_posbubbles = [
 _createPlayer = 
 {
 	//check database
+	
+	diag_log format["CONNECTION: _id: %1 _uid: %2 _name: %3",_id,_uid,_name];
+	
 	_savedChar = dbFindCharacter _uid;
 	_isAlive = _savedChar select 0;
-	_pos = [_savedChar select 1,_savedChar select 2,_savedChar select 3];
-	_idleTime = _savedChar select 4;
+	_isOnline = _savedChar select 1;
+	_pos = [_savedChar select 2,_savedChar select 3,_savedChar select 4];
+	_idleTime = _savedChar select 5;
+	
+	if (!_isOnline) then
+	{
+		diag_log format["WARNING: No connection to HIVE. Player %1 could not be loaded.",_uid];
+	};
 	
 	//process client
-	[_id,_isAlive,_pos,overcast,rain] spawnForClient {
+	[_id,_isAlive,_pos,overcast,rain,_isOnline,_idleTime] spawnForClient {
 		titleText ["","BLACK FADED",10e10];
 		diag_log str(_this);
 		playerQueueVM = _this call player_queued;
 
 
-		0 setOvercast (_this select 4);
-		simulSetHumidity (_this select 4);
-		0 setRain (_this select 5);
 	};
 };
 
@@ -135,7 +141,7 @@ onPlayerDisconnected _disconnectPlayer;
 	_array = _this select 1;
 	_id = _array select 2;
 	diag_log format ["CLIENT %1 request to spawn %2",_id,_this];
-	///_id spawnForClient {statusChat ['testing 1 2 3','']};
+	_id spawnForClient {statusChat ['testing 1 2 3','']};
 	
 	_savedChar = dbFindCharacter (getClientUID _id);
 
@@ -195,4 +201,6 @@ onPlayerDisconnected _disconnectPlayer;
 	//_v = _agent createInInventory "Meat_ChickenBreast_Cooked";_v setVariable ["amount",100];
 	_agent call init_newPlayer;
 	call init_newBody;
+	
+	diag_log format["SERVER: Created %1 for clientId %2",_agent,_id];
 };

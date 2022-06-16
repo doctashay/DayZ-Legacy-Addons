@@ -34,6 +34,8 @@ switch _state do
 		//_person setVariable ["isUsingSomething",1];
 		//_person setVariable ["inUseItem",_item];
 		
+		_person setVariable ["wasCanceled",0];
+		
 		//check if player is able to do action (if he isn't on ladder or swimming etc.)
 		_anim =  animationState _person; 
 		_skeleton = getText (configFile >> "CfgVehicles" >> typeOf _person >> "moves"); 
@@ -44,25 +46,37 @@ switch _state do
 			[_person,"I'm unable to do that now",""] call fnc_playerMessage;	//empty message
 			_person setVariable ["inUseItem",objNull];
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};
-		
+		/*
+		if (_item getVariable ['inusage',0] == 1) exitWith
+		{
+			[_person,"I cannot use it as it's being used by someone else",""] call fnc_playerMessage;	//empty message
+			_person setVariable ["inUseItem",objNull];
+			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
+		};
+		*/
 		if (damage _item == 1) exitWith
 		{
 			[_person,format["The %1 is completely ruined",displayName _item],""] call fnc_playerMessage;	//empty message
 			_person setVariable ["inUseItem",objNull];
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};		
 		if ((!isNull _inUse) and !_override) exitWith
 		{
 			[_person,"I'm already using something",""] call fnc_playerMessage;	//empty message
 			_person setVariable ["inUseItem",objNull];
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};
 		if (_quantity <= 0 and !_unlimited) exitWith
 		{
 			[_person,"There is nothing left",""] call fnc_playerMessage;	//empty message
 			_person setVariable ["inUseItem",objNull];
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};
 		
 		//move item into hands
@@ -154,17 +168,18 @@ switch _state do
 		_quantity = quantity _item;
 		_use = 	getNumber (_config >> "UserActions" >> _actionName >> "useQuantity");
 		
-		/*				
-		_actionCanceled = _person getVariable ["isUsingSomething",0];
+		// Double check for canceling action if it's not triggered after changing stance or holding down throw key etc.		
+		_actionCanceledDoubleCheck = _person getVariable ["wasCanceled",0];
 		
-		if (_actionCanceled == 2) exitWith
+		if (_actionCanceledDoubleCheck == 1) exitWith
 		{
-			[_person,"Current action was canceled",""] call fnc_playerMessage;	// empty message
+			[_person,"Current action was cancelled",""] call fnc_playerMessage;	// empty message
 			_person setVariable ["inUseItem",objNull];
-			_person setVariable ["isUsingSomething",0];				
+			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
+			_item setVariable ['inusage',0];
 		};
-		*/
-		
+				
 		//call player_fnc_useItemStart;	
 				
 		// Conduct onStart script
@@ -215,6 +230,8 @@ switch _state do
 		_person setVariable ["inUseItem",objNull];
 		_person setVariable ["previousItem",objNull];
 		_person setVariable ["isUsingSomething",0];
+		_person setVariable ["wasCanceled",0];
+		_item setVariable ['inusage',0];
 						
 		// Feedback to player
 		[_person,format[(_messages select 2),_name],(_messages select 3)] call fnc_playerMessage;
@@ -259,6 +276,7 @@ switch _state do
 			[_person,"Unable to pickup item",""] call fnc_playerMessage;	//empty message
 			_person setVariable ["inUseItem",objNull];
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};
 		
 		_result = false;_i = 0;
@@ -277,6 +295,7 @@ switch _state do
 			[_person,"Error putting item in your hands",""] call fnc_playerMessage;	//empty message
 			_person setVariable ["inUseItem",objNull];
 			_person setVariable ["isUsingSomething",0];
+			_person setVariable ["wasCanceled",0];
 		};
 	};
 };
