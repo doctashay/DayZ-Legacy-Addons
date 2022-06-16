@@ -15,7 +15,7 @@ scriptName "Functions\initFunctions.sqf";
 
 #define VERSION	3.0
 
-call compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\init.sqf";
+call compile preprocessFileLineNumbers "\dz\modulesDayZ\init.sqf";
 
 // //--- Check version, has to match config version
 // if (getnumber (configfile >> "CfgFunctions" >> "version") != VERSION) exitwith {

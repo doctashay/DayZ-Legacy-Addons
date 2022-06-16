@@ -68,7 +68,7 @@ ductTapeRepairDamage = 0.5; //Minimal damage for compatible item to be repairabl
 
 if (isServer) then
 {
-	call compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\init.sqf";
+	call compile preprocessFileLineNumbers "\dz\server\scripts\init.sqf";
 };
 
 //generate skins
@@ -261,7 +261,7 @@ DZ_BONES = call {
 	_bones
 };
 
-player_queued = compile preprocessFileLineNumbers "\dzlegacy\server_data\scripts\players\player_queued.sqf";
+player_queued = compile preprocessFileLineNumbers "\dz\server\scripts\players\player_queued.sqf";
 
 player_suicide = {
 	_fsm = [_person,_this] execFSM "player_suicide.fsm";
@@ -269,38 +269,38 @@ player_suicide = {
 };
 
 //functions
-fnc_generateTooltip = compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\fn_generateTooltip.sqf";
-dayz_bulletHit = 		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\dayz_bulletHit.sqf";
-fnc_playerMessage =	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\fn_playerMessage.sqf";
-randomValue =		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\randomValue.sqf";
-fnc_isItemDuctTapeCompatible = 	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\fnc_isItemDuctTapeCompatible.sqf";
+fnc_generateTooltip = compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_generateTooltip.sqf";
+dayz_bulletHit = 		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\dayz_bulletHit.sqf";
+fnc_playerMessage =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_playerMessage.sqf";
+randomValue =		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\randomValue.sqf";
+fnc_isItemDuctTapeCompatible = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fnc_isItemDuctTapeCompatible.sqf";
 
 //ui
-ui_characterScreen =	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\ui_characterScreen.sqf";
-ui_defaultCharacterScreen =	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\ui_defaultCharacterScreen.sqf";
-ui_newScene =		compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\ui_newScene.sqf";
+ui_characterScreen =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\ui_characterScreen.sqf";
+ui_defaultCharacterScreen =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\ui_defaultCharacterScreen.sqf";
+ui_newScene =		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\ui_newScene.sqf";
 
 //melee
-melee_startAttack = 	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\melee_startAttack.sqf";
-melee_finishAttack = 	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\melee_finishAttack.sqf";
-event_playerBleed = 	compile preprocessFileLineNumbers "\dzlegacy\modulesDayZ\scripts\event_playerBleed.sqf";
+melee_startAttack = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\melee_startAttack.sqf";
+melee_finishAttack = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\melee_finishAttack.sqf";
+event_playerBleed = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\event_playerBleed.sqf";
 
 //init
-//init_fireplace = compile preprocessFileLineNumbers			"\dzlegacy\modulesDayZ\scripts\init\fireplace_initialize.sqf";
-init_cooking_food = compile preprocessFileLineNumbers		"\dzlegacy\modulesDayZ\scripts\init\cooking_food_initialize.sqf";
-init_gascooker = compile preprocessFileLineNumbers			"\dzlegacy\modulesDayZ\scripts\init\gascooker_initialize.sqf";
-init_gascanister = compile preprocessFileLineNumbers		"\dzlegacy\modulesDayZ\scripts\init\gascanister_initialize.sqf";
-init_cooking_equipment = compile preprocessFileLineNumbers			"\dzlegacy\modulesDayZ\scripts\init\cooking_equipment_initialize.sqf";
+//init_fireplace = compile preprocessFileLineNumbers			"\dz\modulesDayZ\scripts\init\fireplace_initialize.sqf";
+init_cooking_food = compile preprocessFileLineNumbers		"\dz\modulesDayZ\scripts\init\cooking_food_initialize.sqf";
+init_gascooker = compile preprocessFileLineNumbers			"\dz\modulesDayZ\scripts\init\gascooker_initialize.sqf";
+init_gascanister = compile preprocessFileLineNumbers		"\dz\modulesDayZ\scripts\init\gascanister_initialize.sqf";
+init_cooking_equipment = compile preprocessFileLineNumbers			"\dz\modulesDayZ\scripts\init\cooking_equipment_initialize.sqf";
 
 //action conditions
-cooking_action_condition = compile preprocessFileLineNumbers 	"\dzlegacy\modulesDayZ\scripts\cooking\cooking_action_condition.sqf";
-//fireplace_action_condition = compile preprocessFileLineNumbers 	"\dzlegacy\modulesDayZ\scripts\cooking\fireplace_action_condition.sqf";
-//fireplace_state_condition = compile preprocessFileLineNumbers 	"\dzlegacy\modulesDayZ\scripts\cooking\fireplace_state_condition.sqf";
-//barrel_action_condition = compile preprocessFileLineNumbers 	"\dzlegacy\modulesDayZ\scripts\cooking\barrel_action_condition.sqf";
+cooking_action_condition = compile preprocessFileLineNumbers 	"\dz\modulesDayZ\scripts\cooking\cooking_action_condition.sqf";
+//fireplace_action_condition = compile preprocessFileLineNumbers 	"\dz\modulesDayZ\scripts\cooking\fireplace_action_condition.sqf";
+//fireplace_state_condition = compile preprocessFileLineNumbers 	"\dz\modulesDayZ\scripts\cooking\fireplace_state_condition.sqf";
+//barrel_action_condition = compile preprocessFileLineNumbers 	"\dz\modulesDayZ\scripts\cooking\barrel_action_condition.sqf";
 
 //event
-event_explosives = compile preprocessFileLineNumbers 	"\dzlegacy\modulesDayZ\scripts\event\event_explosives.sqf";
-event_ammo = compile preprocessFileLineNumbers 			"\dzlegacy\modulesDayZ\scripts\event\event_ammo.sqf";
+event_explosives = compile preprocessFileLineNumbers 	"\dz\modulesDayZ\scripts\event\event_explosives.sqf";
+event_ammo = compile preprocessFileLineNumbers 			"\dz\modulesDayZ\scripts\event\event_ammo.sqf";
 
 melee_fnc_checkHitLocal = {
 	if (!_processHit) exitWith {};
