@@ -71,22 +71,22 @@ init_spawnServerEvent = 	compile preprocessFileLineNumbers "\dz\server\scripts\i
 player_queued = 		compile preprocessFileLineNumbers "\dz\server\scripts\players\player_queued.sqf";
 
 //functions
-fnc_generateTooltip = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_generateTooltip.sqf";
-fnc_inString = 			compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_inString.sqf";
+fnc_generateTooltip = compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_generateTooltip.sqf";
+fnc_inString = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_inString.sqf";
 fnc_inAngleSector =  	compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_inAngleSector.sqf";
-fnc_isMaxQuantity = 	compile preprocessFileLineNumbers "\dz\server\scripts\functions\isMaxQuantity.sqf";
+fnc_isMaxQuantity = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\isMaxQuantity.sqf";
 BIS_fnc_findSafePos =	compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_findSafePos.sqf";
-fnc_generateQuantity =	compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_generateQuantity.sqf";
-dayz_losCheck =			compile preprocessFileLineNumbers "\dz\server\scripts\functions\dayz_losCheck.sqf";
+fnc_generateQuantity =compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_generateQuantity.sqf";
+dayz_losCheck =		compile preprocessFileLineNumbers "\dz\server\scripts\functions\dayz_losCheck.sqf";
 dayz_losChance = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\dayz_losChance.sqf";
 dayz_bulletHit = 		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\dayz_bulletHit.sqf";
-fnc_playerMessage =		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_playerMessage.sqf";
+fnc_playerMessage =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_playerMessage.sqf";
 runZombieBrain =		compile preprocessFileLineNumbers "\dz\server\scripts\functions\runZombieBrain.sqf";
 tick_modifiers =		compile preprocessFileLineNumbers "\dz\server\scripts\functions\tick_modifiers.sqf";
-tick_states =			compile preprocessFileLineNumbers "\dz\server\scripts\functions\tick_states.sqf";
-tick_environment = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\tick_environment.sqf";
-randomValue =			compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\randomValue.sqf";
-dbLoadPlayer = 			compile preprocessFileLineNumbers "\dz\server\scripts\functions\dbLoadPlayer.sqf";
+tick_states =		compile preprocessFileLineNumbers "\dz\server\scripts\functions\tick_states.sqf";
+tick_environment = 	compile preprocessFileLineNumbers "\dz\server\scripts\functions\tick_environment.sqf";
+randomValue =		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\randomValue.sqf";
+dbLoadPlayer = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\dbLoadPlayer.sqf";
 world_surfaceNoise = 	compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_surfaceNoise.sqf";
 
 //initialize
@@ -94,7 +94,7 @@ zombie_initialize = 	compile preprocessFileLineNumbers "\dz\server\scripts\init\
 player_initialize = 	compile preprocessFileLineNumbers "\dz\server\scripts\init\player_initialize.sqf";
 init_battery = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\battery_initialize.sqf";
 init_cooker = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\cooker_initialize.sqf";
-init_fireplace = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\fireplace_initialize.sqf";
+init_fireplace = compile preprocessFileLineNumbers "\dz\server\scripts\init\fireplace_initialize.sqf";
 init_kindling = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\kindling_initialize.sqf";
 init_flare = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\flare_initialize.sqf";
 init_wreck = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\wreck_initialize.sqf";

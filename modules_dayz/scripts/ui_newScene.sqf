@@ -43,10 +43,11 @@ if (_doSmooth) then
 myCamera camCommitPrepared 0;
 myCamera camPreload 1;
 
-setDate sceneDate;
-0 setOvercast _overcast;
-simulSetHumidity _humidity;
+setDate [2022, 2, 6, 15, 0];
+0 setOvercast 1;
+//simulSetHumidity _humidity;
 setAperture _aperture;
+0 setFog 1;
 
 sleep 0.1;
 showCinemaBorder true;

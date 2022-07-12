@@ -12,9 +12,9 @@ DZ_spawnparams = [
   25.0,         // SPT_minDist2Player
   70.0,         // SPT_maxDist2Player
    0.5,         // SPT_minDist2Static
-  30.0,         // SPT_maxDist2Static
+  2.0        // SPT_maxDist2Static
   -0.785398163, // SPT_minSteepness
-  +0.785398163  // SPT_maxSteepness
+  +0.855398163  // SPT_maxSteepness
 ];
 
 DZ_spawnQuad0 = 
@@ -76,8 +76,13 @@ _createPlayer =
 //DISCONNECTION PROCESSING
 _disconnectPlayer =
 {
-	if ((lifeState _agent == "ALIVE") and (not captive player)) then
-	{
+	if (!isNull _agent) then
+	{	
+		if (vehicle _agent != _agent) then
+		{
+			//_agent action ["eject", vehicle _agent]; 
+			moveOut _agent;
+		};
 		_agent call dbSavePlayerPrep;
 		dbServerSaveCharacter _agent;
 		deleteVehicle _agent;
@@ -184,7 +189,7 @@ onPlayerDisconnected _disconnectPlayer;
 	_v = _agent createInInventory "Medical_Bandage";_v setVariable ["quantity",100];
 	_v = _agent createInInventory "Light_PortableLamp";
 	_v = _agent createInInventory "Consumable_GasCanisterLarge";_v setVariable ["quantity",100];
-	_v = _agent createInInventory "Consumable_Firewood";_v setVariable ["quantity",2];
+	_v = _agent createInInventory "Consumable_Firewood";_v setVariable ["quantity",4];
 	_v = _agent createInInventory "CombatKnife";
 	_v = _agent createInInventory "TentMedium_Packed";
 	_v = _agent createInInventory "M_STANAG_30Rnd";
@@ -193,6 +198,7 @@ onPlayerDisconnected _disconnectPlayer;
 	_v = _agent createInInventory "Att_Buttstock_M4MP_Black";
 	_v = _agent createInInventory "Att_Handguard_MP";
 	_v = _agent createInInventory "Att_Optic_ACOG";
+	_v = _agent createInInventory "Consumable_Rags";_v setVariable ["quantity",6];
 	//_v = _agent createInInventory "MiscItem_HeatPack";_v setVariable ["amount",100];
 	//_v = _agent createInInventory "Consumable_Roadflare";_v setVariable ["quantity",100];
 	//_v = _agent createInInventory "Fireplace_Prepared";

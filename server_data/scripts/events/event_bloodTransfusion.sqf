@@ -20,7 +20,7 @@ _matched = false;
 if (_bagBloodType == _targetBloodType) then
 {
 	//hint "same type";
-	_target setVariable ['blood',((_target getVariable 'blood') + 2500) min 5000];
+	_target setVariable ['blood',((_target getVariable 'blood') + 1000) min 5000];
 }
 else
 {
@@ -28,7 +28,7 @@ else
 		if (_x == _bagBloodType) exitWith
 		{	
 			//hint "compatible type";
-			_target setVariable ['blood',((_target getVariable 'blood') + 2500) min 5000];
+			_target setVariable ['blood',((_target getVariable 'blood') + 1000) min 5000];
 			_matched = true;
 		};	
 	} foreach _targetCompatibleBloodTypes;

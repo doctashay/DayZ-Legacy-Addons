@@ -16,12 +16,12 @@ if (isServer) then
 			null = (_this select 2) call player_addInventory;
 		};
 	};
-	/*"dropItems"	addPublicVariableEventHandler
+	"dropItems"	addPublicVariableEventHandler
 	{
 		private["_agent"];
 		_agent = _this select 1;
 		_agent moveToHands objNull;
-	};*/
+	};
 	"playerWet"	addPublicVariableEventHandler
 	{
 		private["_agent"];

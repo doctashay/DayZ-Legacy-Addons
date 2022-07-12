@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, DayZ Player Monitor">*/
+/*%FSM<COMPILE "scriptedFSM.cfg, DayZ Player Monitor">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"init",0,250,50.000000,-275.000000,150.000000,-225.000000,0.000000,"init"};
@@ -55,388 +55,410 @@ link28[] = {18,10};
 link29[] = {19,15};
 link30[] = {20,15};
 link31[] = {21,2};
-globals[] = {25.000000,1,0,0,0,640,480,1,136,6316128,1,-123.823090,397.460205,211.062256,-345.647766,824,880,1};
-window[] = {2,-1,-1,-1,-1,1092,150,1121,150,3,846};
+globals[] = {0.000000,0,0,0,0,640,480,1,136,6316128,1,-184.096436,707.317871,401.648315,-541.442139,828,876,1};
+window[] = {2,-1,-1,-1,-1,1020,78,1049,78,3,846};
 *//*%FSM</HEAD>*/
 class FSM
 {
-  fsmName = "DayZ Player Monitor";
-  class States
-  {
-    /*%FSM<STATE "init">*/
-    class init
-    {
-      name = "init";
-      init = /*%FSM<STATEINIT""">*/"DZ_Brightness = 1;" \n
-       "DZ_Contrast = 1;" \n
-       "DZ_dynamicBlur = 0;" \n
-       "DZ_colorSat = 1;"/*%FSM</STATEINIT""">*/;
-      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
-      class Links
-      {
-        /*%FSM<LINK "done">*/
-        class done
+        fsmName = "DayZ Player Monitor";
+        class States
         {
-          priority = 0.000000;
-          to="normal_state";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"isSceneReady && _this==_this"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"3 fadeSound 1;" \n
-           "TitleText ["""", ""BLACK IN"", 3];" \n
-           "0 fadeMusic 0.5;" \n
-           "setAperture -1;" \n
-           "" \n
-           "_body = _this;" \n
-           "" \n
-           "_agentTime2 = diag_tickTime;" \n
-           "" \n
-           "profileNamespace setVariable [""lastCharacter"",typeOf _this];" \n
-           "" \n
-           "//_damageEH = _this addEventHandler [""HandleDamage"",{_this spawn event_playerDamage;0}];" \n
-           "/*" \n
-           "[] spawn {" \n
-           "	sleep 1;" \n
-           "	_keyAction = (findDisplay 46) displayAddEventHandler [""mouseButtonDown"", ""_this call melee_startAttack""];" \n
-           "	_keyAction = (findDisplay 46) displayAddEventHandler [""mouseButtonUp"", ""meleeAttempt = false""];" \n
-           "};" \n
-           "*/" \n
-           "" \n
-           """effectDazed"" addPublicVariableEventHandler" \n
-           "{" \n
-           "	call dayz_bulletHit;" \n
-           "	effectDazed = false;" \n
-           "};" \n
-           """actionRestrained""  addPublicVariableEventHandler" \n
-           "{" \n
-           "	[(_this select 1)] call event_playerRestrained;" \n
-           "};	" \n
-           """makeNote"" addPublicVariableEventHandler" \n
-           "{" \n
-           "	notepen = (_this select 1) select 0;" \n
-           "	notepaper = (_this select 1) select 1;" \n
-           "	_ok = createDialog 'RscDisplayNote';" \n
-           "};" \n
-           """displayNote"" addPublicVariableEventHandler" \n
-           "{" \n
-           "	noteDisplay = createDialog 'RscDisplayNoteViewer';" \n
-           "	(findDisplay 121 displayCtrl 1400) ctrlSetStructuredText parseText (_this select 1);" \n
-           "};" \n
-           """myNotifiers"" addPublicVariableEventHandler {};" \n
-           "" \n
-           "_vm = _body spawn" \n
-           "{" \n
-           "	while {alive _this} do" \n
-           "	{" \n
-           "		_this call rainCheck;" \n
-           "		sleep 1;" \n
-           "	};" \n
-           "};" \n
-           "" \n
-           "" \n
-           "" \n
-           "if ((player itemInSlot ""headgear"") isKindOf ""Cover_BurlapSack"") then " \n
-           " { " \n
-           "	setAperture 10000;1 fadeSound 0.4;1 fadeSpeech 0.4;" \n
-           " };"/*%FSM</ACTION""">*/;
+                /*%FSM<STATE "init">*/
+                class init
+                {
+                        name = "init";
+                        itemno = 0;
+                        init = /*%FSM<STATEINIT""">*/"DZ_Brightness = 1;" \n
+                         "DZ_Contrast = 1;" \n
+                         "DZ_dynamicBlur = 0;" \n
+                         "DZ_colorSat = 1;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "done">*/
+                                class done
+                                {
+                                        itemno = 1;
+                                        priority = 0.000000;
+                                        to="normal_state";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"isSceneReady && _this==_this"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"//3 fadeSound 1;" \n
+                                         "TitleText ["""", ""BLACK IN"", 3];" \n
+                                         "//0 fadeMusic 0.5;" \n
+                                         "setAperture -1;" \n
+                                         "" \n
+                                         "_body = _this;" \n
+                                         "" \n
+                                         "_agentTime2 = diag_tickTime;" \n
+                                         "" \n
+                                         "profileNamespace setVariable [""lastCharacter"",typeOf _this];" \n
+                                         "" \n
+                                         "_damageEH = _this addEventHandler [""HandleDamage"",{_this spawn event_playerDamage;0}];" \n
+                                         "" \n
+                                         "[] spawn {" \n
+                                         "	sleep 1;" \n
+                                         "	_keyAction = (findDisplay 46) displayAddEventHandler [""mouseButtonDown"", ""_this call melee_startAttack""];" \n
+                                         "	_keyAction = (findDisplay 46) displayAddEventHandler [""mouseButtonUp"", ""meleeAttempt = false""];" \n
+                                         "};" \n
+                                         "" \n
+                                         "" \n
+                                         """effectDazed"" addPublicVariableEventHandler" \n
+                                         "{" \n
+                                         "	call dayz_bulletHit;" \n
+                                         "	effectDazed = false;" \n
+                                         "};" \n
+                                         """actionRestrained""  addPublicVariableEventHandler" \n
+                                         "{" \n
+                                         "	[(_this select 1)] call event_playerRestrained;" \n
+                                         "};	" \n
+                                         """makeNote"" addPublicVariableEventHandler" \n
+                                         "{" \n
+                                         "	notepen = (_this select 1) select 0;" \n
+                                         "	notepaper = (_this select 1) select 1;" \n
+                                         "	_ok = createDialog 'RscDisplayNote';" \n
+                                         "};" \n
+                                         """displayNote"" addPublicVariableEventHandler" \n
+                                         "{" \n
+                                         "	noteDisplay = createDialog 'RscDisplayNoteViewer';" \n
+                                         "	(findDisplay 121 displayCtrl 1400) ctrlSetStructuredText parseText (_this select 1);" \n
+                                         "};" \n
+                                         """myNotifiers"" addPublicVariableEventHandler {};" \n
+                                         "" \n
+                                         "_vm = _body spawn" \n
+                                         "{" \n
+                                         "	while {alive _this} do" \n
+                                         "	{" \n
+                                         "		_this call rainCheck;" \n
+                                         "		sleep 1;" \n
+                                         "	};" \n
+                                         "};" \n
+                                         "" \n
+                                         "" \n
+                                         "" \n
+                                         "if ((player itemInSlot ""headgear"") isKindOf ""Cover_BurlapSack"") then " \n
+                                         " { " \n
+                                         "	setAperture 10000;1 fadeSound 0.4;1 fadeSpeech 0.4;" \n
+                                         " };"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "normal_state">*/
+                class normal_state
+                {
+                        name = "normal_state";
+                        itemno = 2;
+                        init = /*%FSM<STATEINIT""">*/"_agentTime = diag_tickTime;" \n
+                         "" \n
+                         "//sync character" \n
+                         "if (isMultiplayer) then" \n
+                         "{" \n
+                         "	_type = typeOf _this;" \n
+                         "	_inventory = itemsInInventory _this;" \n
+                         "	_inventoryStr = [];" \n
+                         "	{" \n
+                         "		_inventoryStr set [count _inventoryStr,typeOf _x];" \n
+                         "	} forEach _inventory;" \n
+                         "	profileNamespace setVariable [""lastInventory"",_inventoryStr];" \n
+                         "	profileNamespace setVariable [""lastCharacter"",_type];" \n
+                         "" \n
+                         "	_attachments = itemsInInventory (_this itemInSlot ""shoulder"");" \n
+                         "	_attachmentsStr = [];" \n
+                         "	{" \n
+                         "		_attachmentsStr set [count _attachmentsStr,typeOf _x];" \n
+                         "	} forEach _attachments;" \n
+                         "	profileNamespace setVariable [""lastAttachments"",_attachmentsStr];" \n
+                         "};" \n
+                         "" \n
+                         "//Health" \n
+                         "	_health = 	_this getVariable[""health"",5000];" \n
+                         "	_blood = 	_this getVariable[""blood"",5000];" \n
+                         "	_this call rainCheck;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "dead">*/
+                                class dead
+                                {
+                                        itemno = 6;
+                                        priority = 7.000000;
+                                        to="dead";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!(alive _body)"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"profileNamespace setVariable [""lastInventory"",[]];" \n
+                                         "profileNamespace setVariable [""lastCharacter"",""""];"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "unconscious">*/
+                                class unconscious
+                                {
+                                        itemno = 5;
+                                        priority = 6.000000;
+                                        to="unconscious";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"lifeState _body == ""UNCONSCIOUS"""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"2 fadeSound 0;" \n
+                                         "2 fadeSpeech 0;" \n
+                                         "2 fadeRadio 0; " \n
+                                         "closeDialog 0;" \n
+                                         "titleText [""You are unconscious"",""BLACK OUT"",10e10];" \n
+                                         "setAperture 1000;"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "captive">*/
+                                class captive
+                                {
+                                        itemno = 7;
+                                        priority = 5.000000;
+                                        to="restrained";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"captive _body"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"TitleText [""You are restrained..."", ""PLAIN"",1];" \n
+                                         "" \n
+                                         "struggle_keyAction1 = (findDisplay 46) displayAddEventHandler [""KeyUp"", ""if ((_this select 1) in DZ_KEYS_STUGGLE) then	{struggling = false};""];" \n
+                                         "struggle_keyAction2 = (findDisplay 46) displayAddEventHandler [""KeyDown"", ""if ((_this select 1) in DZ_KEYS_STUGGLE) then	{struggling = true};""];" \n
+                                         "" \n
+                                         "_brokenFree = false;" \n
+                                         ""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "delay_check">*/
+                                class delay_check
+                                {
+                                        itemno = 4;
+                                        priority = 0.000000;
+                                        to="normal_state";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"((diag_tickTime - _agentTime2) > 5)"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"{" \n
+                                         "	_source = _x getVariable [""breathingParticleSource"",objNull];" \n
+                                         "	if (airTemperature < DZ_DEW_POINT) then" \n
+                                         "	{" \n
+                                         "		if (isNull _source) then" \n
+                                         "		{" \n
+                                         "			_x call effect_createBreathFog;" \n
+                                         "		};" \n
+                                         "	}" \n
+                                         "	else" \n
+                                         "	{" \n
+                                         "		if (!isNull _source) then" \n
+                                         "		{" \n
+                                         "			deleteVehicle _source;" \n
+                                         "			_x setVariable [""breathingParticleSource"",objNull];" \n
+                                         "		};" \n
+                                         "	};" \n
+                                         "} forEach players;" \n
+                                         "_agentTime2 = diag_tickTime;"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "wait">*/
+                                class wait
+                                {
+                                        itemno = 3;
+                                        priority = 0.000000;
+                                        to="normal_state";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"((diag_tickTime - _agentTime) > 1) and (!dialog)"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"//Update PP effects" \n
+                                         "	DZ_colorSat = ((_blood/5000));" \n
+                                         "	DZ_dynamicBlur = ((1 - (_health/5000)) * 8);" \n
+                                         "	" \n
+                                         "	if (ppEffectCommitted ""DynamicBlur"") then" \n
+                                         "	{" \n
+                                         "		""DynamicBlur"" ppEffectAdjust [DZ_dynamicBlur];" \n
+                                         "		""DynamicBlur"" ppEffectCommit 0;" \n
+                                         "	};" \n
+                                         "	""ColorCorrections"" ppEffectAdjust [DZ_Brightness, DZ_Contrast, 0, [1, 1, 1,0], [1, 1, 1, DZ_colorSat],  [1, 1, 1, 0.0]];" \n
+                                         "	""ColorCorrections"" ppEffectCommit 0;"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "dead">*/
+                class dead
+                {
+                        name = "dead";
+                        itemno = 8;
+                        init = /*%FSM<STATEINIT""">*/"titleText [""You are dead"",""BLACK OUT"",10];" \n
+                         "" \n
+                         ""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "struggling">*/
+                class struggling
+                {
+                        name = "struggling";
+                        itemno = 9;
+                        init = /*%FSM<STATEINIT""">*/"TitleText [""You are struggling against your restraints..."", ""PLAIN"",10e10];"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "dead">*/
+                                class dead
+                                {
+                                        itemno = 6;
+                                        priority = 7.000000;
+                                        to="dead";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!(alive _body)"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"profileNamespace setVariable [""lastInventory"",[]];" \n
+                                         "profileNamespace setVariable [""lastCharacter"",""""];"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "not">*/
+                                class not
+                                {
+                                        itemno = 10;
+                                        priority = 4.000000;
+                                        to="normal_state";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!(captive _body)"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"(findDisplay 46) displayRemoveEventHandler [""KeyUp"",struggle_keyAction1];" \n
+                                         "(findDisplay 46) displayRemoveEventHandler [""KeyDown"",struggle_keyAction2];" \n
+                                         "TitleText [""You are no longer restrained"", ""PLAIN"",1];"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "broken_restraint">*/
+                                class broken_restraint
+                                {
+                                        itemno = 17;
+                                        priority = 3.000000;
+                                        to="restrained";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"((diag_tickTime - _start) > 5) "/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"actionReleased = player;" \n
+                                         "publicVariableServer 'actionReleased';" \n
+                                         "_brokenFree = true;" \n
+                                         ""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "not_struggle">*/
+                                class not_struggle
+                                {
+                                        itemno = 20;
+                                        priority = 2.000000;
+                                        to="restrained";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!struggling"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"playerAction ""playerRestrainIn"";"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "unconscious">*/
+                class unconscious
+                {
+                        name = "unconscious";
+                        itemno = 14;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "dead">*/
+                                class dead
+                                {
+                                        itemno = 6;
+                                        priority = 7.000000;
+                                        to="dead";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!(alive _body)"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"profileNamespace setVariable [""lastInventory"",[]];" \n
+                                         "profileNamespace setVariable [""lastCharacter"",""""];"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "not">*/
+                                class not
+                                {
+                                        itemno = 12;
+                                        priority = 0.000000;
+                                        to="normal_state";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"lifeState _body != ""UNCONSCIOUS"""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"setAperture -1;" \n
+                                         "4 fadeSound 1;" \n
+                                         "4 fadeSpeech 1;" \n
+                                         "4 fadeRadio 1; " \n
+                                         "titleText [""You are unconscious"",""BLACK IN"",4];" \n
+                                         "setAperture -1;"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "restrained">*/
+                class restrained
+                {
+                        name = "restrained";
+                        itemno = 15;
+                        init = /*%FSM<STATEINIT""">*/"_agentTime = diag_tickTime;" \n
+                         "_bodyPos = getText (configFile >> ""CfgMovesMaleSdr2"" >> ""states"" >> animationState player >> ""bodyPosition"");"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "dead">*/
+                                class dead
+                                {
+                                        itemno = 6;
+                                        priority = 7.000000;
+                                        to="dead";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!(alive _body)"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"profileNamespace setVariable [""lastInventory"",[]];" \n
+                                         "profileNamespace setVariable [""lastCharacter"",""""];"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "not">*/
+                                class not
+                                {
+                                        itemno = 10;
+                                        priority = 4.000000;
+                                        to="normal_state";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!(captive _body)"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"(findDisplay 46) displayRemoveEventHandler [""KeyUp"",struggle_keyAction1];" \n
+                                         "(findDisplay 46) displayRemoveEventHandler [""KeyDown"",struggle_keyAction2];" \n
+                                         "TitleText [""You are no longer restrained"", ""PLAIN"",1];"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "struggle">*/
+                                class struggle
+                                {
+                                        itemno = 16;
+                                        priority = 1.000000;
+                                        to="struggling";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"struggling and !_brokenFree and (_bodyPos != ""stand"")"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"_start = diag_tickTime;" \n
+                                         "playerAction ""PlayerRestrainStruggle"";"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "wait">*/
+                                class wait
+                                {
+                                        itemno = 19;
+                                        priority = 0.000000;
+                                        to="restrained";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"((diag_tickTime - _agentTime) > 1) "/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"TitleText [""You are restrained..."", ""PLAIN"",1];"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
         };
-        /*%FSM</LINK>*/
-      };
-    };
-    /*%FSM</STATE>*/
-    /*%FSM<STATE "normal_state">*/
-    class normal_state
-    {
-      name = "normal_state";
-      init = /*%FSM<STATEINIT""">*/"_agentTime = diag_tickTime;" \n
-       "" \n
-       "//sync character" \n
-       "if (isMultiplayer) then" \n
-       "{" \n
-       "	_type = typeOf _this;" \n
-       "	_inventory = itemsInInventory _this;" \n
-       "	_inventoryStr = [];" \n
-       "	{" \n
-       "		_inventoryStr set [count _inventoryStr,typeOf _x];" \n
-       "	} forEach _inventory;" \n
-       "	profileNamespace setVariable [""lastInventory"",_inventoryStr];" \n
-       "	profileNamespace setVariable [""lastCharacter"",_type];" \n
-       "" \n
-       "	_attachments = itemsInInventory (_this itemInSlot ""shoulder"");" \n
-       "	_attachmentsStr = [];" \n
-       "	{" \n
-       "		_attachmentsStr set [count _attachmentsStr,typeOf _x];" \n
-       "	} forEach _attachments;" \n
-       "	profileNamespace setVariable [""lastAttachments"",_attachmentsStr];" \n
-       "};" \n
-       "" \n
-       "//Health" \n
-       "	_health = 	_this getVariable[""health"",5000];" \n
-       "	_blood = 	_this getVariable[""blood"",5000];" \n
-       "	_this call rainCheck;"/*%FSM</STATEINIT""">*/;
-      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
-      class Links
-      {
-        /*%FSM<LINK "dead">*/
-        class dead
+        initState="init";
+        finalStates[] =
         {
-          priority = 7.000000;
-          to="dead";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!(alive _body)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"profileNamespace setVariable [""lastInventory"",[]];" \n
-           "profileNamespace setVariable [""lastCharacter"",""""];"/*%FSM</ACTION""">*/;
+                "dead",
         };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "unconscious">*/
-        class unconscious
-        {
-          priority = 6.000000;
-          to="unconscious";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"lifeState _body == ""UNCONSCIOUS"""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"2 fadeSound 0;" \n
-           "2 fadeSpeech 0;" \n
-           "2 fadeRadio 0; " \n
-           "closeDialog 0;" \n
-           "titleText [""You are unconscious"",""BLACK FADED"",10e10];" \n
-           "setAperture 1000;"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "captive">*/
-        class captive
-        {
-          priority = 5.000000;
-          to="restrained";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"captive _body"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"TitleText [""You are restrained..."", ""PLAIN"",1];" \n
-           "" \n
-           "struggle_keyAction1 = (findDisplay 46) displayAddEventHandler [""KeyUp"", ""if ((_this select 1) in DZ_KEYS_STUGGLE) then	{struggling = false};""];" \n
-           "struggle_keyAction2 = (findDisplay 46) displayAddEventHandler [""KeyDown"", ""if ((_this select 1) in DZ_KEYS_STUGGLE) then	{struggling = true};""];" \n
-           "" \n
-           "_brokenFree = false;" \n
-           ""/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "delay_check">*/
-        class delay_check
-        {
-          priority = 0.000000;
-          to="normal_state";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"((diag_tickTime - _agentTime2) > 5)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"{" \n
-           "	_source = _x getVariable [""breathingParticleSource"",objNull];" \n
-           "	if (airTemperature < DZ_DEW_POINT) then" \n
-           "	{" \n
-           "		if (isNull _source) then" \n
-           "		{" \n
-           "			_x call effect_createBreathFog;" \n
-           "		};" \n
-           "	}" \n
-           "	else" \n
-           "	{" \n
-           "		if (!isNull _source) then" \n
-           "		{" \n
-           "			deleteVehicle _source;" \n
-           "			_x setVariable [""breathingParticleSource"",objNull];" \n
-           "		};" \n
-           "	};" \n
-           "} forEach players;" \n
-           "_agentTime2 = diag_tickTime;"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "wait">*/
-        class wait
-        {
-          priority = 0.000000;
-          to="normal_state";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"((diag_tickTime - _agentTime) > 1) and (!dialog)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"//Update PP effects" \n
-           "	DZ_colorSat = ((_blood/5000));" \n
-           "	DZ_dynamicBlur = ((1 - (_health/5000)) * 8);" \n
-           "	" \n
-           "	if (ppEffectCommitted ""DynamicBlur"") then" \n
-           "	{" \n
-           "		""DynamicBlur"" ppEffectAdjust [DZ_dynamicBlur];" \n
-           "		""DynamicBlur"" ppEffectCommit 0;" \n
-           "	};" \n
-           "	""ColorCorrections"" ppEffectAdjust [DZ_Brightness, DZ_Contrast, 0, [1, 1, 1,0], [1, 1, 1, DZ_colorSat],  [1, 1, 1, 0.0]];" \n
-           "	""ColorCorrections"" ppEffectCommit 0;"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-      };
-    };
-    /*%FSM</STATE>*/
-    /*%FSM<STATE "dead">*/
-    class dead
-    {
-      name = "dead";
-      init = /*%FSM<STATEINIT""">*/"titleText [""You are dead"",""BLACK OUT"",10];" \n
-       "" \n
-       ""/*%FSM</STATEINIT""">*/;
-      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
-      class Links
-      {
-      };
-    };
-    /*%FSM</STATE>*/
-    /*%FSM<STATE "struggling">*/
-    class struggling
-    {
-      name = "struggling";
-      init = /*%FSM<STATEINIT""">*/"TitleText [""You are struggling against your restraints..."", ""PLAIN"",10e10];"/*%FSM</STATEINIT""">*/;
-      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
-      class Links
-      {
-        /*%FSM<LINK "dead">*/
-        class dead
-        {
-          priority = 7.000000;
-          to="dead";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!(alive _body)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"profileNamespace setVariable [""lastInventory"",[]];" \n
-           "profileNamespace setVariable [""lastCharacter"",""""];"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "not">*/
-        class not
-        {
-          priority = 4.000000;
-          to="normal_state";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!(captive _body)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"(findDisplay 46) displayRemoveEventHandler [""KeyUp"",struggle_keyAction1];" \n
-           "(findDisplay 46) displayRemoveEventHandler [""KeyDown"",struggle_keyAction2];" \n
-           "TitleText [""You are no longer restrained"", ""PLAIN"",1];"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "broken_restraint">*/
-        class broken_restraint
-        {
-          priority = 3.000000;
-          to="restrained";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"((diag_tickTime - _start) > 5) "/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"actionReleased = player;" \n
-           "publicVariableServer 'actionReleased';" \n
-           "_brokenFree = true;" \n
-           ""/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "not_struggle">*/
-        class not_struggle
-        {
-          priority = 2.000000;
-          to="restrained";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!struggling"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"playerAction ""playerRestrainIn"";"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-      };
-    };
-    /*%FSM</STATE>*/
-    /*%FSM<STATE "unconscious">*/
-    class unconscious
-    {
-      name = "unconscious";
-      init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
-      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
-      class Links
-      {
-        /*%FSM<LINK "dead">*/
-        class dead
-        {
-          priority = 7.000000;
-          to="dead";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!(alive _body)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"profileNamespace setVariable [""lastInventory"",[]];" \n
-           "profileNamespace setVariable [""lastCharacter"",""""];"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "not">*/
-        class not
-        {
-          priority = 0.000000;
-          to="normal_state";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"lifeState _body != ""UNCONSCIOUS"""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"setAperture -1;" \n
-           "4 fadeSound 1;" \n
-           "4 fadeSpeech 1;" \n
-           "4 fadeRadio 1; " \n
-           "titleText [""You are unconscious"",""BLACK IN"",4];" \n
-           "setAperture -1;"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-      };
-    };
-    /*%FSM</STATE>*/
-    /*%FSM<STATE "restrained">*/
-    class restrained
-    {
-      name = "restrained";
-      init = /*%FSM<STATEINIT""">*/"_agentTime = diag_tickTime;" \n
-       "_bodyPos = getText (configFile >> ""CfgMovesMaleSdr2"" >> ""states"" >> animationState player >> ""bodyPosition"");"/*%FSM</STATEINIT""">*/;
-      precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
-      class Links
-      {
-        /*%FSM<LINK "dead">*/
-        class dead
-        {
-          priority = 7.000000;
-          to="dead";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!(alive _body)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"profileNamespace setVariable [""lastInventory"",[]];" \n
-           "profileNamespace setVariable [""lastCharacter"",""""];"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "not">*/
-        class not
-        {
-          priority = 4.000000;
-          to="normal_state";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"!(captive _body)"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"(findDisplay 46) displayRemoveEventHandler [""KeyUp"",struggle_keyAction1];" \n
-           "(findDisplay 46) displayRemoveEventHandler [""KeyDown"",struggle_keyAction2];" \n
-           "TitleText [""You are no longer restrained"", ""PLAIN"",1];"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "struggle">*/
-        class struggle
-        {
-          priority = 1.000000;
-          to="struggling";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"struggling and !_brokenFree and (_bodyPos != ""stand"")"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_start = diag_tickTime;" \n
-           "playerAction ""PlayerRestrainStruggle"";"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-        /*%FSM<LINK "wait">*/
-        class wait
-        {
-          priority = 0.000000;
-          to="restrained";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"((diag_tickTime - _agentTime) > 1) "/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"TitleText [""You are restrained..."", ""PLAIN"",1];"/*%FSM</ACTION""">*/;
-        };
-        /*%FSM</LINK>*/
-      };
-    };
-    /*%FSM</STATE>*/
-  };
-  initState="init";
-  finalStates[] =
-  {
-    "dead",
-  };
 };
 /*%FSM</COMPILE>*/
