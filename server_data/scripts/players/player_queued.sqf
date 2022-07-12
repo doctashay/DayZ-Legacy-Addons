@@ -70,7 +70,7 @@ if (!_alive) then
 	statusChat ['DayZ Legacy: Creating default scene.',''];
 	waitUntil {isSceneReady};
 	statusChat ['DayZ Legacy: Default scene created.',''];
-	_id spawnForClient {execVM 'debugFunctions.sqf'}; //this causes recompilation every time you respawn
+	//_id spawnForClient {execVM 'debugFunctions.sqf'}; //this causes recompilation every time you respawn
 	//execVM "debugFunctions.sqf";
 }
 else
@@ -78,7 +78,7 @@ else
 	clientReady = _id;
 	publicVariableServer "clientReady";		
 	statusChat ['DayZ Legacy: Scene created.',''];
-	_id spawnForClient {execVM 'debugFunctions.sqf'};
+	//_id spawnForClient {execVM 'debugFunctions.sqf'};
 	//execVM "debugFunctions.sqf";
 };
 5 fadeSound 0;
