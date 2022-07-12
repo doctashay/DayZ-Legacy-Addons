@@ -32,7 +32,6 @@ DZ_posbubbles = [
   [ 13502.3 , 3905.05 , 0.000827312] ,
   [ 13417.7 , 5449.19 , 0.00129318]  ,
   [ 7118.22 , 7652.72 , 0.00143433]  ,
-  DZ_spawnQuad0,
   [ 13314.1 , 7041.18 , 0.00136793]  ,
   [ 13115.5 , 7638.63 , 0.00145864]  ,
   [ 13526.9 , 5096.7  , 0.00142241]  ,
@@ -157,7 +156,7 @@ onPlayerDisconnected _disconnectPlayer;
 	_charType = _array select 0;
 	_charInv = _array select 1;
     //_pos = findCachedSpawnPoint [ DZ_spawnpointsfile, DZ_spawnpass3params ];
-	_pos = [2260.8, 5083.73, 0.0003];
+	_pos = DZ_posbubbles;
 	
 	//load data
 	_top = getArray(configFile >> "cfgCharacterCreation" >> "top");
@@ -179,32 +178,38 @@ onPlayerDisconnected _disconnectPlayer;
 	// _v = _agent createInInventory "TTsKO_Jacket_Camo";
 	// _v = _agent createInInventory "TTsKO_Pants_Camo";
 	// _v = _agent createInInventory "MilitaryBoots_Bluerock";
-	_v = _agent createInInventory "BagMountain_Red";
+	//_v = _agent createInInventory "BagMountain_Red";
 	_v = _agent createInInventory "UKAssVest_Black";
-	_v = _agent createInInventory "M4A1";
-	_v = _agent createInInventory "BallisticHelmet_Black";
+	_v = _agent createInInventory "Drink_SodaCanPipsi";
+	_v = _agent createInInventory "Drink_SodaCanPipsi";
+	_v = _agent createInInventory "Drink_SodaCanPipsi";
+	_v = _agent createInInventory "Food_CanSpaghetti";
+	_v = _agent createInInventory "Food_CanBakedBeans";
+	//_v = _agent createInInventory "M4A1";
+	//_v = _agent createInInventory "BallisticHelmet_Black";
 	_v = _agent createInInventory "FirefighterAxe_Black";
 	_v = _agent createInInventory "tool_flashlight";
-	_v = _agent createInInventory "Consumable_Battery9V";_v setVariable ["QUANTITY",100];
+	_v = _agent createInInventory "Consumable_Battery9V";_v setVariable ["quantity",100];
 	_v = _agent createInInventory "Medical_Bandage";_v setVariable ["quantity",100];
-	_v = _agent createInInventory "Light_PortableLamp";
-	_v = _agent createInInventory "Consumable_GasCanisterLarge";_v setVariable ["quantity",100];
-	_v = _agent createInInventory "Consumable_Firewood";_v setVariable ["quantity",4];
+	//_v = _agent createInInventory "Light_PortableLamp";
+	//_v = _agent createInInventory "Consumable_GasCanisterLarge";_v setVariable ["quantity",100];
+	//_v = _agent createInInventory "Consumable_Firewood";_v setVariable ["quantity",4];
 	_v = _agent createInInventory "CombatKnife";
 	_v = _agent createInInventory "TentMedium_Packed";
-	_v = _agent createInInventory "M_STANAG_30Rnd";
-	_v = _agent createInInventory "M_STANAG_30Rnd";
-	_v = _agent createInInventory "M_STANAG_30Rnd";
-	_v = _agent createInInventory "Att_Buttstock_M4MP_Black";
-	_v = _agent createInInventory "Att_Handguard_MP";
-	_v = _agent createInInventory "Att_Optic_ACOG";
+	//_v = _agent createInInventory "M_STANAG_30Rnd";
+	//_v = _agent createInInventory "M_STANAG_30Rnd";
+	//_v = _agent createInInventory "M_STANAG_30Rnd";
+	//_v = _agent createInInventory "Att_Buttstock_M4MP_Black";
+	//_v = _agent createInInventory "Att_Handguard_MP";
+	//_v = _agent createInInventory "Att_Optic_ACOG";
 	_v = _agent createInInventory "Consumable_Rags";_v setVariable ["quantity",6];
 	//_v = _agent createInInventory "MiscItem_HeatPack";_v setVariable ["amount",100];
 	//_v = _agent createInInventory "Consumable_Roadflare";_v setVariable ["quantity",100];
 	//_v = _agent createInInventory "Fireplace_Prepared";
-	_v = _agent createInInventory "Cookware_FryingPan";
+	//_v = _agent createInInventory "Cookware_FryingPan";
 	_v = _agent createInInventory "Consumable_Matchbox";_v setVariable ["quantity",100];
-	//_v = _agent createInInventory "Meat_ChickenBreast_Cooked";_v setVariable ["amount",100];
+	_v = _agent createInInventory "Meat_BoarSteak_Cooked";_v setVariable ["amount",100];
+		_v = _agent createInInventory "Meat_BoarSteak_Cooked";_v setVariable ["quantity",100];
 	_agent call init_newPlayer;
 	call init_newBody;
 	
