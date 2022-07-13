@@ -1,5 +1,6 @@
 _cfgSpawns = configFile >> "CfgSpawns" >> "WildAnimalsSpawns";
 
+diag_log "Begin spawn wild animals";
 DZ_TotalAnimals = 0;
 _mult = DZ_MAX_ANIMALS / getNumber( _cfgSpawns >> "serverWildAnimalSpawn") ;
 _totalAreas = ((count _cfgSpawns) - 1);

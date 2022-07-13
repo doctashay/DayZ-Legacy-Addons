@@ -19,6 +19,7 @@ for "_i" from 0 to (count _hitPoints - 1) do {
 	DZ_PlayerHitpoints set [count DZ_PlayerHitpoints,configName(_hitPoints select _i)];
 };
 
+diag_log "server_data init started";
 //events
 event_saySound =		compile preprocessFileLineNumbers "\dz\server\scripts\events\event_saySound.sqf";
 event_weaponFired =		compile preprocessFileLineNumbers "\dz\server\scripts\events\event_weaponFired.sqf";
@@ -66,8 +67,9 @@ weapon_swapHandguard =compile preprocessFileLineNumbers "\dz\server\scripts\weap
 building_spawnLoot =	compile preprocessFileLineNumbers "\dz\server\scripts\server\building_spawnLoot.sqf";
 init_spawnLoot = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\spawnLoot.sqf";
 init_spawnZombies = 	compile preprocessFileLineNumbers "\dz\server\scripts\init\spawnZombies.sqf";
-init_spawnWildAnimals = 	compile preprocessFileLineNumbers "\dz\server\scripts\init\spawnWildAnimals.sqf";
-init_spawnServerEvent = 	compile preprocessFileLineNumbers "\dz\server\scripts\init\spawnServerEvent.sqf";
+init_spawnWildAnimals = compile preprocessFileLineNumbers "\dz\server\scripts\init\spawnWildAnimals.sqf";
+diag_log "compiled spawnWildAnimals";
+init_spawnServerEvent = compile preprocessFileLineNumbers "\dz\server\scripts\init\spawnServerEvent.sqf";
 player_queued = 		compile preprocessFileLineNumbers "\dz\server\scripts\players\player_queued.sqf";
 
 //functions
@@ -146,6 +148,7 @@ init_newBody =
 	_id selectPlayer _agent;
 	_agent call player_initialize;	
 	[_id] spawnForClient compile "player execFSM '\dz\modulesDayZ\fsm\brain_player_client.fsm'";
+	[_id] spawnForClient compile "0 setOvercast 1";
 	_agent addEventHandler ["HandleDamage",{_this call event_assessDamage} ];
 	myNotifiers = _agent getVariable ["myNotifiers",[]];
 	_id publicVariableClient "myNotifiers";
