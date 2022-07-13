@@ -12,7 +12,7 @@ fnc_spawnWildAnimal =
 	DZ_TotalAnimals = DZ_TotalAnimals + 1;
 	_type = _this select 0;
 	_wildAnimal = createAgent [_type, _this select 1,[],0,"CAN_COLLIDE"];
-	if ( _type == "WildBoarNew" || _type == "RedDeer" || _type == "RabbitV2") then
+	if ( _type == "WildBoar" || _type == "Deer" || _type == "Rabbit") then
 	{
 		_wildAnimal addeventhandler ["killed",{null = _this spawn event_killedWildAnimal} ];
 	};

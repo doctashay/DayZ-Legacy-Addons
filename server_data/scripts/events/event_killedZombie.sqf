@@ -6,7 +6,7 @@ _type = typeOf _agent;
 _last_pos = getPosATL _agent;
 
 //cleanup
-_cleanup_delay = 120 + floor(random(60));
+_cleanup_delay = floor(random(60));
 sleep _cleanup_delay;
 deleteVehicle _agent;
 

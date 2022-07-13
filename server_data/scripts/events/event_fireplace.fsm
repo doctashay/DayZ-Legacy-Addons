@@ -111,33 +111,7 @@ class FSM
        "			};" \n
        "		};" \n
        "	};" \n
-       "} forEach itemsInCargo _fireplace;" \n
-       "" \n
-       "" \n
-       "_list= nearestObjects [_fireplace,[""SurvivorBase""],2.5];" \n
-       "{" \n
-       "	_agent = _x;" \n
-       "	_oldwet = _agent getVariable[""wet"",0];" \n
-       "	if(((getPosASL _agent) distance (getPosASL _fireplace)) < 0.4)then{" \n
-       "		_agent setVariable [""heatcomfort"",210];" \n
-       "	}else{" \n
-       "		if (_oldwet < 0.2)then{" \n
-       "			_agent setVariable [""heatcomfort"",20];" \n
-       "		}else{" \n
-       "			_agent setVariable [""heatcomfort"",0];" \n
-       "		};" \n
-       "	};" \n
-       "	if(_oldwet > 0.1)then{" \n
-       "		_heat = 0.00006*(2.5 - ((getPosASL _agent) distance (getPosASL _fireplace)));" \n
-       "		_agent setVariable[""wet"",_oldwet -_heat];" \n
-       "	}else{" \n
-       "		_oldtemp = _agent getVariable[""bodytemperature"",37.7];" \n
-       "		if(_oldtemp < 37.6)then{" \n
-       "			_temp = 0.00006*(2.5 - ((getPosASL _agent) distance (getPosASL _fireplace)));" \n
-       "			_agent setVariable[""bodytemperature"",_oldtemp + _temp];" \n
-       "		};" \n
-       "	};" \n
-       "}forEach _list;"/*%FSM</STATEINIT""">*/;
+       "} forEach itemsInCargo _fireplace;"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {

@@ -92,7 +92,7 @@ switch _mode do {
 	{
 		startLoadingScreen ["Loading Character Creation...."];
 		_display = _param select 0;
-		uiNameSpace setVariable [ "myDisplay", _display];
+		myDisplay = _display;
 		_s = 0;
 		_c = 0;
 		mousePressed = false;
@@ -174,10 +174,10 @@ switch _mode do {
 	};
 	case "sexLBchanged": {
 		DZ_selectedSex = (_this select 1) select 1;
-		_display = uiNameSpace getVariable "myDisplay";
-		_ctrl = _display displayCtrl 1420;
+		_ctrl = myDisplay displayCtrl 1420;
 		lbClear _ctrl;
 
+		_display = myDisplay;
 		[1420,_skin,DZ_selectedSkin] call _prepareCtrl;
 		{
 			[1420,_x] call _addToCtrl;

@@ -36,7 +36,7 @@ _ammo = getText (configFile >> "CfgMagazines" >> _type >> "ammoItem");
 
 if (_ammo != typeOf _sender) exitWith
 {
-	[_person,format["The %2 does not fit in the %1",displayName _mag,displayName _sender],"colorStatusChannel"] call fnc_playerMessage;
+	[_person,format["The %1 does not fit in the %2",displayName _mag,displayName _sender],"colorStatusChannel"] call fnc_playerMessage;
 };
 
 if (_receiverQty == _max) exitWith

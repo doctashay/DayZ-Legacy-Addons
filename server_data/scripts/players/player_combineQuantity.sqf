@@ -12,9 +12,6 @@ _name = 	getText (_config >> "displayName");
 _max = 		getNumber (_config >> "stackedMax");
 _senderQty = quantity _sender;
 _receiverQty = quantity _receiver;
-_senderDamage = damage _sender;
-_receiverDamage = damage _receiver;
-_condition = ((_senderDamage*_senderQty)+(_receiverDamage*_receiverQty))/(_senderQty+_receiverQty);
 
 if ((typeOf _sender) != (typeOf _receiver)) exitWith
 {	
@@ -23,7 +20,7 @@ if ((typeOf _sender) != (typeOf _receiver)) exitWith
 
 if ((damage _sender >= 1) or (damage _receiver >= 1)) exitWith
 {	
-	[_person,format["Some of the %1 is ruined",displayname _receiver],""] call fnc_playerMessage;
+	[_person,format["Some of the %1 is too badly damaged",displayname _receiver],""] call fnc_playerMessage;
 	
 	//[_person,format["Some of the %1 is too badly damaged",typeOf _receiver],""] call fnc_playerMessage;
 };
@@ -38,9 +35,23 @@ _senderQty = _senderQty - _exchanged;
 [_person,_receiver,"Direct"] call event_transferModifiers;
 
 //check damage of combined piles and setDamage to the receiver
+_senderDamage = damage _sender;
+_receiverDamage = damage _receiver;
+_condition = 0;
+_dirty = false;
+if (_senderDamage >= _receiverDamage) then
+{
+	_condition = _senderDamage;
+}
+else 
+{
+	_condition = _receiverDamage;
+};
+if (_condition >= 0.5) then
+{
+	_dirty = true;
+};
 
-
-hint str _condition;
 //save results
 if (_senderQty > 0) then
 {
@@ -51,7 +62,11 @@ else
 	deleteVehicle _sender;
 };
 _receiver setQuantity _receiverQty;
-_receiver setDamage _condition;
+if (_dirty) then
+{
+	_receiver setDamage _condition;
+};
+_dirty = false;
 
 //send response
 [_person,"craft_rounds"] call event_saySound;

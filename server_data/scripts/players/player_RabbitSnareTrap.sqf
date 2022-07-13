@@ -1,43 +1,47 @@
-//Define values
-_catchChance = 50; //Chance of catching something
-_trap = _this;
-_trap setVariable ['internalenergy', 0.2]; //The first timer
-_wearOut = 0.2; //Added damage after each use
-_minPlayerDistance = 5; //Minimum distance from closest player for the trap to work
-_trapEnabled = true;
-_pos = getPos _trap;
+Hint "Creating trap...";
 
-//Find closest player
-_distance = 9999999;
-_closestPlayer = 
-{
-	_distanceNew = _x distance _trap;
-	if (  _distanceNew < _distance ) then
-	{
-		_distance = _distanceNew;
-	};
-} forEach players;
+player playAction "Surrender";
+sleep 3;
 
-//Check if the closest player is not too close
-if ( _distance < _minPlayerDistance ) then
-{
-	_trap setVariable ['internalenergy', 0.2];
-	_trapEnabled = false;
-	_trap powerOn true;
-}else{
-	_trap setdamage (damage _trap + _wearOut);
-};
+_pauseDistance = 10;
+_timer = round( 5 + random (5) );
+_failChance = 50;
+_x = getpos player select 0;
+_y = getpos player select 1;
+_dir = getdir player;
+_thing = createVehicle 
+	[
+		"Land_Campfire", 
+		[_x + (4*sin(_dir)), _y + (4*cos(_dir)), 0], 
+		[], 
+		0, 
+		"NONE"
+	];
 
-//Decide whenever trap catches something or not
-if ( _catchChance > random 100 and _trapEnabled ) then
+while {_timer > 0} do
 {	
-	_rabbit = createAgent ['RabbitV2', _pos, [], 0, 'NONE'];
-	_rabbit setDamage 1;
-	hint "The trap has caught something!";
-}else
-{
-	if ( _trapEnabled ) then 
+	if ( player distance _thing > _pauseDistance ) then 
 	{
-		hint "The trap has failed!";
+		_timer = _timer - 1;
+		hintSilent format ["Remaining time: %1", _timer];
+		
+		if (_timer <= 0) then 
+		{
+			if ( random 100 > _failChance ) then
+			{
+				_thing inflame true;
+				hint "Trap successfull!";
+			}else
+			{
+				hint "Trap failed!";
+				deletevehicle _thing;
+			};
+		}
+	}
+	else
+	{
+	hintSilent "You are too close!";
 	};
+	
+	sleep 1;
 };

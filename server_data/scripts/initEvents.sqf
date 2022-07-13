@@ -16,12 +16,12 @@ if (isServer) then
 			null = (_this select 2) call player_addInventory;
 		};
 	};
-	/*"dropItems"	addPublicVariableEventHandler
+	"dropItems"	addPublicVariableEventHandler
 	{
 		private["_agent"];
 		_agent = _this select 1;
 		_agent moveToHands objNull;
-	};*/
+	};
 	"playerWet"	addPublicVariableEventHandler
 	{
 		private["_agent"];
@@ -30,12 +30,12 @@ if (isServer) then
 		_state = _array select 1;
 		if (_state) then
 		{
-			//[_agent,"You are getting wet",""] call fnc_playerMessage;	//empty message
+			[_agent,"You are getting wet",""] call fnc_playerMessage;	//empty message
 			_agent setVariable ["gettingWet",true];
 		}
 		else
 		{
-			//[_agent,"You are no longer getting wet",""] call fnc_playerMessage;	//empty message
+			[_agent,"You are no longer getting wet",""] call fnc_playerMessage;	//empty message
 			_agent setVariable ["gettingWet",false];
 		};
 	};

@@ -36,18 +36,6 @@ switch _state do
 		
 		//_person setVariable ["isUsingSomething",1];
 		
-		//check if player is able to do action (if he isn't on ladder or swimming etc.)
-		_anim =  animationState _person; 
-		_skeleton = getText (configFile >> "CfgVehicles" >> typeOf _person >> "moves"); 
-		_canUseActions = getNumber (configFile >> _skeleton >> "states" >> _anim >> "canUseActions");
-		
-		if (_canUseActions == 0) exitWith
-		{
-			[_person,"I'm unable to do that now",""] call fnc_playerMessage;	//empty message
-			_person setVariable ["inUseItem",objNull];
-			_person setVariable ["isUsingSomething",0];
-		};
-		
 		//ensure item is on player
 		if ((!isNull _inUse) and !_override) exitWith
 		{

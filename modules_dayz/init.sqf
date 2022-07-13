@@ -48,9 +48,6 @@ DZ_STOMACH = 1000; // actual volume in stomach
 DZ_DIET = 0.5; // actual diet state
 DZ_HEALTH = 5000;
 DZ_BLOOD = 5000;
-DZ_TEMPERATURE = 36.5;
-DZ_HEATCOMFORT = 0;
-DZ_MUSCLECRAMP = 0;
 
 //publicVariables
 effectDazed = false;	//PVEH Client
@@ -61,9 +58,6 @@ gettingWet = false;
 
 init_cooker = {};
 
-//Repairing items
-ductTapeRepairDamage = 0.5; //Minimal damage for compatible item to be repairable with Duct Tape
-
 if (isServer) then
 {
 	call compile preprocessFileLineNumbers "\dz\server\scripts\init.sqf";
@@ -73,15 +67,11 @@ if (isServer) then
 _format = getText(configFile >> "cfgCharacterCreation" >> "format");
 DZ_SkinsArray = [];
 {
-	_gender = _x;
+	_v = _x;
 	{
-		_race = _x;
-		DZ_SkinsArray set [count DZ_SkinsArray,format[_format,_gender,_race]];
-	} forEach getArray(configFile >> "cfgCharacterCreation" >> "race");
-	{
-		DZ_SkinsArray set [count DZ_SkinsArray,format[_format,_gender,_x]];
-	}  forEach getArray(configFile >> "cfgCharacterCreation" >> format["%1custom",_gender]);
-} forEach getArray(configFile >> "cfgCharacterCreation" >> "gender");
+		DZ_SkinsArray set [count DZ_SkinsArray,format[_format,_x,_v]]
+	} forEach getArray(configFile >> "cfgCharacterCreation" >> "gender");
+} forEach getArray(configFile >> "cfgCharacterCreation" >> "race");
 
 _format = getText(configFile >> "cfgCharacterCreation" >> "format");
 _gender = getArray(configFile >> "cfgCharacterCreation" >> "gender");
@@ -240,6 +230,17 @@ DZ_colorSat = 1;
 "DynamicBlur" ppEffectEnable true;
 "ColorCorrections" ppEffectEnable true;
 
+//generate skins
+_format = getText(configFile >> "cfgCharacterCreation" >> "format");
+DZ_SkinsArray = [];
+{
+	_v = _x;
+	{
+		DZ_SkinsArray set [count DZ_SkinsArray,format[_format,_x,_v]]
+	} forEach getArray(configFile >> "cfgCharacterCreation" >> "gender");
+} forEach getArray(configFile >> "cfgCharacterCreation" >> "race");
+
+
 DZ_BONES = call {
 	_cfgClasses = configFile >> "CfgBody";
 	_total = ((count _cfgClasses) - 1);
@@ -251,7 +252,7 @@ DZ_BONES = call {
 	_bones
 };
 
-player_queued = 		compile preprocessFileLineNumbers "\dz\server\scripts\players\player_queued.sqf";
+player_queued = 		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\player_queued.sqf";
 
 //functions
 fnc_generateTooltip = compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_generateTooltip.sqf";
@@ -284,19 +285,14 @@ melee_fnc_checkHitLocal = {
 	};
 };
 
-isUnderRoof = {
-	_pos = getPosASL _this;
-	_pos0 = [_pos select 0,_pos select 1,(_pos select 2)+ 50];
-	_hits = lineHit [_pos,_pos0,"shadow",_this,objNull,0];
-	_hits
-};
-
 rainCheck =
 {
 	_body = _this;
 	if (rain > 0) then
 	{
-		_hits = _body call isUnderRoof;
+		_pos = getPosASL _body;
+		_pos0 = [_pos select 0,_pos select 1,(_pos select 2)+ 50];
+		_hits = lineHit [_pos,_pos0,"shadow",_body,objNull,0];
 		if (count _hits == 0) then
 		{
 			if (!gettingWet) then
@@ -344,7 +340,7 @@ syncWeather = {
 		if (_this select 5) then {setDate (_this select 1)};
 		0 setOvercast (_this select 2);
 		//DZ_WEATHER_CHANGE setFog (_this select 3);
-		simulSetHumidity (_this select 2);
+		//simulSetHumidity (_this select 2);
 		0 setRain (_this select 4);
 		//hint "Weather Change from server!";
 	};

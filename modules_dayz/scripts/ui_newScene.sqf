@@ -45,7 +45,7 @@ myCamera camPreload 1;
 
 setDate sceneDate;
 0 setOvercast _overcast;
-simulSetHumidity _humidity;
+//simulSetHumidity _humidity;
 setAperture _aperture;
 
 sleep 0.1;

@@ -68,25 +68,25 @@ init_spawnLoot = 		compile preprocessFileLineNumbers "\dz\server\scripts\init\sp
 init_spawnZombies = 	compile preprocessFileLineNumbers "\dz\server\scripts\init\spawnZombies.sqf";
 init_spawnWildAnimals = 	compile preprocessFileLineNumbers "\dz\server\scripts\init\spawnWildAnimals.sqf";
 init_spawnServerEvent = 	compile preprocessFileLineNumbers "\dz\server\scripts\init\spawnServerEvent.sqf";
-player_queued = 		compile preprocessFileLineNumbers "\dz\server\scripts\players\player_queued.sqf";
+player_queued = 		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\player_queued.sqf";
 
 //functions
-fnc_generateTooltip = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_generateTooltip.sqf";
-fnc_inString = 			compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_inString.sqf";
+fnc_generateTooltip = compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_generateTooltip.sqf";
+fnc_inString = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_inString.sqf";
 fnc_inAngleSector =  	compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_inAngleSector.sqf";
-fnc_isMaxQuantity = 	compile preprocessFileLineNumbers "\dz\server\scripts\functions\isMaxQuantity.sqf";
+fnc_isMaxQuantity = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\isMaxQuantity.sqf";
 BIS_fnc_findSafePos =	compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_findSafePos.sqf";
-fnc_generateQuantity =	compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_generateQuantity.sqf";
-dayz_losCheck =			compile preprocessFileLineNumbers "\dz\server\scripts\functions\dayz_losCheck.sqf";
+fnc_generateQuantity =compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_generateQuantity.sqf";
+dayz_losCheck =		compile preprocessFileLineNumbers "\dz\server\scripts\functions\dayz_losCheck.sqf";
 dayz_losChance = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\dayz_losChance.sqf";
 dayz_bulletHit = 		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\dayz_bulletHit.sqf";
-fnc_playerMessage =		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_playerMessage.sqf";
+fnc_playerMessage =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_playerMessage.sqf";
 runZombieBrain =		compile preprocessFileLineNumbers "\dz\server\scripts\functions\runZombieBrain.sqf";
 tick_modifiers =		compile preprocessFileLineNumbers "\dz\server\scripts\functions\tick_modifiers.sqf";
-tick_states =			compile preprocessFileLineNumbers "\dz\server\scripts\functions\tick_states.sqf";
-tick_environment = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\tick_environment.sqf";
-randomValue =			compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\randomValue.sqf";
-dbLoadPlayer = 			compile preprocessFileLineNumbers "\dz\server\scripts\functions\dbLoadPlayer.sqf";
+tick_states =		compile preprocessFileLineNumbers "\dz\server\scripts\functions\tick_states.sqf";
+tick_environment = 	compile preprocessFileLineNumbers "\dz\server\scripts\functions\tick_environment.sqf";
+randomValue =		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\randomValue.sqf";
+dbLoadPlayer = 		compile preprocessFileLineNumbers "\dz\server\scripts\functions\dbLoadPlayer.sqf";
 world_surfaceNoise = 	compile preprocessFileLineNumbers "\dz\server\scripts\functions\fn_surfaceNoise.sqf";
 
 //initialize
@@ -117,9 +117,6 @@ init_newPlayer =
 	_this setVariable ["water",DZ_WATER];
 	_this setVariable ["stomach",DZ_STOMACH];
 	_this setVariable ["diet",DZ_DIET];
-	_this setVariable ["bodytemperature",DZ_TEMPERATURE];
-	_this setVariable ["heatComfort",DZ_HEATCOMFORT];
-	_this setVariable ["wet",0];
 	
 	//get blood type
 	_bloodTypes = getArray (configFile >> "cfgSolutions" >> "bloodTypes"); 
@@ -327,7 +324,7 @@ player_transferWater = {
 	{
 		[_owner,format["The %1 is already full",_name1],""] call fnc_playerMessage;
 	};
-	if (damage _tool2 >= 1 || damage _tool1 >= 1) exitWith 
+	if (damage _tool2 >= 1) exitWith 
 	{
 		[_owner,format["The %1 is too badly damaged",_name1],""] call fnc_playerMessage;
 	};
@@ -468,31 +465,39 @@ fnc_processItemWetness = {
 		_this refers to whether item is parented to player or not
 	*/
 	
-	//if there are no clothes on that part of body, dry/wet player instead
-	if (isNull _item)exitWith{
-		_playerWet = ((_playerWet + (_delta * 0.1 * _scale)) min 1) max 0;
-	};
-	
-	//if clothes are already dry, dry player instead
-	_wetness = _item getVariable ["wet",0];
-	if(_wetness == 0 and _isDrying)exitWith{
-	_playerWet = ((_playerWet + (_delta * 0.01 * _scale)) min 1) max 0;
-	};
-	
-	//if clothes are already soaked, wet player instead
-	_absorbancy = getNumber(configFile >> "cfgVehicles" >> typeOf _item >> "absorbency");
-	if((_wetness == _absorbancy or _absorbancy == 0) and !_isDrying)exitWith{
-		//if player has waterproof clothes and is in water he gets wet, if its just raining, then not
-		if(_isWater)then{
-_playerWet = ((_playerWet + (_delta * (_absorbancy+0.1) * _scale)) min 1) max 0;
-		};
+	if (!isNull _item) then
+	{
+		if (_this) then {_filledSlots = _filledSlots + 1};
+		
+		//is the player getting wet?
+		_wetness = _item getVariable ["wet",0];
+		if (_isDrying and (_wetness == 0)) exitWith {};
+		
+		//is the item actually absorbent?
+		_absorbancy = getNumber(configFile >> "cfgVehicles" >> typeOf _item >> "absorbency");
+		if (_absorbancy == 0) exitWith {};
 
+		//is the item already wet enough?
+		private["_change"];
+		_change = (_delta * _scale);
+		if ((_wetness >= _scale) and !_isDrying) exitWith {};
+
+		//calculate wetness
+		_wetness = (((_wetness + (_delta * _scale)) min 1) max 0) * _absorbancy;
+		if (_this) then
+		{
+			//check if should make player wet or dry
+			if ((_wetness == 1) or (_wetness == 0)) then
+			{
+				_playerWet = (((_playerWet + _change) min 1) max 0);
+			};			
+		};
+		_item setVariable ["wet",_wetness];
+	}
+	else
+	{
+		_playerWet = (((_playerWet + (_delta * _scale)) min 1) max 0);
 	};
-	
-	//dry/wet clothes
-	//_wetness = (((_wetness + (_delta * _scale)) min 1) max 0) * _absorbancy;
-	_wetness = ((_wetness + (_delta * _scale)) min _absorbancy) max 0;
-	_item setVariable ["wet",_wetness];
 };
 
 /*
@@ -1184,7 +1189,6 @@ fishing_event_add={
 
 fishing_event_remove={
 	[_this,'You have moved and pulled the bait out of the water.','colorImportant'] call fnc_playerMessage;
-	_this playAction 'cancelAction';
 	_this removeAllEventHandlers 'AnimChanged';
 };
 
@@ -1192,26 +1196,15 @@ build_TentContainer =
 {
 	if ( isServer ) then
 	{
+		deleteVehicle (_this select 0);
 		_person = (_this select 1);
-		_tentType = (_this select 2) select 0;
-		_tentOri = (_this select 2) select 1;
-		_dist = (_this select 2) select 2;
-
 		_pos = getPos _person;
+		_dist = 6.5;
 		_ori = direction _person;
 		_xPos = (_pos select 0) + (sin _ori * _dist);
 		_yPos = (_pos select 1) + (cos _ori * _dist);
-		
-		if ( !(surfaceIsWater [_xPos, _yPos]) ) then
-		{
-			deleteVehicle (_this select 0);
-			_tent = _tentType createVehicle [_xPos, _yPos];
-			_tent setDir _ori - _tentOri;
-		}
-		else
-		{
-			[_person,'I can not pitch the tent in the water!','colorImportant'] call fnc_playerMessage;
-		};
+		_tent = (_this select 2) createVehicle [_xPos, _yPos];
+		_tent setDir _ori - 180;
 	};
 };
 
@@ -1219,93 +1212,8 @@ pack_TentContainer =
 {
 	if ( isServer ) then
 	{
-		deleteVehicle nearestobject [_this select 0, "Tent_ClutterCutter"]; // delete cutter
-
-		_hp = damage (_this select 0);
 		deleteVehicle (_this select 0);
 		_person = (_this select 1);
 		_tent = [(_this select 2),_person] call player_addInventory;
-		_tent setDamage _hp;
-	};
-};
-
-player_drown = {
-	_agent = _this select 0;
-	_branch = _this select 1;
-	_dmg = _agent getVariable ["underwater",0];
-	if(_branch == 0)then{
-		if(_dmg > 0)then{
-			_agent setVariable ["underwater",0];
-		};
-	}else{
-		_dmg = _dmg + 1;
-		if(_dmg > 30)then{_agent setDamage 1;}else{
-			if(_dmg > 27)then{[_agent,"I am drowning","colorImportant"] call fnc_playerMessage;
-				if (isPlayer _agent) then
-				{
-					effectDazed = true;
-					(owner _agent) publicVariableClient "effectDazed";
-				};
-			}else{
-				if(_dmg > 23)then{[_agent,"I am going to drown","colorImportant"] call fnc_playerMessage;}else{
-					if(_dmg > 15)then{[_agent,"I am running out of air",""] call fnc_playerMessage;};
-				};
-			};
-		};
-		_agent setVariable ["underwater",_dmg];
-	};
-};
-
-
-//Returns global X,Y pos according to given offset and direction
-fnc_getRelativeXYPos = {
-	_x = (_this select 0) select 0;
-	_y = (_this select 0) select 1;
-	_offsetX = (_this select 1) select 0;
-	_offsetY = (_this select 1) select 1;
-	_dir = _this select 2;
-	
-	_xPos = _x + (sin _dir * _offsetX);
-	_yPos = _y + (cos _dir * _offsetX);
-	_xPos = _xPos + (sin (_dir+90) * _offsetY);
-	_yPos = _yPos + (cos (_dir+90) * _offsetY);
-	[_xPos, _yPos];
-};
-
-/*
-	Adds quantity to given item and keeps it within its limits.
-	Negative parameter is supported and the item is automatically deleted when its quantity is <= 0
-	Return value is resulted quantity
-	[_item, _addedQuantity] call fnc_addQuantity
-*/
-fnc_addQuantity = {
-	_item = _this select 0;
-	_amount = _this select 1;
-	_resultedQuantity = quantity _item + _amount;
-	if (_resultedQuantity > 0) then {
-		if (_resultedQuantity > maxQuantity _item) then {
-			_resultedQuantity = maxQuantity _item;
-		};
-		_item setQuantity _resultedQuantity;
-		_resultedQuantity;
-	}else{ //Delete empty items
-		deleteVehicle _item;
-		_resultedQuantity;
-	};
-};
-
-/*
-	Adds multiple items of the same type into the user's inventory
-	[_itemType, _itemCount, _user] call fnc_addItemCount;
-*/
-fnc_addItemCount = {
-	_itemType = _this select 0;
-	_itemCount = _this select 1;
-	_user = _this select 2;
-	while {_itemCount > 0} do
-	{
-		_itemCount = _itemCount - 1;
-		_item = [_itemType, _user] call player_addInventory;
-		_item setQuantity maxQuantity _item;
 	};
 };
