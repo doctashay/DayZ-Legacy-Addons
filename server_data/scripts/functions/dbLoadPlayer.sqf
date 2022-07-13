@@ -1,6 +1,8 @@
 diag_log "Arrived at redirected dbLoadPlayer";
 dbLoadHost;	//loads the hostname
 
+DZ_spawnpointsfile = "spawnpoints_players.bin";
+
 DZ_spawnparams = [
   1 / 7.0,      // SPT_gridDensity
   35.0,         // SPT_gridWidth
@@ -155,8 +157,8 @@ onPlayerDisconnected _disconnectPlayer;
 		
 	_charType = _array select 0;
 	_charInv = _array select 1;
-    //_pos = findCachedSpawnPoint [ DZ_spawnpointsfile, DZ_spawnpass3params ];
-	_pos = DZ_posbubbles;
+    _spawnPos = DZ_posbubbles select (floor (random (count DZ_posbubbles)));
+    _pos = [_spawnPos select 0, _spawnPos select 1, _spawnPos select 2];
 	
 	//load data
 	_top = getArray(configFile >> "cfgCharacterCreation" >> "top");
