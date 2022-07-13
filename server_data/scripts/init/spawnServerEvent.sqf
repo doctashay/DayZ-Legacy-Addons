@@ -43,7 +43,7 @@ if ( _eventsCount > 0 ) then
 			if ( _sizeLoc >= 0 ) then 
 			{
 				DZ_TotalEvents = DZ_TotalEvents + 1;
-				_spawnEvent = _type createVehicle [_position, 0.05, 0.2];
+				_spawnEvent = _type createVehicle [_position];
 				//_spawnEvent addEventHandler ["init", { null = _this spawn init_wreck}];
 				_text = format["Server Event: %1, Spawned At: %2, Vehicles No.: %3", _event, _position, _s ];
 				diag_log _text;

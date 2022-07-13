@@ -74,12 +74,14 @@ if (!_alive) then
 	statusChat ['ready default!',''];
 	waitUntil {isSceneReady};
 	statusChat ['scene ready...',''];
+	_id spawnForClient {execVM 'debugFunctions.sqf'};
 }
 else
 {
 	clientReady = _id;
 	publicVariableServer "clientReady";		
 	statusChat ['ready!',''];
+	_id spawnForClient {execVM 'debugFunctions.sqf'};
 };
 5 fadeSound 0;
 5 fadeSpeech 0;
