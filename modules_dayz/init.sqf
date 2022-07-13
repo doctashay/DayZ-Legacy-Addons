@@ -66,7 +66,8 @@ ductTapeRepairDamage = 0.5; //Minimal damage for compatible item to be repairabl
 
 if (isServer) then
 {
-	call compile preprocessFileLineNumbers "\dz\server\scripts\init.sqf";
+	diag_log "Calling server_data init"
+	//call compile preprocessFileLineNumbers "\dz\server\scripts\init.sqf";
 };
 
 //generate skins
@@ -236,14 +237,14 @@ DZ_Contrast = 1;
 DZ_dynamicBlur = 0;
 DZ_colorSat = 1;
 
-_hndl = ppEffectCreate ["colorCorrections", 1501];
-_hndl ppEffectEnable true;
-_hndl ppEffectAdjust [1,1,-0.003,[0,0,0,0],[0.5,0.5,0.5,1.18],[0.6,0.6,0.6,0]]; 
-_hndl ppEffectCommit 0;
+// _hndl = ppEffectCreate ["colorCorrections", 1501];
+// _hndl ppEffectEnable true;
+// _hndl ppEffectAdjust [1,1,-0.003,[0,0,0,0],[0.5,0.5,0.5,1.18],[0.6,0.6,0.6,0]]; 
+// _hndl ppEffectCommit 0;
 
 //enable PP
 "DynamicBlur" ppEffectEnable true;
-//"ColorCorrections" ppEffectEnable true;
+"ColorCorrections" ppEffectEnable true;
 
 
 
@@ -356,8 +357,8 @@ syncWeather = {
 	[_this select 0, [2022, 2, 6, 15, 0], 1, 1, 1,_this select 1] spawnForPlayer 
 	{
 		if (_this select 5) then {setDate (_this select 1)};
-		1 setOvercast (_this select 2);
-		DZ_WEATHER_CHANGE setFog (_this select 3);
+		0 setOvercast (_this select 2);
+		0 setFog (_this select 3);
 		//simulSetHumidity (_this select 2);
 		0 setFog (_this select 4);
 
