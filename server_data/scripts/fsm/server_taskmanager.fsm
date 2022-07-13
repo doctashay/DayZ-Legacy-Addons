@@ -116,7 +116,6 @@ class FSM
        "if (_totalPlayers != count players) then" \n
        "{" \n
        "	diag_log ""SERVER: New players, sending weather update"";" \n
-       "	publishForecast;" \n
        "	_totalPlayers = count players;" \n
        "};" \n
        ""/*%FSM</STATEINIT""">*/;
