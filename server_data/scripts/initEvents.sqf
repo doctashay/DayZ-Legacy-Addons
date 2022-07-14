@@ -30,12 +30,12 @@ if (isServer) then
 		_state = _array select 1;
 		if (_state) then
 		{
-			[_agent,"You are getting wet",""] call fnc_playerMessage;	//empty message
+			//[_agent,"You are getting wet",""] call fnc_playerMessage;	//empty message
 			_agent setVariable ["gettingWet",true];
 		}
 		else
 		{
-			[_agent,"You are no longer getting wet",""] call fnc_playerMessage;	//empty message
+			//[_agent,"You are no longer getting wet",""] call fnc_playerMessage;	//empty message
 			_agent setVariable ["gettingWet",false];
 		};
 	};
