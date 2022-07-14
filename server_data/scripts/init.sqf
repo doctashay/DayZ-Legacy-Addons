@@ -319,14 +319,20 @@ player_transferWater = {
 	_receiverQty = quantity _tool2;
 	_senderQty = quantity _tool1;
 	_name1 = displayName _tool2;
+	_type = _tool1 getVariable ["liquidType", ""];
 	
 	if (_receiverQty >= maxQuantity _tool2) exitWith 
 	{
 		[_owner,format["The %1 is already full",_name1],""] call fnc_playerMessage;
 	};
-	if (damage _tool2 >= 1) exitWith 
+	if (damage _tool2 >= 1 || damage _tool1 >= 1) exitWith 
 	{
 		[_owner,format["The %1 is too badly damaged",_name1],""] call fnc_playerMessage;
+	};
+	
+	if ( quantity _tool2 > 0 && (quantity _tool2 < (maxQuantity _tool2) && _tool2 getVariable ["liquidType",""] != _type ) ) exitWith 
+	{
+		[_owner,format["There is already something in %1",_name1],""] call fnc_playerMessage;
 	};
 	
 	_exchanged = ((_receiverQty + _senderQty) min (maxQuantity _tool2)) - _receiverQty;
@@ -335,7 +341,25 @@ player_transferWater = {
 	_tool2 setQuantity _receiverQty;
 	_tool1 setQuantity _senderQty;
 	
+	_tool2 setVariable [ "liquidType", _type];
+	
+	[_tool1,_tool2,"Direct",1] call event_transferModifiers;
 	[_owner,format["You have poured the %2 into the %1",_name1,displayName _tool1],"colorAction"] call fnc_playerMessage;
+};
+
+player_canUseDrinkAction =
+{
+	_canUse = true;
+	_item =  _this select 0;
+	_person = _this select 1;
+
+	if ( _person getVariable ['isUsingSomething',0] != 0 ) then {_canUse = false;};
+	
+	if ( quantity _item <= 0 ) then {_canUse = false;};
+	
+	if ( !(isNull itemInHands _person) && (isNull itemParent _item) ) then {_canUse = false;};
+	
+	_canUse
 };
 
 player_paintItem = {
@@ -925,6 +949,7 @@ player_fnc_roundsDistribute = {
 		_pile setQuantity _quantity;
 	};
 	*/
+	_magdmg = _this;
 	_max = 	getNumber (configFile >> "CfgVehicles" >> _ammo >> "stackedMax");
 	_sound = getText (configFile >> "CfgVehicles" >> _ammo >> "emptySound");
 	if (_quantity > _max)then{
@@ -944,6 +969,10 @@ player_fnc_roundsDistribute = {
 		_pile = [_ammo,_parent,_person] call player_addInventory;
 		_pile setQuantity _quantity;
 		[_person,_sound] call event_saySound;
+	};
+	//if unpacked ammo box is damaged pass it to ammo
+	if(_magdmg != 0)then{
+		_pile setDamage _magdmg;
 	};
 };
 
@@ -1184,7 +1213,7 @@ FISHING
 fishing_event_add={
 	_owner = _this select 0;
 	fishingpos =  _this select 1;
-	_owner addEventHandler ['AnimChanged','_owner=_this select 0;if(((getPosATL _owner) select 0) != fishingpos)then{_owner call fishing_event_remove;itemInHands _owner powerOn false;}'];
+	_owner addEventHandler ['AnimChanged','_owner=_this select 0;if(abs (((getPosATL _owner) select 0) - fishingpos) > 0.1)then{_owner call fishing_event_remove;itemInHands _owner powerOn false;}'];
 };
 
 fishing_event_remove={
@@ -1212,8 +1241,94 @@ pack_TentContainer =
 {
 	if ( isServer ) then
 	{
+		deleteVehicle nearestobject [_this select 0, "Tent_ClutterCutter"]; // delete cutter
+
+		_hp = damage (_this select 0);
 		deleteVehicle (_this select 0);
+
 		_person = (_this select 1);
 		_tent = [(_this select 2),_person] call player_addInventory;
+		_tent setDamage _hp;
+	};
+};
+
+player_drown = {
+	_agent = _this select 0;
+	_branch = _this select 1;
+	_dmg = _agent getVariable ["underwater",0];
+	if(_branch == 0)then{
+		if(_dmg > 0)then{
+			_agent setVariable ["underwater",0];
+		};
+	}else{
+		_dmg = _dmg + 1;
+		if(_dmg > 30)then{_agent setDamage 1;}else{
+			if(_dmg > 27)then{[_agent,"I am drowning","colorImportant"] call fnc_playerMessage;
+				if (isPlayer _agent) then
+				{
+					effectDazed = true;
+					(owner _agent) publicVariableClient "effectDazed";
+				};
+			}else{
+				if(_dmg > 23)then{[_agent,"I am going to drown","colorImportant"] call fnc_playerMessage;}else{
+					if(_dmg > 15)then{[_agent,"I am running out of air",""] call fnc_playerMessage;};
+				};
+			};
+		};
+		_agent setVariable ["underwater",_dmg];
+	};
+};
+
+
+//Returns global X,Y pos according to given offset and direction
+fnc_getRelativeXYPos = {
+	_x = (_this select 0) select 0;
+	_y = (_this select 0) select 1;
+	_offsetX = (_this select 1) select 0;
+	_offsetY = (_this select 1) select 1;
+	_dir = _this select 2;
+	
+	_xPos = _x + (sin _dir * _offsetX);
+	_yPos = _y + (cos _dir * _offsetX);
+	_xPos = _xPos + (sin (_dir+90) * _offsetY);
+	_yPos = _yPos + (cos (_dir+90) * _offsetY);
+	[_xPos, _yPos];
+};
+
+/*
+	Adds quantity to given item and keeps it within its limits.
+	Negative parameter is supported and the item is automatically deleted when its quantity is <= 0
+	Return value is resulted quantity
+	[_item, _addedQuantity] call fnc_addQuantity
+*/
+fnc_addQuantity = {
+	_item = _this select 0;
+	_amount = _this select 1;
+	_resultedQuantity = quantity _item + _amount;
+	if (_resultedQuantity > 0) then {
+		if (_resultedQuantity > maxQuantity _item) then {
+			_resultedQuantity = maxQuantity _item;
+		};
+		_item setQuantity _resultedQuantity;
+		_resultedQuantity;
+	}else{ //Delete empty items
+		deleteVehicle _item;
+		_resultedQuantity;
+	};
+};
+
+/*
+	Adds multiple items of the same type into the user's inventory
+	[_itemType, _itemCount, _user] call fnc_addItemCount;
+*/
+fnc_addItemCount = {
+	_itemType = _this select 0;
+	_itemCount = _this select 1;
+	_user = _this select 2;
+	while {_itemCount > 0} do
+	{
+		_itemCount = _itemCount - 1;
+		_item = [_itemType, _user] call player_addInventory;
+		_item setQuantity maxQuantity _item;
 	};
 };
