@@ -118,8 +118,8 @@ init_newPlayer =
 	_this setVariable ["water",DZ_WATER];
 	_this setVariable ["stomach",DZ_STOMACH];
 	_this setVariable ["diet",DZ_DIET];
-	_this setVariable ["bodytemperature",DZ_TEMPERATURE];
-	_this setVariable ["heatComfort",DZ_HEATCOMFORT];
+	// _this setVariable ["bodytemperature",DZ_TEMPERATURE];
+	// _this setVariable ["heatComfort",DZ_HEATCOMFORT];
 	_this setVariable ["wet",0];
 	_this setVariable ["restrainedwith",0];
 

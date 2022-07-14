@@ -218,7 +218,6 @@ TEMPERATURE
 
 */
 _playerTemperature = _agent getVariable ["bodytemperature",36.5];
-_heatcomfort = 0;
 
 //SETING BODY SHAKE when player is hypothermic
 // _shake = 0;
@@ -233,7 +232,7 @@ _heatcomfort = 0;
 //_heatcomfort = ((_totalHeatIsolation max 5.5)*1.25*((((_agentSpeed/2) max 1) min 3)-_playerWet)/2-(_playerTemperature-(_worldLightScale*15 -((windSpeed*3) min 6)-(getPosASL _agent select 2)/100))) min 100;	
 
 
-_heatcomfort = (_heatpackon+(((_airTemperature+_totalHeatIsolation) max 7)*((((_agentSpeed/3.2) max 1) - _playerWet) max 0.1))- ( _playerTemperature + (((worldLightScale max 0) min 2)*10) - ((windSpeed*3) min 6) - ((getPosASL _agent select 2)/100) ) ) min 100;
+_heatComfort = (_totalHeatIsolation*(1-_playerWet)*2 - (_playerTemperature - (airTemperature + worldLightScale*2 - windSpeed*3 - (getPosASL _agent select 2)/100)));
 
 //[_agent,format['totalHeatIsolation:%1 heatcomfort%2',_totalHeatIsolation,_heatcomfort],'colorImportant'] call fnc_playerMessage;
 _agent setVariable ["heatcomfort",_heatcomfort];
