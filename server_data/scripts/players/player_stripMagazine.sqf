@@ -14,6 +14,12 @@ _client = owner _person;
 _parent = itemParent _mag;
 _config = configFile >> "CfgMagazines" >> _type;
 _quantity = 0;
+_magdmg = 0;
+
+//to transfer damage from ammo box to pile o rounds
+if(_mag isKindOf "AmmunitionBoxItemBase")then{
+	_magdmg = damage _mag;
+};
 
 //statusChat [format["parent: %1, item: %2",displayName _parent,_name],""];
 
@@ -52,7 +58,7 @@ if (_quantity <= 0) exitWith
 //distribute to existing piles
 if (!isNull _parent) then
 {
-	call player_fnc_roundsDistribute;
+	_magdmg call player_fnc_roundsDistribute;
 };
 //send feedback
 if (isClass (configFile >> "CfgWeapons" >> typeOf _parent)) then 
