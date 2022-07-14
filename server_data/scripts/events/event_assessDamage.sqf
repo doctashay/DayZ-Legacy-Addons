@@ -154,6 +154,49 @@ APPLY BODY DAMAGE
 "shock" call damage_fnc_applyStateChange;
 "blood" call damage_fnc_applyStateChange;
 "health" call damage_fnc_applyStateChange;
+//Cattle prod damage transfer
+
+if ((itemInHands _source) isKindOf "CattleProd")then{
+	_battery = (itemInHands _source) itemInSlot "BatteryD"; 
+	_batterypower = _battery getVariable ["power",0];
+	if (_batterypower >= 5000)then{
+		_r = random 4;
+		if (_r < 1)then{
+			_agent setVariable["fibrillation",true];
+		};
+		_agent setVariable ["shock",2000];
+		_batterypower=_batterypower-2000;
+		[_agent,"I feel a hot burst of electricity running through my body.","colorImportant"] call fnc_playerMessage;
+		_battery setVariable ["power",_batterypower];
+	};
+};
+
+if ((itemInHands _source) isKindOf "StunBaton")then{
+	_battery = (itemInHands _source) itemInSlot "BatteryD"; 
+	_batterypower = _battery getVariable ["power",0];
+	if (_batterypower >= 5000)then{
+		_r = random 3;
+		if (_r < 1)then{
+			_agent setVariable["fibrillation",true];
+		};
+		_agent setVariable ["shock",4000];
+		_batterypower=_batterypower-2000;
+		[_agent,"I feel a hot burst of electricity running through my body.","colorImportant"] call fnc_playerMessage;
+		_battery setVariable ["power",_batterypower];
+	};
+};
+
+
+if ((itemInHands _source) isKindOf "Chainsaw")then{
+	if ((isOn (itemInHands _source)))then{
+		_agent setVariable ["shock",1000];
+		_chainblood = _agent getVariable ["blood",5000];
+		_agent setVariable ["blood",_chainblood-1000];
+		_chainhealth = _agent getVariable ["health",5000];
+		_agent setVariable ["health",_chainhealth-500];
+		//[_agent,"Wrrrrummm","colorImportant"] call fnc_playerMessage;
+	};
+};
 
 switch (toLower _bone) do 
 {

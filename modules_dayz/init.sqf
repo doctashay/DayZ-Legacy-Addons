@@ -24,7 +24,7 @@ DZ_BLOOD_UNCONSCIOUS = 500;	//minimum blood before player becomes unconscious
 unconscious = false;	//remove this with lifeState is synchronized
 
 //control defines
-DZ_KEYS_STUGGLE = [17,30,31,32];	//DIK codes for keys that action struggle out of restraints
+DZ_KEYS_STUGGLE = [30,32,203,205];	//DIK codes for keys that action struggle out of restraints
 
 //zombie defines
 dayz_areaAffect = 3;				//used during attack calculations
@@ -48,6 +48,9 @@ DZ_STOMACH = 1000; // actual volume in stomach
 DZ_DIET = 0.5; // actual diet state
 DZ_HEALTH = 5000;
 DZ_BLOOD = 5000;
+DZ_TEMPERATURE = 68.5;
+DZ_HEATCOMFORT = 0;
+
 
 //publicVariables
 effectDazed = false;	//PVEH Client
@@ -57,6 +60,8 @@ myNotifiers = [];
 gettingWet = false;
 
 init_cooker = {};
+//Repairing items
+ductTapeRepairDamage = 0.5; //Minimal damage for compatible item to be repairable with Duct Tape
 
 if (isServer) then
 {
@@ -67,11 +72,15 @@ if (isServer) then
 _format = getText(configFile >> "cfgCharacterCreation" >> "format");
 DZ_SkinsArray = [];
 {
-	_v = _x;
+	_gender = _x;
 	{
-		DZ_SkinsArray set [count DZ_SkinsArray,format[_format,_x,_v]]
-	} forEach getArray(configFile >> "cfgCharacterCreation" >> "gender");
-} forEach getArray(configFile >> "cfgCharacterCreation" >> "race");
+		_race = _x;
+		DZ_SkinsArray set [count DZ_SkinsArray,format[_format,_gender,_race]];
+	} forEach getArray(configFile >> "cfgCharacterCreation" >> "race");
+	{
+		DZ_SkinsArray set [count DZ_SkinsArray,format[_format,_gender,_x]];
+	}  forEach getArray(configFile >> "cfgCharacterCreation" >> format["%1custom",_gender]);
+} forEach getArray(configFile >> "cfgCharacterCreation" >> "gender");
 
 _format = getText(configFile >> "cfgCharacterCreation" >> "format");
 _gender = getArray(configFile >> "cfgCharacterCreation" >> "gender");
@@ -230,15 +239,7 @@ DZ_colorSat = 1;
 "DynamicBlur" ppEffectEnable true;
 "ColorCorrections" ppEffectEnable true;
 
-//generate skins
-_format = getText(configFile >> "cfgCharacterCreation" >> "format");
-DZ_SkinsArray = [];
-{
-	_v = _x;
-	{
-		DZ_SkinsArray set [count DZ_SkinsArray,format[_format,_x,_v]]
-	} forEach getArray(configFile >> "cfgCharacterCreation" >> "gender");
-} forEach getArray(configFile >> "cfgCharacterCreation" >> "race");
+
 
 
 DZ_BONES = call {
@@ -259,6 +260,7 @@ fnc_generateTooltip = compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts
 dayz_bulletHit = 		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\dayz_bulletHit.sqf";
 fnc_playerMessage =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_playerMessage.sqf";
 randomValue =		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\randomValue.sqf";
+fnc_isItemDuctTapeCompatible = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fnc_isItemDuctTapeCompatible.sqf";
 
 //ui
 ui_characterScreen =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\ui_characterScreen.sqf";
@@ -270,6 +272,9 @@ melee_startAttack = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\
 melee_finishAttack = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\melee_finishAttack.sqf";
 event_playerBleed = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\event_playerBleed.sqf";
 
+
+
+/*
 melee_fnc_checkHitLocal = {
 	if (!_processHit) exitWith {};
 	_array = lineHit [_this select 0, _this select 1, "fire", _agent,objNull,0];
@@ -284,15 +289,21 @@ melee_fnc_checkHitLocal = {
 		};
 	};
 };
+*/
+
+isUnderRoof = {
+	_pos = getPosASL _this;
+	_pos0 = [_pos select 0,_pos select 1,(_pos select 2)+ 50];
+	_hits = lineHit [_pos,_pos0,"shadow",_this,objNull,0];
+	_hits
+};
 
 rainCheck =
 {
 	_body = _this;
 	if (rain > 0) then
 	{
-		_pos = getPosASL _body;
-		_pos0 = [_pos select 0,_pos select 1,(_pos select 2)+ 50];
-		_hits = lineHit [_pos,_pos0,"shadow",_body,objNull,0];
+		_hits = _body call isUnderRoof;
 		if (count _hits == 0) then
 		{
 			if (!gettingWet) then
@@ -405,6 +416,35 @@ effect_createBreathFog = {
 		deleteVehicle _source;
 	};
 };
+
+//---------------------------------------
+effect_PumpWater_particle = 
+{
+		_cl = 1;
+		_source = "#particlesource" createVehicleLocal getPosATL _this;
+		_source setParticleParams
+		/*Sprite*/		[["\dz\data\data\ParticleEffects\Universal\Universal", 16, 12, 5, 0],"",// File,Ntieth,Index,Count,Loop(Bool)
+		/*Type*/			"Billboard",
+		/*TimmerPer*/		1,
+		/*Lifetime*/		0.62,
+		/*Position*/		[0.30,0,0.665],
+		/*MoveVelocity*/	[0.12,0,-0.02],
+		/*Simulation*/		0.1,0.32,0.2,0.01,//rotationVel,weight,volume,rubbing
+		/*Scale*/			[0.02,0.07,0.1],
+		/*Color*/			[[0.41,0.41,0.5,0.1],[0.5,0.5,0.6,0.05],[0.92,0.91,0.98,0.01]],
+		/*AnimSpeed*/		[1,0.4,0.2],
+		/*randDirPeriod*/	0,
+		/*randDirIntesity*/	0,
+		/*onTimerScript*/	"",
+		/*DestroyScript*/	"",
+		/*Follow*/		_this];
+		//[lifeTime, position, moveVelocity, rotationVelocity, size, color, randomDirectionPeriod, randomDirectionIntensity, {angle}, bounceOnSurface]
+		_source setParticleRandom [0.1, [0, 0, 0], [0.05, 0.08, 0.04], 0, 0.2, [0, 0, 0.2, 0.1], 0, 0, 10];
+		_source setDropInterval 0.02;
+		[_source, _this] spawn {sleep 4;deleteVehicle (_this select 0);(_this select 1) setVariable["waterSources",((_this select 1) getVariable "waterSources")-1];};
+};
+
+
 
 event_fnc_cookerSteam = {
 	private["_sfx"];
@@ -567,6 +607,130 @@ event_fnc_fireplaceFire =
 		deleteVehicle _fireplaceSmoke;
 		deleteVehicle _fireplaceSparks;
 	};
+};
+
+event_fnc_foodStage =
+{
+	_food = _this;
+	
+	//hint _text;
+	_text = format["event_fnc_foodStage food = %1", displayName _food];
+	diag_log _text;
+	
+	//config
+	_config_name = "CfgVehicles";
+	_config_food = configFile >> _config_name >> typeOf _food;
+
+	//food params
+	_food_stage = _food getVariable 'food_stage';
+	_food_stage_name = _food_stage select 0;
+	_food_stage_index = _food_stage select 1;
+	_food_stage_params = getArray (_config_food >> "Stages" >> _food_stage_name);
+
+	
+	_food_textures = getArray (_config_food >> "foodTextures");
+	_food_materials = getArray (_config_food >> "foodMaterials");
+	_food_appearance = (_food_stage_params select _food_stage_index) select 3;
+		
+	_food_texture_index = _food_appearance select 0;
+	_food_material_index = _food_appearance select 1;
+	_food setObjectTexture [0, _food_textures select _food_texture_index];
+	_food setObjectMaterial [0, _food_materials select _food_material_index];
+};
+
+//'temperature' is changed
+event_fnc_fireplaceIntensity =
+{
+	private["_fireplace","_mid_fireplace_temp","_fire_temp"];
+	_fireplace = _this;
+	_mid_fireplace_temp = 250;
+	
+	_fire_temp = _fireplace getVariable ["temperature",0];	
+	_is_fire = _fireplace getVariable ["fire", false];
+	_fire_intensity = _fireplace getVariable ['fire_intensity', 0];
+	
+	//if not fire, exit
+	if !(_is_fire) exitWith {};
+	
+	//debuglog
+	[player, format["Fire intensity = %1, temperature = %2", _fire_intensity, _fire_temp], "colorStatusChannel"] call fnc_playerMessage;
+	
+	//small fire
+	if (_fire_temp <= _mid_fireplace_temp and 
+		_fire_intensity == 1) exitWith
+	{
+		_fireplace setVariable ['fire_intensity', 0];
+		
+		_fireplace call fnc_kindlingFire_start;
+		_fireplace call fnc_fuelFire_stop;
+	};
+	
+	//big fire
+	if (_fire_temp > _mid_fireplace_temp and 
+		_fire_intensity == 0) exitWith
+	{
+		_fireplace setVariable ['fire_intensity', 1];
+		
+		_fireplace call fnc_fuelFire_start;
+		_fireplace call fnc_kindlingFire_stop;
+	};
+};
+
+//FIREPLACE WITH FUEL
+fnc_fuelFire_start =
+{
+	_fireplace = _this;
+	
+	call effect_createFireplaceFlames; 		
+	call effect_createFireplaceSmoke;
+	call effect_createFireplaceSparks;
+	
+	//debuglog
+	[player, format["Starting fuel fire..."], "colorStatusChannel"] call fnc_playerMessage;
+};
+
+fnc_fuelFire_stop =
+{
+	_fireplace = _this;
+	
+	_fireplaceFlames = _fireplace getVariable ["fireplaceFlamesParticleSource",objNull];		
+	_fireplaceSmoke = _fireplace getVariable ["fireplaceSmokeParticleSource",objNull];		
+	_fireplaceSparks = _fireplace getVariable ["fireplaceSparksParticleSource",objNull];
+	deleteVehicle _fireplaceFlames;
+	deleteVehicle _fireplaceSmoke;
+	deleteVehicle _fireplaceSparks;
+	
+	//debuglog
+	[player, format["Stopping fuel fire..."], "colorStatusChannel"] call fnc_playerMessage;
+};
+
+//FIREPLACE WITH KINDLING ONLY
+fnc_kindlingFire_start =
+{
+	_kindling = _this;
+	_kindling setVariable ['fire_intensity', 0];
+		
+	call effect_createKindlingFlames; 		
+	call effect_createKindlingSmoke;
+	call effect_createKindlingSparks;
+	
+	//debuglog
+	[player, format["Starting kindling fire..."], "colorStatusChannel"] call fnc_playerMessage;
+};
+
+fnc_kindlingFire_stop =
+{
+	_kindling = _this;
+	
+	_kindlingFlames = _kindling getVariable ["kindlingFlamesParticleSource",objNull];		
+	_kindlingSmoke = _kindling getVariable ["kindlingSmokeParticleSource",objNull];		
+	_kindlingSparks = _kindling getVariable ["kindlingSparksParticleSource",objNull];
+	deleteVehicle _kindlingFlames;
+	deleteVehicle _kindlingSmoke;
+	deleteVehicle _kindlingSparks;
+	
+	//debuglog
+	[player, format["Stopping kindling fire..."], "colorStatusChannel"] call fnc_playerMessage;
 };
 
 effect_createFireplaceFlames =
