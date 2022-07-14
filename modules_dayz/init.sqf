@@ -260,7 +260,7 @@ fnc_generateTooltip = compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts
 dayz_bulletHit = 		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\dayz_bulletHit.sqf";
 fnc_playerMessage =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fn_playerMessage.sqf";
 randomValue =		compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\randomValue.sqf";
-fnc_isItemDuctTapeCompatible = 	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\fnc_isItemDuctTapeCompatible.sqf";
+fnc_isItemDuctTapeCompatible = 	compile preprocessFileLineNumbers "\dz\modulesDayz\scripts\fnc_isItemDuctTapeCompatible.sqf";
 
 //ui
 ui_characterScreen =	compile preprocessFileLineNumbers "\dz\modulesDayZ\scripts\ui_characterScreen.sqf";
