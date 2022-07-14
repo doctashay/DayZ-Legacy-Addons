@@ -34,6 +34,7 @@ event_bloodTransfusion = compile preprocessFileLineNumbers "\dz\server\scripts\e
 event_killedWildAnimal = compile preprocessFileLineNumbers "\dz\server\scripts\events\event_killedWildAnimal.sqf";
 event_killedZombie = compile preprocessFileLineNumbers "\dz\server\scripts\events\event_killedZombie.sqf";
 event_gasLight = compile preprocessFileLineNumbers "\dz\server\scripts\events\event_gasLight.sqf";
+event_openCan = compile preprocessFileLineNumbers "\dz\server\scripts\events\event_openCan.sqf";
 
 //players
 //player_checkStealth = 	compile preprocessFileLineNumbers "\dz\server\scripts\players\player_checkStealth.sqf";
@@ -117,7 +118,11 @@ init_newPlayer =
 	_this setVariable ["water",DZ_WATER];
 	_this setVariable ["stomach",DZ_STOMACH];
 	_this setVariable ["diet",DZ_DIET];
-	
+	_this setVariable ["bodytemperature",DZ_TEMPERATURE];
+	_this setVariable ["heatComfort",DZ_HEATCOMFORT];
+	_this setVariable ["wet",0];
+	_this setVariable ["restrainedwith",0];
+
 	//get blood type
 	_bloodTypes = getArray (configFile >> "cfgSolutions" >> "bloodTypes"); 
 	_rand = random 1; 
@@ -489,39 +494,31 @@ fnc_processItemWetness = {
 		_this refers to whether item is parented to player or not
 	*/
 	
-	if (!isNull _item) then
-	{
-		if (_this) then {_filledSlots = _filledSlots + 1};
-		
-		//is the player getting wet?
-		_wetness = _item getVariable ["wet",0];
-		if (_isDrying and (_wetness == 0)) exitWith {};
-		
-		//is the item actually absorbent?
-		_absorbancy = getNumber(configFile >> "cfgVehicles" >> typeOf _item >> "absorbency");
-		if (_absorbancy == 0) exitWith {};
-
-		//is the item already wet enough?
-		private["_change"];
-		_change = (_delta * _scale);
-		if ((_wetness >= _scale) and !_isDrying) exitWith {};
-
-		//calculate wetness
-		_wetness = (((_wetness + (_delta * _scale)) min 1) max 0) * _absorbancy;
-		if (_this) then
-		{
-			//check if should make player wet or dry
-			if ((_wetness == 1) or (_wetness == 0)) then
-			{
-				_playerWet = (((_playerWet + _change) min 1) max 0);
-			};			
-		};
-		_item setVariable ["wet",_wetness];
-	}
-	else
-	{
-		_playerWet = (((_playerWet + (_delta * _scale)) min 1) max 0);
+	//if there are no clothes on that part of body, dry/wet player instead
+	if (isNull _item)exitWith{
+		_playerWet = ((_playerWet + (_delta * 0.2 * _scale)) min 1) max 0;
 	};
+	
+	//if clothes are already dry, dry player instead
+	_wetness = _item getVariable ["wet",0];
+	if(_wetness == 0 and _isDrying)exitWith{
+	_playerWet = ((_playerWet + (_delta * 0.01 * _scale)) min 1) max 0;
+	};
+	
+	//if clothes are already soaked, wet player instead
+	_absorbancy = getNumber(configFile >> "cfgVehicles" >> typeOf _item >> "absorbency");
+	if((_wetness == _absorbancy or _absorbancy == 0) and !_isDrying)exitWith{
+		//if player has waterproof clothes and is in water he gets wet, if its just raining, then not
+		if(_isWater)then{
+			_playerWet = ((_playerWet + (_delta * (_absorbancy+0.2) * _scale)) min 1) max 0;
+		};
+
+	};
+	
+	//dry/wet clothes
+	//_wetness = (((_wetness + (_delta * _scale)) min 1) max 0) * _absorbancy;
+	_wetness = ((_wetness + (_delta * _scale)) min _absorbancy) max 0;
+	_item setVariable ["wet",_wetness];
 };
 
 /*
@@ -1119,20 +1116,57 @@ player_fnc_processStomach = {
 	_isFood = _itemClass isKindOf "FoodItemBase";
 	_isDrink = _itemClass isKindOf "DrinksItemBase";
 	_isMedicine = _itemClass isKindOf "MedicalItemBase";
+	_randomLiquid = _itemClass isKindOf "BottleBase";
 	
 	switch true do
 	{
-		case (_isFood or _isDrink):
+		case (_isFood || _isDrink || _randomLiquid ):
 		{
 			// pull food and drink nutritions parameters from Nutrition class
 			_nutritionConfig = _itemCfg >> "Nutrition";
-			_totalVolume = getNumber (_nutritionConfig >> "totalVolume");
-			_consumableWater = getNumber (_nutritionConfig >> "water");
-			_consumableEnergy = getNumber (_nutritionConfig >> "energy");
-			_consumableNutriIndex = getNumber (_nutritionConfig >> "nutritionalIndex");
+			if ( _randomLiquid ) then
+			{
+				_liquidType = (itemInHands _person) getVariable ["liquidType", ""];
+				
+				if ( _liquidType != "") then
+				{
+					_nutritionConfig = configFile >> "cfgLiquidTypes" >> _liquidType >> "Nutrition";
+				};
+			};
+
+			_totalVolume = 0;
+			_consumableWater = 0;
+			_consumableEnergy = 0;
+			_consumableNutriIndex = 0;
+			
+			if ( !( isNumber (_nutritionConfig >> 'totalVolume'))) then
+			{
+				// pull food and drink nutritions parameters from Stages class
+				_item = _person getVariable "inUseItem";
+				
+				_food_stage = _item getVariable 'food_stage';
+				_food_stage_name = _food_stage select 0;
+				_food_stage_index = _food_stage select 1;
+				_food_stage_params = getArray (_itemCfg >> "Stages" >> _food_stage_name);
+				_nutrition_values = (_food_stage_params select _food_stage_index) select 0;
+				
+				_totalVolume = _nutrition_values select 0;
+				_consumableWater = _nutrition_values select 2;
+				_consumableEnergy = _nutrition_values select 1;
+				_consumableNutriIndex = _nutrition_values select 3;
+			}
+			else
+			{
+				_totalVolume = getNumber (_nutritionConfig >> "totalVolume");
+				_consumableWater = getNumber (_nutritionConfig >> "water");
+				_consumableEnergy = getNumber (_nutritionConfig >> "energy");
+				_consumableNutriIndex = getNumber (_nutritionConfig >> "nutritionalIndex");
+			};
+			
 			
 			//statusChat [format ["D> energy:%1, water:%2, stomach:%3, scale:%4 (%5)",_energy,_water,_stomach,_scale,isNil "_scale"],""]; // debug: actual values of states
-			
+			//statusChat [format ["D> _totalVolume:%1, _consumableWater:%2, _consumableEnergy:%3, _consumableNutriIndex: %4",_totalVolume,_consumableWater,_consumableEnergy, _consumableNutriIndex],""]; 
+				
 			// volume of portion actually eaten/drunk/used
 			_portionVolume = _totalVolume * _scale; // ??Am I sure to get proper scale from actionOnSelf??
 			
@@ -1185,11 +1219,14 @@ player_vomit = {
 		[_agent,"action_vomit"] call event_saySound;
 		
 		//remove contents
+		
+		_energy = (_energy - 600) max -1;
+		_agent setVariable ["energy",_energy];		
+
 		_stomach = 0;
 		_agent setVariable ["stomach",_stomach];
 			
-		_energy = (_energy - 600) max 100;
-		_agent setVariable ["energy",_energy];		
+		
 			
 		_water = (_water - 1000);
 		_agent setVariable ["water",_water];
