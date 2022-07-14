@@ -41,13 +41,15 @@ if (isServer) then
 	};
 	
 	//assign blindness
-	diag_log [format ["headgear slot: %1, type of: %2",(_agent itemInSlot "headgear"),typeOf (_agent itemInSlot "headgear")],""]; // DEBUG
-	if ((_agent itemInSlot "headgear") isKindOf "Cover_BurlapSack") then
+	/*
+	//diag_log [format ["headgear slot: %1, type of: %2",(_agent itemInSlot "headgear"),typeOf (_agent itemInSlot "headgear")],""]; // DEBUG
+	if (typeOf (_agent itemInSlot "headgear") == "Cover_BurlapSack") then
 	{	
-		diag_log [format ["setting the aperture, fading sound, fading speech"],""]; // DEBUG
+		//diag_log [format ["setting the aperture, fading sound, fading speech"],""]; // DEBUG
 		_agent spawnForPlayer {setAperture 10000;1 fadeSound 0.4;1 fadeSpeech 0.4;};
 		//_agent spawnForPlayer compile "setAperture 10000;1 fadeSound 0.4;1 fadeSpeech 0.4;";
 	};
+	*/
 	
 	//count bleeding
 	_coords = call compile (_agent getVariable ["bleedingsources","[]"]);
