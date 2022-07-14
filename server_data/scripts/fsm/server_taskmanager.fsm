@@ -65,7 +65,21 @@ class FSM
            "[""infected"",""infected""] setTargetDistanceLimit 0; " \n
            "[""infected"",""loot""] setTargetDistanceLimit 0; " \n
            "[""infected"",""building""] setTargetDistanceLimit 0; " \n
+           "[""infected"",""vehicle""] setTargetDistanceLimit 0; " \n
            "[""infected"",""player""] setTargetDistanceLimit 200;" \n
+           "[""infected"",""animal""] setTargetDistanceLimit 200;" \n
+           "[""animal"",""animal""] setTargetDistanceLimit 0; " \n
+           "[""animal"",""loot""] setTargetDistanceLimit 0; " \n
+           "[""animal"",""building""] setTargetDistanceLimit 0; " \n
+           "[""animal"",""vehicle""] setTargetDistanceLimit 0; " \n
+           "[""animal"",""player""] setTargetDistanceLimit 200;" \n
+           "[""animal"",""infected""] setTargetDistanceLimit 200;" \n
+           "[""player"",""player""] setTargetDistanceLimit 0; " \n
+           "[""player"",""loot""] setTargetDistanceLimit 0; " \n
+           "[""player"",""building""] setTargetDistanceLimit 0; " \n
+           "[""player"",""vehicle""] setTargetDistanceLimit 0; " \n
+           "[""player"",""animal""] setTargetDistanceLimit 0;" \n
+           "[""player"",""infected""] setTargetDistanceLimit 0;" \n
            "" \n
            "call compile preprocessFileLineNumbers ""\dz\server\scripts\initEvents.sqf"";" \n
            "" \n
@@ -99,12 +113,6 @@ class FSM
       name = "do_nothing_";
       init = /*%FSM<STATEINIT""">*/"_waitTime = diag_tickTime;" \n
        "" \n
-       "if (_totalPlayers != count players) then" \n
-       "{" \n
-       "	diag_log ""SERVER: New players, sending weather update"";" \n
-       "	publishForecast;" \n
-       "	_totalPlayers = count players;" \n
-       "};" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
