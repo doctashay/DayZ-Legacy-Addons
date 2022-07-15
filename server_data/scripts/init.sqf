@@ -1254,3 +1254,84 @@ pack_TentContainer =
 		_tent = [(_this select 2),_person] call player_addInventory;
 	};
 };
+
+player_drown = { 
+	_agent = _this select 0; 
+	_branch = _this select 1; 
+	_dmg = _agent getVariable ["underwater",0]; 
+	if(_branch == 0)then{ 
+		if(_dmg > 0)then{ 
+			_agent setVariable ["underwater",0]; 
+		}; 
+	}else{ 
+		_dmg = _dmg + 1; 
+		if(_dmg > 30)then{_agent setDamage 1;}else{ 
+			if(_dmg > 27)then{[_agent,"I am drowning","colorImportant"] call fnc_playerMessage; 
+				if (isPlayer _agent) then 
+				{ 
+					effectDazed = true; 
+					(owner _agent) publicVariableClient "effectDazed"; 
+				}; 
+			}else{ 
+				if(_dmg > 23)then{[_agent,"I am going to drown","colorImportant"] call fnc_playerMessage;}else{ 
+					if(_dmg > 15)then{[_agent,"I am running out of air",""] call fnc_playerMessage;}; 
+				}; 
+			}; 
+		}; 
+		_agent setVariable ["underwater",_dmg]; 
+	}; 
+}; 
+ 
+ 
+//Returns global X,Y pos according to given offset and direction 
+fnc_getRelativeXYPos = { 
+	_x = (_this select 0) select 0; 
+	_y = (_this select 0) select 1; 
+	_offsetX = (_this select 1) select 0; 
+	_offsetY = (_this select 1) select 1; 
+	_dir = _this select 2; 
+	 
+	_xPos = _x + (sin _dir * _offsetX); 
+	_yPos = _y + (cos _dir * _offsetX); 
+	_xPos = _xPos + (sin (_dir+90) * _offsetY); 
+	_yPos = _yPos + (cos (_dir+90) * _offsetY); 
+	[_xPos, _yPos]; 
+}; 
+ 
+/* 
+	Adds quantity to given item and keeps it within its limits. 
+	Negative parameter is supported and the item is automatically deleted when its quantity is <= 0 
+	Return value is resulted quantity 
+	[_item, _addedQuantity] call fnc_addQuantity 
+*/ 
+fnc_addQuantity = { 
+	_item = _this select 0; 
+	_amount = _this select 1; 
+	_resultedQuantity = quantity _item + _amount; 
+	if (_resultedQuantity > 0) then { 
+		if (_resultedQuantity > maxQuantity _item) then { 
+			_resultedQuantity = maxQuantity _item; 
+		}; 
+		_item setQuantity _resultedQuantity; 
+		_resultedQuantity; 
+	}else{ //Delete empty items 
+		deleteVehicle _item; 
+		_resultedQuantity; 
+	}; 
+}; 
+ 
+/* 
+	Adds multiple items of the same type into the user's inventory 
+	[_itemType, _itemCount, _user] call fnc_addItemCount; 
+*/ 
+fnc_addItemCount = { 
+	_itemType = _this select 0; 
+	_itemCount = _this select 1; 
+	_user = _this select 2; 
+	while {_itemCount > 0} do 
+	{ 
+		_itemCount = _itemCount - 1; 
+		_item = [_itemType, _user] call player_addInventory; 
+		_item setQuantity maxQuantity _item; 
+	}; 
+};
